@@ -1,5 +1,12 @@
 from django.contrib import admin
-from .models import TodoItem
+from .models import *
 
 # Register your models here.
-admin.site.register(TodoItem)
+admin.site.register(User)
+admin.site.register(Listing)
+admin.site.register(Photo)
+admin.site.register(Message)
+admin.site.register(Review)
+admin.site.register(CreditTransaction)
+admin.site.register(Notification)
+admin.site.register(Category)
