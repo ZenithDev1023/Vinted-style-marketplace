@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>{{ product.title }}</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'myapp/css/productspagecss.css' %}">
+    <link rel="stylesheet" href="{% static 'myapp/products-page/products.css' %}">
 </head>
 <body>
     <h1>{{ product.title }}</h1>
@@ -13,5 +13,7 @@
     <p>Category: {{ product.category.name }}</p>
 
     <a href="{% url 'products' %}">← Back to Products</a>
+
+    <script src="{% static 'myapp/products-page/products.js' %}"></script>
 </body>
 </html>
