@@ -1,0 +1,84 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: lightgreen;
+}
+
+/* Carousel wrapper stays the same */
+.carousel-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;          /* Added - gives some breathing room */
+}
+
+.carousel-window {
+    overflow: hidden;
+    width: 100%;
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.3s ease;
+}
+
+/* Each container is now one "slide" */
+.container {
+    display: flex;
+    min-width: 100%;
+    justify-content: space-around;
+    gap: 20px;
+    padding: 10px;          /* Added - stops images touching edges */
+    box-sizing: border-box; /* Added - prevents padding breaking layout */
+}
+
+/* Product cards */
+.container div {
+    flex: 1;
+    text-align: center;
+}
+
+.container img {
+    width: 100%;
+    max-width: 200px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ccc; /* Added - helps if image fails to load */
+}
+
+.container a {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    color: darkblue;
+    text-decoration: underline;
+}
+
+/* Added - style the carousel buttons */
+.carousel-wrapper button {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    cursor: pointer;
+    flex-shrink: 0;         /* Stops buttons shrinking on small screens */
+}
+
+.carousel-wrapper button:hover {
+    background-color: #f0f0f0;
+}

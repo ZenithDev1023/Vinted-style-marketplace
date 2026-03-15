@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Products Page</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'myapp/css/productspagecss.css' %}">
+</head>
+
+<body>
+    <h1>Products</h1>
+
+    <div class="carousel-wrapper">
+        <button onclick="prev()">&#8592;</button>
+        <div class="carousel-window">
+            <div class="carousel-track">
+
+                {% for listing in listings %}
+                <div class="container">
+                    <div>
+                        <a href="{% url 'product_detail' listing.id %}">
+                            <img src="{{ listing.photo_set.filter(isPrimary=True).first.image_url }}" alt="{{ listing.title }}">
+                            {{ listing.title }}
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+        <button onclick="next()">&#8594;</button>
+    </div>
+
+    <script src="{% static 'myapp/js/productspage.js' %}"></script>
+</body>
+</html>

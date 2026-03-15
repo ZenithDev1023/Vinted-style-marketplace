@@ -1,0 +1,17 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ product.title }}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'myapp/css/productspagecss.css' %}">
+</head>
+<body>
+    <h1>{{ product.title }}</h1>
+    <p>{{ product.description }}</p>
+    <p>Price: £{{ product.price }}</p>
+    <p>Condition: {{ product.condition }}</p>
+    <p>Category: {{ product.category.name }}</p>
+
+    <a href="{% url 'products' %}">← Back to Products</a>
+</body>
+</html>
