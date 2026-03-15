@@ -3,7 +3,27 @@ from .models import *
 
 # Create your views here.
 def home(request):
-    return render(request, "home.html")
+    user_id = request.session.get("user_id")
+    user = None
+    featured_listings = []
+    
+    if user_id:
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            pass
+    
+    # Get featured listings (recent 6)
+    featured_listings = Listing.objects.all()[:6]
+    
+    context = {
+        'user_id': user_id,
+        'user': user,
+        'featured_listings': featured_listings,
+    }
+    
+    return render(request, "home/home.html", context)
+    
 
 
 def products(request):

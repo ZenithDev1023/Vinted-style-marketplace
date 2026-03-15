@@ -1,17 +1,291 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="{% static 'myapp/home/home.css' %}">
-    </head>
-    <body>
-        <h1>Hello World!</h1>
-     
-        
-        <script src="{% static 'myapp/home/home.js' %}"></script>
-    </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradeX - Trade & Construction Marketplace</title>
+    <link rel="stylesheet" href="{% static 'home/home.css' %}">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- ==================== TOP NAVIGATION BAR ==================== -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <!-- Logo (Left) -->
+            <a href="{% url 'home' %}" class="logo">
+                <img src="{% static 'images/tradex-logo.png' %}" alt="TradeX Logo">
+                <span>TradeX</span>
+            </a>
+
+            <!-- Search Bar (Center) -->
+            <form class="search-bar" method="GET" action="{% url 'products' %}">
+                <input type="text" 
+                       name="q" 
+                       placeholder="Search tools, equipment, materials..." 
+                       value="{{ search_query }}">
+                <button type="submit" class="search-btn">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </form>
+
+            <!-- Auth Buttons (Right) -->
+            <div class="nav-actions">
+                {% if user_id %}
+                    <span class="user-greeting">Hi, {{ user.username }}!</span>
+                    <a href="{% url 'create_listing' %}" class="btn btn-primary">Post an Ad</a>
+                    <a href="{% url 'profile' %}" class="btn btn-secondary">My Profile</a>
+                    <a href="{% url 'home' %}" class="btn btn-outline">Logout</a>
+                {% else %}
+                    <a href="{% url 'create_listing' %}" class="btn btn-primary">Post an Ad</a>
+                    <a href="{% url 'register' %}" class="btn btn-secondary">Sign Up</a>
+                    <a href="{% url 'login' %}" class="btn btn-outline">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==================== CATEGORY NAVIGATION BAR ==================== -->
+    <nav class="category-nav">
+        <div class="nav-container">
+            <ul class="category-list">
+                <li><a href="{% url 'products' %}?category=hand-tools">🔧 Hand Tools</a></li>
+                <li><a href="{% url 'products' %}?category=power-tools">⚡ Power Tools</a></li>
+                <li><a href="{% url 'products' %}?category=equipment">🏗️ Equipment</a></li>
+                <li><a href="{% url 'products' %}?category=safety-gear">🦺 Safety Gear</a></li>
+                <li><a href="{% url 'products' %}?category=materials">🧱 Materials</a></li>
+                <li><a href="{% url 'products' %}?category=vehicles">🚛 Trade Vehicles</a></li>
+                <li><a href="{% url 'products' %}?category=services">👷 Services</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ==================== HERO SECTION ==================== -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Free Trade & Construction Classifieds</h1>
+            <p>One place for all your trade tools, equipment & materials</p>
+            
+            {% if user_id %}
+                <a href="{% url 'create_listing' %}" class="btn btn-large btn-primary">Post an Ad</a>
+            {% else %}
+                <button class="btn btn-large btn-primary" onclick="openModal('authModal')">Post an Ad</button>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- ==================== POPULAR CATEGORIES ==================== -->
+    <section class="popular-categories">
+        <div class="container">
+            <h2>Discover Popular Categories</h2>
+            <div class="category-grid">
+                <a href="{% url 'products' %}?category=hand-tools" class="category-card">
+                    <div class="category-icon">🔧</div>
+                    <h3>Hand Tools</h3>
+                    <p>{{ hand_tools_count|default:"0" }} listings</p>
+                </a>
+                <a href="{% url 'products' %}?category=power-tools" class="category-card">
+                    <div class="category-icon">⚡</div>
+                    <h3>Power Tools</h3>
+                    <p>{{ power_tools_count|default:"0" }} listings</p>
+                </a>
+                <a href="{% url 'products' %}?category=equipment" class="category-card">
+                    <div class="category-icon">🏗️</div>
+                    <h3>Equipment</h3>
+                    <p>{{ equipment_count|default:"0" }} listings</p>
+                </a>
+                <a href="{% url 'products' %}?category=safety-gear" class="category-card">
+                    <div class="category-icon">🦺</div>
+                    <h3>Safety Gear</h3>
+                    <p>{{ safety_count|default:"0" }} listings</p>
+                </a>
+                <a href="{% url 'products' %}?category=materials" class="category-card">
+                    <div class="category-icon">🧱</div>
+                    <h3>Materials</h3>
+                    <p>{{ materials_count|default:"0" }} listings</p>
+                </a>
+                <a href="{% url 'products' %}?category=vehicles" class="category-card">
+                    <div class="category-icon">🚛</div>
+                    <h3>Trade Vehicles</h3>
+                    <p>{{ vehicles_count|default:"0" }} listings</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== FEATURED LISTINGS ==================== -->
+    <section class="featured-listings">
+        <div class="container">
+            <h2>Featured Listings</h2>
+            <div class="listing-grid">
+                {% for listing in featured_listings %}
+                <div class="listing-card">
+                    {% if listing.photo_set.all %}
+                        <img src="{{ listing.photo_set.first.image_url }}" alt="{{ listing.title }}">
+                    {% else %}
+                        <img src="{% static 'images/placeholder-tool.png' %}" alt="No image">
+                    {% endif %}
+                    <div class="listing-info">
+                        <h3>{{ listing.title }}</h3>
+                        <p class="price">
+                            {% if listing.status == "free" %}
+                                Free
+                            {% elif listing.status == "trade" %}
+                                Trade Only
+                            {% else %}
+                                £{{ listing.price }}
+                            {% endif %}
+                        </p>
+                        <p class="location">📍 {{ listing.location.city|default:"UK" }}</p>
+                        <p class="condition">Condition: {{ listing.get_condition_display }}</p>
+                        <p class="date">Posted: {{ listing.createdDate|date:"M d, Y" }}</p>
+                        <a href="{% url 'product_details' listing.id %}" class="btn btn-outline btn-small">View Details</a>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="no-listings">No listings yet. <a href="{% url 'create_listing' %}">Be the first!</a></p>
+                {% endfor %}
+            </div>
+            <div class="view-all">
+                <a href="{% url 'products' %}" class="btn btn-outline">View All Listings</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== HOW IT WORKS ==================== -->
+    <section class="how-it-works">
+        <div class="container">
+            <h2>How TradeX Works</h2>
+            <div class="steps-grid">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Create Account</h3>
+                    <p>Sign up free and get starter credits</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Post Your Ad</h3>
+                    <p>List tools, equipment, or materials</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Connect & Trade</h3>
+                    <p>Chat with buyers and complete transactions</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <!-- About Us -->
+                <div class="footer-section">
+                    <h4>About TradeX</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Press</a></li>
+                    </ul>
+                </div>
+
+                <!-- Help & Contact -->
+                <div class="footer-section">
+                    <h4>Help & Contact</h4>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Safety Tips</a></li>
+                        <li><a href="#">Scam Alerts</a></li>
+                    </ul>
+                </div>
+
+                <!-- Policies -->
+                <div class="footer-section">
+                    <h4>Policies</h4>
+                    <ul>
+                        <li><a href="#">Privacy Notice</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                        <li><a href="#">Community Guidelines</a></li>
+                    </ul>
+                </div>
+
+                <!-- For Tradespeople -->
+                <div class="footer-section">
+                    <h4>For Tradespeople</h4>
+                    <ul>
+                        <li><a href="{% url 'create_listing' %}">Sell on TradeX</a></li>
+                        <li><a href="#">Business Accounts</a></li>
+                        <li><a href="#">Advertising</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div class="footer-bottom">
+                <p>&copy; {% now "Y" %} TradeX Marketplace. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== AUTH MODAL (Login/Signup) ==================== -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('authModal')">&times;</span>
+            
+            <div class="modal-tabs">
+                <button class="tab-btn active" onclick="switchTab('login')">Login</button>
+                <button class="tab-btn" onclick="switchTab('signup')">Sign Up</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" class="auth-form" method="POST" action="{% url 'login' %}">
+                {% csrf_token %}
+                <h2>Login</h2>
+                <div class="form-group">
+                    <label for="login-username">Username</label>
+                    <input type="text" id="login-username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Login</button>
+            </form>
+
+            <!-- Signup Form -->
+            <form id="signupForm" class="auth-form" method="POST" action="{% url 'register' %}" style="display: none;">
+                {% csrf_token %}
+                <h2>Sign Up</h2>
+                <div class="form-group">
+                    <label for="signup-username">Username</label>
+                    <input type="text" id="signup-username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-email">Email</label>
+                    <input type="email" id="signup-email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-password">Password</label>
+                    <input type="password" id="signup-password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script src="{% static 'home/home.js' %}"></script>
+</body>
 </html>
