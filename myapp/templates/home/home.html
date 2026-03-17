@@ -14,6 +14,9 @@
     <!-- ==================== TOP NAVIGATION BAR ==================== -->
     <nav class="navbar">
         <div class="nav-container">
+            <!-- Hamburger Button (Far Left) -->
+            <span id="openNavBtn" style="font-size:30px;cursor:pointer;color:white;">&#9776;</span>
+
             <!-- Logo (Left) -->
             <a href="{% url 'home' %}" class="logo">
                 <img src="{% static 'images/tradex-logo.png' %}" alt="TradeX Logo">
@@ -46,6 +49,15 @@
             </div>
         </div>
     </nav>
+
+    <!-- ==================== SIDE NAVIGATION ==================== -->
+    <div id="mySidenav" class="sidenav">
+        <a id="closeNavBtn" href="javascript:void(0)" class="closebtn">&times;</a>
+        <a href="#">About</a>
+        <a href="#">Services</a>
+        <a href="#">Clients</a>
+        <a href="#">Contact</a>
+    </div>
 
     <!-- ==================== CATEGORY NAVIGATION BAR ==================== -->
     <nav class="category-nav">
@@ -288,4 +300,4 @@
     <!-- ==================== JAVASCRIPT ==================== -->
     <script src="{% static 'home/home.js' %}"></script>
 </body>
-</html>
+</html> 

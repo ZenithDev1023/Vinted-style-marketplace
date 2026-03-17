@@ -28,13 +28,22 @@ def home(request):
 
 def products(request):
     listings = Listing.objects.all()
-    return render(request, "products.html", {"listings": listings})
+    listings_with_photos = []
+    #It now loops through each listing and retrieves the primary photo associated with it, creating a list of dictionaries that contain both the listing and its primary photo. 
+    # This allows the template to easily access and display the primary photo for each listing.
+    for listing in listings:
+        primary_photo = listing.photo_set.filter(isPrimary=True).first()
+        listings_with_photos.append({
+            "listing": listing,
+            "primary_photo": primary_photo,
+        })
+    return render(request, "product-page/products.html", {"listings_with_photos": listings_with_photos})
 
 
 def product_detail(request, listing_id):
     try:
         product = Listing.objects.get(id=listing_id)
-        return render(request, "product_detail.html", {"product": product})
+        return render(request, "product-page/product_detail.html", {"product": product})
         
     except Listing.DoesNotExist:
         return redirect("products")
@@ -50,7 +59,7 @@ def register(request):
 
         return redirect("login")
     
-    return render(request, "register.html")
+    return render(request, "login-register/register.html")
 
 
 def login(request):
@@ -66,9 +75,9 @@ def login(request):
                 return redirect("home")
 
         except User.DoesNotExist:
-            return render(request, "register.html")
+            return render(request, "login-register/register.html")
     
-    return render(request, "login.html")
+    return render(request, "login-register/login.html")
         
 
 def profile(request):
@@ -79,7 +88,7 @@ def profile(request):
 
     user = User.objects.get(id=user_id)
 
-    return render(request, "profile.html", {"user": user})
+    return render(request, "profile/profile.html", {"user": user})
 
 
 def create_listing(request):
@@ -98,7 +107,7 @@ def create_listing(request):
 
         return redirect("products")
 
-    return render(request, "create_listing.html")
+    return render(request, "listings/create_listing.html")
 
 
 
@@ -121,9 +130,9 @@ def edit_listing(request):
             return redirect("products")
 
         except Listing.DoesNotExist:
-            return render(request, "home.html")
+            return render(request, "home/home.html")
 
-    return render(request, "edit_listing.html")
+    return render(request, "listings/edit_listing.html")
 
 
 
@@ -136,7 +145,7 @@ def my_listings(request):
 
     listings = Listing.objects.filter(user_id=user_id)
 
-    return render(request, "my_listings.html", {"listings": listings})
+    return render(request, "listings/my_listings.html", {"listings": listings})
     
 
 
@@ -148,7 +157,7 @@ def messages(request):
 
     user_messages = Message.objects.filter(user_id=user_id)
 
-    return render(request, "messages.html", {"messages": user_messages})
+    return render(request, "profile/messages.html", {"messages": user_messages})
 
 
 def transactions(request):
@@ -159,7 +168,7 @@ def transactions(request):
 
     user_transactions = Transaction.objects.filter(user_id=user_id)
 
-    return render(request, "transactions.html", {"transactions": user_transactions})
+    return render(request, "profile/transactions.html", {"transactions": user_transactions})
 
 
 
@@ -171,4 +180,4 @@ def notifications(request):
 
     user_notifications = Notification.objects.filter(user_id=user_id)
 
-    return render(request, "notifications.html", {"notifications": user_notifications})
+    return render(request, "profile/notifications.html", {"notifications": user_notifications})

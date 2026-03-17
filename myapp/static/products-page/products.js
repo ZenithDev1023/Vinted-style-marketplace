@@ -6,6 +6,7 @@ const slides = document.querySelectorAll('.container');
 const total = slides.length;
 
 function updateCarousel() {
+    if (!track) return;
     track.style.transform = `translateX(-${current * 100}%)`;
 }
 
@@ -20,3 +21,19 @@ function prev() {
     current = (current - 1 + total) % total;  // Loops back to end
     updateCarousel();
 }
+
+
+/* Open the side navigation */
+function openNav() {
+  document.getElementById("mySidenav").classList.add("open");
+  document.getElementById("main").style.marginLeft = "250px";
+}
+
+/* Close the side navigation */
+function closeNav() {
+  document.getElementById("mySidenav").classList.remove("open");
+  document.getElementById("main").style.marginLeft = "0";
+}
+
+document.getElementById("openNavBtn").addEventListener("click", openNav);
+document.getElementById("closeNavBtn").addEventListener("click", closeNav);
