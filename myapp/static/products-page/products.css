@@ -175,14 +175,14 @@
 }
 
 
-/* ===========Products page specific styles===================== */
+/* ===========PRODUCTS PAGE BODY===================== */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
 }
 
-/* Carousel wrapper stays the same */
+/*============CAROUSEL=====================*/
 .carousel-wrapper {
     display: flex;
     align-items: center;
@@ -244,6 +244,40 @@ a:hover {
     text-decoration: underline;
 }
 
+/* ========IMAGES======= */
+.row{
+    display: flex;
+    flex-wrap: wrap; 
+    padding: 0 4px; 
+}
+
+.column{
+    flex: 50%;
+    padding: 0 4px;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
+
+.column img{
+    margin-top: 8px;
+    vertical-align: middle;
+}
+
+.product-image{
+    width: 100%;
+    max-width: 200px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+
+.product-image:hover {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+
 /* Added - style the carousel buttons */
 .carousel-wrapper button {
     background-color: white;
@@ -261,7 +295,7 @@ a:hover {
 }
 
 
-/* <SIDEBAR> */
+/* ===============SIDEBAR===================== */
 
 .sidenav {
   height: 100%;
@@ -270,7 +304,7 @@ a:hover {
   z-index: 1001;
   top: 0;
   left: 0;
-  background-color: #111;
+  background-color: #0d2f4f;
   overflow-x: hidden;
   overflow-y: auto;
   white-space: nowrap;
@@ -298,6 +332,9 @@ a:hover {
 /* When you mouse over the navigation links, change their color */
 .sidenav a:hover {
   color: #f1f1f1;
+  background-color: #1a5fa8;
+  border-radius: 4px; 
+  color: white;
 }
 
 /* Position and style the close button (top right corner) */

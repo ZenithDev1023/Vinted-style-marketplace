@@ -49,38 +49,31 @@
 
     <div id="mySidenav" class="sidenav">
         <a id="closeNavBtn" href="javascript:void(0)" class="closebtn">&times;</a>
+        <a href="#">My Profile</a>
         <a href="#">About</a>
-        <a href="#">Services</a>
-        <a href="#">Clients</a>
+        <a href="{% url 'products' %}">Products</a>
         <a href="#">Contact</a>
+        <a href="#">Messages</a>
+        <a href="#">Settings</a>
+        <a href="#">Logout</a>
     </div>
 
 
 
     <div id="main">
         <h1>Products</h1>
-        <div class="carousel-wrapper">
-            <button onclick="prev()">&#8592;</button>
-            <div class="carousel-window">
-                <div class="carousel-track">
-
-                    {% for item in listings_with_photos %}
-                    <div class="container">
-                        <div>
-                            <a href="{% url 'product_detail' item.listing.id %}">
-                                {% if item.primary_photo %}
-                                    <img src="{{ item.primary_photo.image_url }}" alt="{{ item.listing.title }}">
-                                {% endif %}
-                                {{ item.listing.title }}
-                            </a>
-                        </div>
-                    </div>
-                    {% endfor %}
-
+            <div class="row">
+                <div class="column">
+                    <div><img src="{% static 'images/Hammer.jpeg' %}" alt="Hammer" class="product-image"><p>Hammer</p></div>
+                    <div><img src="{% static 'images/Saw.jpeg' %}" alt="Saw" class="product-image"><p>Saw</p></div>
+                    <div><img src="{% static 'images/Crowbar.jpeg' %}" alt="Crowbar" class="product-image"><p>Crowbar</p></div>
+                </div>
+                <div class="column">
+                    <div><img src="{% static 'images/Nails.jpeg' %}" alt="Nails" class="product-image"><p>Nails</p></div>
+                    <div><img src="{% static 'images/Screwdriver.webp' %}" alt="Screwdriver" class="product-image"><p>Screwdriver</p></div>
+                    <div><img src="{% static 'images/WoodPlanks.jpeg' %}" alt="Wood Planks" class="product-image"><p>Wood Planks</p></div>
                 </div>
             </div>
-            <button onclick="next()">&#8594;</button>
-        </div>
     </div>
 
 </body>

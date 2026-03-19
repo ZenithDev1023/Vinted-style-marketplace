@@ -14,6 +14,26 @@
 
     <a href="{% url 'products' %}">← Back to Products</a>
 
+    <div id="main">
+        <h1>Products</h1>
+        <div class="carousel-wrapper">
+            <button onclick="prev()">&#8592;</button>
+            <div class="carousel-window">
+                <div class="carousel-track">
+                    <div class="container">
+                        <div><img src="{% static 'images/Hammer.jpeg' %}" alt="Hammer" class="product-image"><p>Hammer</p></div>
+                        <div><img src="{% static 'images/Saw.jpeg' %}" alt="Saw" class="product-image"><p>Saw</p></div>
+                        <div><img src="{% static 'images/Crowbar.jpeg' %}" alt="Crowbar" class="product-image"><p>Crowbar</p></div>
+                        <div><img src="{% static 'images/Nails.jpeg' %}" alt="Nails" class="product-image"><p>Nails</p></div>
+                        <div><img src="{% static 'images/Screwdriver.webp' %}" alt="Screwdriver" class="product-image"><p>Screwdriver</p></div>
+                        <div><img src="{% static 'images/WoodPlanks.jpeg' %}" alt="Wood Planks" class="product-image"><p>Wood Planks</p></div>
+                    </div>
+                </div>
+            </div>
+            <button onclick="next()">&#8594;</button>
+        </div>
+    </div>
+
     <script src="{% static 'products-page/products.js' %}"></script>
 </body>
 </html>
