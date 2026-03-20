@@ -13,5 +13,5 @@ urlpatterns = [
     path("myListings/", views.my_listings, name="my_listings"),
     path("messages/", views.messages, name="messages"),
     path('transactions/', views.transactions, name="transactions"),
-    path("notifications/", views.notifications, name="notifications")
+    path("notifications/", views.notifications, name="notifications"),
 ]
