@@ -49,7 +49,11 @@ def products(request):
 def product_detail(request, listing_id):
     try:
         product = Listing.objects.get(id=listing_id)
-        return render(request, "product-page/product_detail.html", {"product": product})
+        primary_photo = product.photo_set.filter(isPrimary=True).first()
+        return render(request, "product-page/product_detail.html", {
+            "product": product,
+            "primary_photo": primary_photo,
+        })
         
     except Listing.DoesNotExist:
         return redirect("products")

@@ -4,8 +4,8 @@
 <head>
     <title>Products Page</title>
     <link rel="stylesheet" type="text/css" href="{% static 'products-page/products.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/styles.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="{% static 'products-page/products.js' %}" defer></script>
 </head>
 
 <body>
@@ -64,7 +64,7 @@
         <h1>Products</h1>
             <div class="row">
                 <div class="column">
-                    <div><img src="{% static 'images/Hammer.jpeg' %}" alt="Hammer" class="product-image"><p>Hammer</p></div>
+                    <a href="{% url 'product_details' 1%}"><img src="{% static 'images/Hammer.jpeg' %}" alt="Hammer" class="product-image"><p>Hammer</p></a>
                     <div><img src="{% static 'images/Saw.jpeg' %}" alt="Saw" class="product-image"><p>Saw</p></div>
                     <div><img src="{% static 'images/Crowbar.jpeg' %}" alt="Crowbar" class="product-image"><p>Crowbar</p></div>
                 </div>
@@ -75,6 +75,8 @@
                 </div>
             </div>
     </div>
+    <script src="{% static 'products-page/products.js' %}" defer></script>
+    <script src="{% static 'styles/styles.js' %}"></script>
 
 </body>
 </html>

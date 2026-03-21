@@ -1,4 +1,10 @@
-/* ==================== VARIABLES ==================== */
+/* ==================== RESET ==================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 :root {
     --primary-blue: #1E5AA8;
     --secondary-blue: #2D7BC0;
@@ -8,13 +14,6 @@
     --medium-gray: #666666;
     --light-gray: #F5F5F5;
     --border-color: #DDDDDD;
-}
-
-/* ==================== RESET ==================== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
 }
 
 body {
