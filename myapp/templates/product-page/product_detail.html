@@ -58,13 +58,18 @@
     </div>
 
     <h1>{{ product.title }}</h1>
-    {% if primary_photo %}
-        <img src="{{ primary_photo.image_url }}" alt="{{ product.title }}" class="product-image">
-    {% endif %}
-    <p>{{ product.description }}</p>
-    <p>Price: £{{ product.price }}</p>
-    <p>Condition: {{ product.condition }}</p>
-    <p>Category: {{ product.category.name }}</p>
+    <div class="product-layout">
+        {% if primary_photo %}
+            <img src="{{ primary_photo.image_url }}" alt="{{ product.title }}" class="main-product-image">
+        {% endif %}
+        <div class="product-info">
+            <p class="product-description">{{ product.description }}</p>
+            <p class="product-description">Price: £{{ product.price }}</p>
+            <p class="product-description">Condition: {{ product.condition }}</p>
+            <p class="product-description">Category: {{ product.category.name }}</p>
+        </div>
+        <button class="contact-seller-button">Contact Seller</button>
+    </div>
 
     <a href="{% url 'products' %}">← Back to Products</a>
 

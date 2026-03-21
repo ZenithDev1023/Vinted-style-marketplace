@@ -4,6 +4,64 @@ body {
     margin: 0;
     padding: 0;
 }
+
+.product-description {
+    padding: 5px 0;
+    max-width: 800px;
+    margin: 0;
+    text-align: left;
+    font-size: 15px;
+    color: #333;
+    line-height: 1.6;
+}
+
+.product-divider {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 10px 0;
+}
+
+.contact-seller-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+/* ===========PRODUCT LAYOUT===================== */
+.product-layout {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.product-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-top: 5px;
+}
+
+/* ===========PRODUCT IMAGE===================== */
+.product-image {
+    width: 170px;
+    height: 150px;
+    object-fit: cover;
+    border: 1px solid #ccc;
+}
+
+/* Main product photo (larger than carousel thumbnails) */
+.main-product-image {
+    width: 400px;
+    height: 400px;
+    object-fit: cover;
+    border: 1px solid #ccc;
+    display: block;
+}
 /*============CAROUSEL=====================*/
 .carousel-wrapper {
     display: flex;
