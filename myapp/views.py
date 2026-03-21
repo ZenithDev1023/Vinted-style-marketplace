@@ -1,6 +1,12 @@
 from django.shortcuts import render, redirect, HttpResponse
 from .models import *
 
+from .forms import RegisterForm
+
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 def home(request):
     user_id = request.session.get("user_id")
@@ -53,35 +59,48 @@ def product_detail(request, listing_id):
         return redirect("products")
 
 
+def contact(request):
+    return render(request, "sidebar/contact.html")
+
+
+@login_required
+def messages(request):
+    user = request.user
+
+    return render(request, "sidebar/messages.html")
+
+@login_required 
+def settings(request):
+    user = request.user
+    
+    return render(request, "sidebar/settings.html")
+
+
 def register(request):
     if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-
-        user = User(username=username, password_hash=password)
-        user.save()
-
-        return redirect("login")
+        form = RegisterForm(request.POST)
+        
+        if form.is_valid():
+            form.save()
+            return redirect("login")
+    else:
+        form = RegisterForm()
     
-    return render(request, "login-register/register.html")
+    return render(request, "login-register/register.html", {"form": form})
 
 
-def login(request):
+def login_view(request):
     if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
+        form = AuthenticationForm(request, data=request.POST)
 
-        try:
-            user = User.objects.get(username=username)
-
-            if user.login(password):
-                request.session["user_id"] = user.id 
-                return redirect("home")
-
-        except User.DoesNotExist:
-            return render(request, "login-register/register.html")
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect("home")
+    else:
+        form = AuthenticationForm()
     
-    return render(request, "login-register/login.html")
+    return render(request, "login-register/login.html", {"form": form})
         
 
 def profile(request):
@@ -152,16 +171,6 @@ def my_listings(request):
     return render(request, "listings/my_listings.html", {"listings": listings})
     
 
-
-def messages(request):
-    user_id = request.session.get("user_id")
-
-    if not user_id:
-        return redirect("login")
-
-    user_messages = Message.objects.filter(user_id=user_id)
-
-    return render(request, "profile/messages.html", {"messages": user_messages})
 
 
 def transactions(request):

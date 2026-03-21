@@ -225,6 +225,8 @@ class Message(models.Model):
         return f"( {self.content} | {self.sent_at} | {self.read_status} )"
 
 
+
+
 # Notification model
 class Notification(models.Model):
     message = models.TextField()
