@@ -47,11 +47,10 @@
         </div>
     </nav>
 
-    <!-- ==================== SIDE NAVIGATION ==================== -->
     <div id="mySidenav" class="sidenav">
         <a id="closeNavBtn" href="javascript:void(0)" class="closebtn">&times;</a>
-        <a href="{% url 'profile' %}">My Profile</a>
-        <a href="{% url 'about' %}">About</a>
+        <a href="#">My Profile</a>
+        <a href="#">About</a>
         <a href="{% url 'products' %}">Products</a>
         <a href="{% url 'contact' %}">Contact</a>
         <a href="{% url 'messages' %}">Messages</a>
@@ -65,14 +64,26 @@
         <h1>Products</h1>
             <div class="row">
                 <div class="column">
-                    <a href="{% url 'product_details' 1%}"><img src="{% static 'images/Hammer.jpeg' %}" alt="Hammer" class="product-image"><p>Hammer</p></a>
-                    <div><img src="{% static 'images/Saw.jpeg' %}" alt="Saw" class="product-image"><p>Saw</p></div>
-                    <div><img src="{% static 'images/Crowbar.jpeg' %}" alt="Crowbar" class="product-image"><p>Crowbar</p></div>
+                    <div class="container">
+                        <a href="{% url 'product_details' 1 %}"><img src="{% static 'images/Hammer.jpeg' %}" alt="Hammer" class="product-image"><p>Hammer</p></a>
+                    </div>
+                    <div class="container">
+                        <a href="#"><img src="{% static 'images/Saw.jpeg' %}" alt="Saw" class="product-image"><p>Saw</p></a>
+                    </div>
+                    <div class="container">
+                        <a href="{% url 'product_details' 2 %}"><img src="{% static 'images/Crowbar.jpeg' %}" alt="Crowbar" class="product-image"><p>Crowbar</p></a>
+                    </div>
                 </div>
                 <div class="column">
-                    <div><img src="{% static 'images/Nails.jpeg' %}" alt="Nails" class="product-image"><p>Nails</p></div>
-                    <div><img src="{% static 'images/Screwdriver.webp' %}" alt="Screwdriver" class="product-image"><p>Screwdriver</p></div>
-                    <div><img src="{% static 'images/WoodPlanks.jpeg' %}" alt="Wood Planks" class="product-image"><p>Wood Planks</p></div>
+                    <div class="container">
+                        <a href="{% url 'product_details' 3 %}"><img src="{% static 'images/Nails.jpeg' %}" alt="Nails" class="product-image"><p>Nails</p></a>
+                    </div>
+                    <div class="container">
+                        <a href="#"><img src="{% static 'images/Screwdriver.webp' %}" alt="Screwdriver" class="product-image"><p>Screwdriver</p></a>
+                    </div>
+                    <div class="container">
+                        <a href="#"><img src="{% static 'images/WoodPlanks.jpeg' %}" alt="Wood Planks" class="product-image"><p>Wood Planks</p></a>
+                    </div>
                 </div>
             </div>
     </div>

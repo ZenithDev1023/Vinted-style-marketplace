@@ -6,3 +6,47 @@ body {
     padding: 0;
 }
 
+
+
+
+/* ===========PRODUCT IMAGE GRID===================== */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.column {
+    flex: 50%;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    padding: 8px;
+}
+
+.product-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+
+}
+
+.container a {
+    text-decoration: none;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container a:hover p {
+    color: darkblue;
+    text-decoration: underline;
+}
+
+.container a:hover .product-image {
+    opacity: 0.85;
+    cursor: pointer;
+}
+
+
+
