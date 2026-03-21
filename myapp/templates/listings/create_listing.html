@@ -1,15 +1,196 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="{% static 'listings/listings.css' %}">
-    </head>
-    <body>
-        
-        <script src="{% static 'listings/listings.js' %}"></script>
-    </body>
-</html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradeX - Trade & Construction Marketplace</title>
+    <link rel="stylesheet" href="{% static 'home/home.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- ==================== TOP NAVIGATION BAR ==================== -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <!-- Hamburger Button (Far Left) -->
+            <span id="openNavBtn" style="font-size:30px;cursor:pointer;color:white;">&#9776;</span>
+
+            <!-- Logo (Left) -->
+            <a href="{% url 'home' %}" class="logo">
+                <img src="{% static 'images/tradex-logo.png' %}" alt="TradeX Logo">
+                <span>TradeX</span>
+            </a>
+
+            <!-- Search Bar (Center) -->
+            <form class="search-bar" method="GET" action="{% url 'products' %}">
+                <input type="text" 
+                       name="q" 
+                       placeholder="Search tools, equipment, materials..." 
+                       value="{{ search_query }}">
+                <button type="submit" class="search-btn">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </form>
+
+            <!-- Auth Buttons (Right) -->
+            <div class="nav-actions">
+                {% if user_id %}
+                    <span class="user-greeting">Hi, {{ user.username }}!</span>
+                    <a href="{% url 'create_listing' %}" class="btn btn-primary">Post an Ad</a>
+                    <a href="{% url 'profile' %}" class="btn btn-secondary">My Profile</a>
+                    <a href="{% url 'home' %}" class="btn btn-outline">Logout</a>
+                {% else %}
+                    <a href="{% url 'create_listing' %}" class="btn btn-primary">Post an Ad</a>
+                    <a href="{% url 'register' %}" class="btn btn-secondary">Sign Up</a>
+                    <a href="{% url 'login' %}" class="btn btn-outline">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==================== SIDE NAVIGATION ==================== -->
+    <div id="mySidenav" class="sidenav">
+        <a id="closeNavBtn" href="javascript:void(0)" class="closebtn">&times;</a>
+        <a href="{% url 'profile' %}">My Profile</a>
+        <a href="{% url 'about' %}">About</a>
+        <a href="{% url 'products' %}">Products</a>
+        <a href="{% url 'contact' %}">Contact</a>
+        <a href="{% url 'messages' %}">Messages</a>
+        <a href="{% url 'settings' %}">Settings</a>
+        <a href="#">Logout</a>
+    </div>
+
+    <!-- ==================== CATEGORY NAVIGATION BAR ==================== -->
+    <nav class="category-nav">
+        <div class="nav-container">
+            <ul class="category-list">
+                <li><a href="{% url 'products' %}?category=hand-tools">🔧 Hand Tools</a></li>
+                <li><a href="{% url 'products' %}?category=power-tools">⚡ Power Tools</a></li>
+                <li><a href="{% url 'products' %}?category=equipment">🏗️ Equipment</a></li>
+                <li><a href="{% url 'products' %}?category=safety-gear">🦺 Safety Gear</a></li>
+                <li><a href="{% url 'products' %}?category=materials">🧱 Materials</a></li>
+                <li><a href="{% url 'products' %}?category=vehicles">🚛 Trade Vehicles</a></li>
+                <li><a href="{% url 'products' %}?category=services">👷 Services</a></li>
+            </ul>
+        </div>
+    </nav>
+
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <!-- About Us -->
+                <div class="footer-section">
+                    <h4>About TradeX</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Press</a></li>
+                    </ul>
+                </div>
+
+                <!-- Help & Contact -->
+                <div class="footer-section">
+                    <h4>Help & Contact</h4>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Safety Tips</a></li>
+                        <li><a href="#">Scam Alerts</a></li>
+                    </ul>
+                </div>
+
+                <!-- Policies -->
+                <div class="footer-section">
+                    <h4>Policies</h4>
+                    <ul>
+                        <li><a href="#">Privacy Notice</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                        <li><a href="#">Community Guidelines</a></li>
+                    </ul>
+                </div>
+
+                <!-- For Tradespeople -->
+                <div class="footer-section">
+                    <h4>For Tradespeople</h4>
+                    <ul>
+                        <li><a href="{% url 'create_listing' %}">Sell on TradeX</a></li>
+                        <li><a href="#">Business Accounts</a></li>
+                        <li><a href="#">Advertising</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div class="footer-bottom">
+                <p>&copy; {% now "Y" %} TradeX Marketplace. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== AUTH MODAL (Login/Signup) ==================== -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('authModal')">&times;</span>
+            
+            <div class="modal-tabs">
+                <button class="tab-btn active" onclick="switchTab('login')">Login</button>
+                <button class="tab-btn" onclick="switchTab('signup')">Sign Up</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" class="auth-form" method="POST" action="{% url 'login' %}">
+                {% csrf_token %}
+                <h2>Login</h2>
+                <div class="form-group">
+                    <label for="login-username">Username</label>
+                    <input type="text" id="login-username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Login</button>
+            </form>
+
+            <!-- Signup Form -->
+            <form id="signupForm" class="auth-form" method="POST" action="{% url 'register' %}" style="display: none;">
+                {% csrf_token %}
+                <h2>Sign Up</h2>
+                <div class="form-group">
+                    <label for="signup-username">Username</label>
+                    <input type="text" id="signup-username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-email">Email</label>
+                    <input type="email" id="signup-email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-password">Password</label>
+                    <input type="password" id="signup-password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    </div>
+    <script src="{% static 'home/home.js' %}"></script>
+    <script src="{% static 'styles/styles.js' %}"></script>
+</body>
+</html> 
+
+

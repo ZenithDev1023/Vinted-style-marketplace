@@ -115,13 +115,13 @@ body {
   position: fixed;
   z-index: 999;
   left: 0;
-  background-color: red;
+  top: 0;
+  background-color: var(--primary-blue);
   overflow-x: hidden;
   overflow-y: auto;
   white-space: nowrap;
   padding-top: 60px;
   transition: 0.5s;
-  margin-top: 200px;
 }
 
 .sidenav.open {
@@ -225,13 +225,16 @@ body {
     background-color: var(--white);
     border-bottom: 1px solid var(--border-color);
     padding: 10px 0;
+    overflow-x: auto;
 }
 
 .category-list {
     display: flex;
     list-style: none;
-    gap: 5px;
+    justify-content: space-evenly;
     overflow-x: auto;
+    font-size: 1.25rem;
+    gap: 20px;
 }
 
 .category-list li a {
@@ -585,7 +588,11 @@ body {
     .nav-container {
         flex-direction: column;
         gap: 15px;
+        padding: 0;
+        margin: 0;
+        font-size: 0.8rem;
     }
+
 
     .search-bar {
         width: 100%;
@@ -595,6 +602,10 @@ body {
     .nav-actions {
         flex-wrap: wrap;
         justify-content: center;
+    }
+
+    .category-list {
+        font-size: 1rem;
     }
 
     .hero h1 {

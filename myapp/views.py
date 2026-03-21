@@ -30,7 +30,15 @@ def home(request):
     
     return render(request, "home/home.html", context)
     
+@login_required
+def profile(request):
+    user = request.user
 
+    return render(request, "profile/profile.html", {"user": user})
+
+
+def about(request):
+    return render(request, "about/about.html")
 
 def products(request):
     listings = Listing.objects.all()
@@ -102,17 +110,6 @@ def login_view(request):
     
     return render(request, "login-register/login.html", {"form": form})
         
-
-def profile(request):
-    user_id = request.session.get("user_id")
-
-    if not user_id:
-        return redirect("login")
-
-    user = User.objects.get(id=user_id)
-
-    return render(request, "profile/profile.html", {"user": user})
-
 
 def create_listing(request):
     user_id = request.session.get("user_id")
