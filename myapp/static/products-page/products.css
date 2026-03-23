@@ -39,8 +39,8 @@ body {
 }
 
 .container a:hover p {
-    color: darkblue;
-    text-decoration: underline;
+    color: #C7511F; /* Amazon Orange */
+    font-weight: bold;
 }
 
 .container a:hover .product-image {
@@ -49,4 +49,55 @@ body {
 }
 
 
+/* ===========FILTER BUTTONS===================== */
+.filterButtonContainer {
+    float: left;
+    color: white;
+    text-align: center;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: none;
+}
 
+.filterButtonContainer:hover {
+    background-color: #aad4f6;
+}
+
+.filterButtonContainer.show {
+    display: block;
+}
+
+.filterButtons.button{
+    border: none;
+    outline: none;
+}
+
+.filterButtons.button.hover{
+    background-color: #0b7dda;
+}
+
+.filterButtons.button.active{
+    background-color: #73c0ff;
+}
+
+/* ===========FILTER BUTTON STYLES===================== */
+.filter-btn {
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    outline: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    margin: 4px 2px;
+}
+
+.filter-btn:hover {
+    background-color: #0b7dda;
+}
+
+.filter-btn.active {
+    background-color: #73c0ff;
+}

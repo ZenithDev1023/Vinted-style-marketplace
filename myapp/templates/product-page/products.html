@@ -60,33 +60,101 @@
 
 
 
+
     <div id="main">
+        <div id="filterButtons">
+            <button class="filter-btn active" onclick="filterSelection('all')"> Show all</button>
+            <button class="filter-btn" onclick="filterSelection('tools')"> Tools</button>
+            <button class="filter-btn" onclick="filterSelection('equipment')"> Equipment</button>
+            <button class="filter-btn" onclick="filterSelection('materials')"> Materials</button>
+         </div>
         <h1>Products</h1>
             <div class="row">
                 <div class="column">
                     <div class="container">
-                        <a href="{% url 'product_details' 1 %}"><img src="{% static 'images/Hammer.jpeg' %}" alt="Hammer" class="product-image"><p>Hammer</p></a>
+                        <div class = "filterButtonContainer tools"><a href="{% url 'product_details' 1 %}"><img src="{% static 'images/Hammer.jpeg' %}" alt="Hammer" class="product-image"><p>Hammer</p></a></div>
                     </div>
                     <div class="container">
-                        <a href="#"><img src="{% static 'images/Saw.jpeg' %}" alt="Saw" class="product-image"><p>Saw</p></a>
+                        <div class="filterButtonContainer tools"><a href="#"><img src="{% static 'images/Saw.jpeg' %}" alt="Saw" class="product-image"><p>Saw</p></a></div>
                     </div>
                     <div class="container">
-                        <a href="{% url 'product_details' 2 %}"><img src="{% static 'images/Crowbar.jpeg' %}" alt="Crowbar" class="product-image"><p>Crowbar</p></a>
+                        <div class="filterButtonContainer tools"><a href="{% url 'product_details' 2 %}"><img src="{% static 'images/Crowbar.jpeg' %}" alt="Crowbar" class="product-image"><p>Crowbar</p></a></div>
                     </div>
                 </div>
                 <div class="column">
                     <div class="container">
-                        <a href="{% url 'product_details' 3 %}"><img src="{% static 'images/Nails.jpeg' %}" alt="Nails" class="product-image"><p>Nails</p></a>
+                        <div class="filterButtonContainer materials"><a href="{% url 'product_details' 3 %}"><img src="{% static 'images/Nails.jpeg' %}" alt="Nails" class="product-image"><p>Nails</p></a></div>
                     </div>
                     <div class="container">
-                        <a href="#"><img src="{% static 'images/Screwdriver.webp' %}" alt="Screwdriver" class="product-image"><p>Screwdriver</p></a>
+                        <div class="filterButtonContainer tools"><a href="#"><img src="{% static 'images/Screwdriver.webp' %}" alt="Screwdriver" class="product-image"><p>Screwdriver</p></a></div>
                     </div>
                     <div class="container">
-                        <a href="#"><img src="{% static 'images/WoodPlanks.jpeg' %}" alt="Wood Planks" class="product-image"><p>Wood Planks</p></a>
+                        <div class="filterButtonContainer materials"><a href="#"><img src="{% static 'images/WoodPlanks.jpeg' %}" alt="Wood Planks" class="product-image"><p>Wood Planks</p></a></div>
                     </div>
                 </div>
             </div>
     </div>
+
+        <!-- ==================== FOOTER ==================== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <!-- About Us -->
+                <div class="footer-section">
+                    <h4>About TradeX</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Press</a></li>
+                    </ul>
+                </div>
+
+                <!-- Help & Contact -->
+                <div class="footer-section">
+                    <h4>Help & Contact</h4>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Safety Tips</a></li>
+                        <li><a href="#">Scam Alerts</a></li>
+                    </ul>
+                </div>
+
+                <!-- Policies -->
+                <div class="footer-section">
+                    <h4>Policies</h4>
+                    <ul>
+                        <li><a href="#">Privacy Notice</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                        <li><a href="#">Community Guidelines</a></li>
+                    </ul>
+                </div>
+
+                <!-- For Tradespeople -->
+                <div class="footer-section">
+                    <h4>For Tradespeople</h4>
+                    <ul>
+                        <li><a href="{% url 'create_listing' %}">Sell on TradeX</a></li>
+                        <li><a href="#">Business Accounts</a></li>
+                        <li><a href="#">Advertising</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div class="footer-bottom">
+                <p>&copy; {% now "Y" %} TradeX Marketplace. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
     <script src="{% static 'products-page/products.js' %}" defer></script>
     <script src="{% static 'styles/styles.js' %}"></script>
 

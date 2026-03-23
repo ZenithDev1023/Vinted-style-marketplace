@@ -31,6 +31,10 @@ body {
     margin-top: 10px;
 }
 
+.contact-seller-button:hover {
+    background-color: #0056b3;
+    cursor: pointer;
+}
 /* ===========PRODUCT LAYOUT===================== */
 .product-layout {
     display: flex;
