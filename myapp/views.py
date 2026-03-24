@@ -81,6 +81,10 @@ def products(request):
 
     for listing in listings:
         primary_photo = listing.photo_set.filter(isPrimary=True).first()
+        listings_with_photos.append({
+            "listing": listing,
+            "primary_photo": primary_photo,
+        })
         listings_with_photos.append({"listing": listing, "primary_photo": primary_photo})
 
     return render(request, "product-page/products.html", {"listings_with_photos": listings_with_photos})
@@ -134,6 +138,7 @@ def contact(request):
 def messages(request):
 
     return render(request, "sidebar/messages.html")
+
 
 @login_required
 def settings(request):
