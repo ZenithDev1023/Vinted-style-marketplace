@@ -1,35 +1,31 @@
+from django.shortcuts import render, redirect, HttpResponse
+from .models import *
+
+from .forms import RegisterForm
+
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import AuthenticationForm
-from django.shortcuts import redirect, render
-
-from .forms import CreateListingForm, RegisterForm
-from .models import (
-    Category,
-    CreditAccount,
-    Listing,
-    ListingStatus,
-    Location,
-    Photo,
-    Transaction,
-    User,
-)
-
 
 # Create your views here.
 def home(request):
     user_id = request.session.get("user_id")
     user = None
+    featured_listings = []
     
     if user_id:
-         user = User.objects.filter(id=user_id).first()
-
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            pass
+    
+    # Get featured listings (recent 6)
     featured_listings = Listing.objects.all()[:6]
     
     context = {
-        "user_id": user_id,
-        "user": user,
-        "featured_listings": featured_listings,
+        'user_id': user_id,
+        'user': user,
+        'featured_listings': featured_listings,
     }
     
     return render(request, "home/home.html", context)
@@ -51,25 +47,24 @@ def products(request):
     # This allows the template to easily access and display the primary photo for each listing.
     for listing in listings:
         primary_photo = listing.photo_set.filter(isPrimary=True).first()
-    listings_with_photos.append({"listing": listing, "primary_photo": primary_photo})
+        listings_with_photos.append({
+            "listing": listing,
+            "primary_photo": primary_photo,
+        })
     return render(request, "product-page/products.html", {"listings_with_photos": listings_with_photos})
 
 
 def product_detail(request, listing_id):
-    product = Listing.objects.filter(id=listing_id).first()
-    if not product:
-        return redirect("products")
-
-    primary_photo = product.photo_set.filter(isPrimary=True).first()
-    return render(
-        request,
-        "product-page/product_detail.html",
-        {
+    try:
+        product = Listing.objects.get(id=listing_id)
+        primary_photo = product.photo_set.filter(isPrimary=True).first()
+        return render(request, "product-page/product_detail.html", {
             "product": product,
             "primary_photo": primary_photo,
+        })
         
-       },
-    )
+    except Listing.DoesNotExist:
+        return redirect("products")
 
 
 def contact(request):
@@ -94,24 +89,7 @@ def register(request):
         form = RegisterForm(request.POST)
         
         if form.is_valid():
-            auth_user = form.save()
-
-            # create app profile record used by listings flow
-            profile_user, _ = User.objects.get_or_create(
-                username=auth_user.username,
-                defaults={
-                    "email": auth_user.email,
-                    # kept for legacy custom model compatibility
-                    "password_hash": auth_user.password,
-                },
-            )
-            if profile_user.email != auth_user.email:
-                profile_user.email = auth_user.email
-                profile_user.save(update_fields=["email"])
-
-            # Keep legacy session-based flow working
-            request.session["user_id"] = profile_user.id
-
+            form.save()
             return redirect("login")
     else:
         form = RegisterForm()
@@ -124,19 +102,8 @@ def login_view(request):
         form = AuthenticationForm(request, data=request.POST)
 
         if form.is_valid():
-            auth_user = form.get_user()
-            login(request, auth_user)
-
-            # ensure app profile exists and put profile id in session
-            profile_user, _ = User.objects.get_or_create(
-                username=auth_user.username,
-                defaults={
-                    "email": auth_user.email,
-                    "password_hash": auth_user.password,
-                },
-            )
-            request.session["user_id"] = profile_user.id
-
+            user = form.get_user()
+            login(request, user)
             return redirect("home")
     else:
         form = AuthenticationForm()
@@ -150,49 +117,18 @@ def create_listing(request):
     if not user_id:
         return redirect("login")
 
-    profile_user = User.objects.filter(id=user_id).first()
-    if not profile_user:
-        return redirect("login")
     if request.method == "POST":
-        form = CreateListingForm(request.POST)
-        if form.is_valid():
-            listing = form.save(commit=False)
-            listing.user = profile_user
-            listing.status = ListingStatus.ACTIVE
+        title = request.POST.get("title")
+        description = request.POST.get("description")
+        price = request.POST.get("price")
 
-            default_category, _ = Category.objects.get_or_create(name="General")
-            default_location, _ = Location.objects.get_or_create(
-                user=profile_user,
-                defaults={
-                    "postcode": "N/A",
-                    "city": "Unknown",
-                    "latitude": 0,
-                    "longitude": 0,
-                },
-            )
-            credit_account, _ = CreditAccount.objects.get_or_create(
-                user=profile_user,
-                defaults={"creditBalance": profile_user.credits_balance},
-            )
+        listing = Listing(title=title, description=description, price=price, user_id=user_id)
+        listing.save()
 
-            listing.category = default_category
-            listing.location = default_location
-            listing.creditAccount = credit_account
-            listing.save()
-            image_url = request.POST.get("image_url")
-            if image_url:
-                Photo.objects.create(
-                    image_url=image_url,
-                    listing=listing,
-                    category=default_category,
-                    isPrimary=True,
-                )
+        return redirect("products")
 
-            return redirect("products")
-    else:
-        form = CreateListingForm()
+    return render(request, "listings/create_listing.html")
 
-    return render(request, "listings/create_listing.html", {"form": form})
 
 
 
@@ -206,9 +142,9 @@ def edit_listing(request):
         try:
             listing = Listing.objects.get(id=listing_id, user_id=request.session.get("user_id"))
 
-            listing.title = title
-            listing.description = description
-            listing.price = price
+            listing.title = title 
+            listing.description = description 
+            listing.price = price 
             listing.save()
 
             return redirect("products")
@@ -240,13 +176,18 @@ def transactions(request):
     if not user_id:
         return redirect("login")
 
-    # Legacy model relation mismatch kept safe for now.
-    user_transactions = Transaction.objects.none()
+    user_transactions = Transaction.objects.filter(user_id=user_id)
 
     return render(request, "profile/transactions.html", {"transactions": user_transactions})
 
 
 
 def notifications(request):
-    # Notification model is not implemented in this codebase.
-    return render(request, "profile/notifications.html", {"notifications": []})
+    user_id = request.session.get("user_id")
+    
+    if not user_id:
+        return redirect("login")
+
+    user_notifications = Notification.objects.filter(user_id=user_id)
+
+    return render(request, "profile/notifications.html", {"notifications": user_notifications})
