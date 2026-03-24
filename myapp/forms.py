@@ -1,4 +1,4 @@
-from django import forms 
+from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User as AuthUser
 
@@ -16,7 +16,7 @@ class RegisterForm(UserCreationForm):
 class CreateListingForm(forms.ModelForm):
     class Meta:
         model = Listing
-        fields = ['title', 'description', 'price', 'condition']
+        fields = ["title", "description", "price", "condition"]
 
     condition = forms.ChoiceField(choices=MaterialCondition.choices)
 
@@ -34,5 +34,5 @@ class ListingReviewForm(forms.ModelForm):
         model = ListingReview
         fields = ["rating", "comment"]
         widgets = {
-            "comment": forms.Textarea(attrs={"rows": 3, "placeholder": "Write your review..."})
+            "comment": forms.Textarea(attrs={"rows": 3, "placeholder": "Write your review..."}),
         }
