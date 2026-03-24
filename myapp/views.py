@@ -17,12 +17,13 @@ from .models import (
 )
 
 
-def get_profile_user(request):
+def _get_profile_user(request):
     user_id = request.session.get("user_id")
     profile_user = None
 
     if user_id:
         profile_user = User.objects.filter(id=user_id).first()
+
 
     if not profile_user and request.user.is_authenticated:
         profile_user = User.objects.filter(username=request.user.username).first()
@@ -55,7 +56,7 @@ def home(request):
 
 @login_required
 def profile(request):
-    profile_user = get_profile_user(request)
+    profile_user = _get_profile_user(request)
     user_listings = Listing.objects.none()
 
     if profile_user:
@@ -106,7 +107,7 @@ def product_detail(request, listing_id):
 
 @login_required
 def add_review(request, listing_id):
-    reviewer = get_profile_user(request)
+    reviewer = _get_profile_user(request)
     if not reviewer:
         return redirect("login")
 
@@ -136,6 +137,7 @@ def messages(request):
 
 @login_required
 def settings(request):
+    
     return render(request, "sidebar/settings.html")
 
 
@@ -203,7 +205,7 @@ def logout_view(request):
     return redirect("home")
 
 def create_listing(request):
-    profile_user = get_profile_user(request)
+    profile_user = _get_profile_user(request)
     if not profile_user:
         return redirect("login")
 
@@ -282,7 +284,7 @@ def edit_listing(request):
 
 @login_required
 def delete_listing(request, listing_id):
-    profile_user = get_profile_user(request)
+    profile_user = _get_profile_user(request)
     if not profile_user:
         return redirect("login")
 
@@ -303,6 +305,8 @@ def my_listings(request):
 
     return render(request, "listings/my_listings.html", {"listings": listings})
     
+
+
 
 def transactions(request):
     user_id = request.session.get("user_id")
