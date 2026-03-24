@@ -60,9 +60,6 @@ body {
     display: none;
 }
 
-.filterButtonContainer:hover {
-    background-color: #aad4f6;
-}
 
 .filterButtonContainer.show {
     display: block;

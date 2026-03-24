@@ -57,10 +57,13 @@
         <a href="#">Logout</a>
     </div>
 
+    <!-- ==================== PRODUCT DETAILS ==================== -->
     <h1>{{ product.title }}</h1>
     <div class="product-layout">
         {% if primary_photo %}
             <img src="{{ primary_photo.image_url }}" alt="{{ product.title }}" class="main-product-image">
+        {% else %}
+            <img src="{% static 'images/placeholder.webp' %}" alt="No Image Available" class="main-product-image">
         {% endif %}
         <div class="product-info">
             <p class="product-description">{{ product.description }}</p>

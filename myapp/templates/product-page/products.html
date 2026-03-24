@@ -70,28 +70,20 @@
          </div>
         <h1>Products</h1>
             <div class="row">
-                <div class="column">
-                    <div class="container">
-                        <div class = "filterButtonContainer tools"><a href="{% url 'product_details' 1 %}"><img src="{% static 'images/Hammer.jpeg' %}" alt="Hammer" class="product-image"><p>Hammer</p></a></div>
-                    </div>
-                    <div class="container">
-                        <div class="filterButtonContainer tools"><a href="#"><img src="{% static 'images/Saw.jpeg' %}" alt="Saw" class="product-image"><p>Saw</p></a></div>
-                    </div>
-                    <div class="container">
-                        <div class="filterButtonContainer tools"><a href="{% url 'product_details' 2 %}"><img src="{% static 'images/Crowbar.jpeg' %}" alt="Crowbar" class="product-image"><p>Crowbar</p></a></div>
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="container">
-                        <div class="filterButtonContainer materials"><a href="{% url 'product_details' 3 %}"><img src="{% static 'images/Nails.jpeg' %}" alt="Nails" class="product-image"><p>Nails</p></a></div>
-                    </div>
-                    <div class="container">
-                        <div class="filterButtonContainer tools"><a href="#"><img src="{% static 'images/Screwdriver.webp' %}" alt="Screwdriver" class="product-image"><p>Screwdriver</p></a></div>
-                    </div>
-                    <div class="container">
-                        <div class="filterButtonContainer materials"><a href="#"><img src="{% static 'images/WoodPlanks.jpeg' %}" alt="Wood Planks" class="product-image"><p>Wood Planks</p></a></div>
+                {% for item in listings_with_photos %}
+                <div class="container">
+                    <div class="filterButtonContainer {{ item.listing.category.name|lower }}">
+                        <a href="{% url 'product_details' item.listing.id %}">
+                            {% if item.primary_photo %}
+                                <img src="{{ item.primary_photo.image_url }}" alt="{{ item.listing.title }}" class="product-image">
+                            {% else %}
+                                <img src="{% static 'images/placeholder.png' %}" alt="{{ item.listing.title }}" class="product-image">
+                            {% endif %}
+                            <p>{{ item.listing.title }}</p>
+                        </a>
                     </div>
                 </div>
+                {% endfor %}
             </div>
     </div>
 
