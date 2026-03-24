@@ -79,6 +79,24 @@
     </nav>
 
 
+
+    <main class="main-div" style="padding:2rem 1rem;max-width:700px;margin:0 auto;">
+        <div class="register-container">
+            <div class="inner-div">
+                <h2>Post an Ad</h2>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="form-group">
+                        <label for="id_image_url">Image URL (optional)</label>
+                        <input type="url" id="id_image_url" name="image_url" placeholder="https://example.com/photo.jpg">
+                    </div>
+                    <button type="submit" class="submit-btn">Create Listing</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
     <!-- ==================== FOOTER ==================== -->
     <footer class="footer">
         <div class="container">
