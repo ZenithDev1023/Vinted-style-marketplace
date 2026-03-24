@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User as AuthUser
 
-from .models import Listing, ListingStatus, MaterialCondition
+from .models import Listing, ListingReview, ListingStatus, MaterialCondition
 
 
 class RegisterForm(UserCreationForm):
@@ -16,7 +16,7 @@ class RegisterForm(UserCreationForm):
 class CreateListingForm(forms.ModelForm):
     class Meta:
         model = Listing
-        fields = ["title", "description", "price", "condition"]
+        fields = ['title', 'description', 'price', 'condition']
 
     condition = forms.ChoiceField(choices=MaterialCondition.choices)
 
@@ -27,3 +27,12 @@ class CreateListingForm(forms.ModelForm):
         if commit:
             listing.save()
         return listing
+
+
+class ListingReviewForm(forms.ModelForm):
+    class Meta:
+        model = ListingReview
+        fields = ["rating", "comment"]
+        widgets = {
+            "comment": forms.Textarea(attrs={"rows": 3, "placeholder": "Write your review..."})
+        }

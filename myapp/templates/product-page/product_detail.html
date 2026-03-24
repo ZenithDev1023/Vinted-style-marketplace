@@ -35,7 +35,7 @@
                     <span class="user-greeting">Hi, {{ user.username }}!</span>
                     <a href="{% url 'create_listing' %}" class="btn btn-primary">Post an Ad</a>
                     <a href="{% url 'profile' %}" class="btn btn-secondary">My Profile</a>
-                    <a href="{% url 'home' %}" class="btn btn-outline">Logout</a>
+                    <a href="{% url 'logout' %}" class="btn btn-outline">Logout</a>
                 {% else %}
                     <a href="{% url 'create_listing' %}" class="btn btn-primary">Post an Ad</a>
                     <a href="{% url 'register' %}" class="btn btn-secondary">Sign Up</a>
@@ -54,7 +54,7 @@
         <a href="{% url 'contact' %}">Contact</a>
         <a href="{% url 'messages' %}">Messages</a>
         <a href="{% url 'settings' %}">Settings</a>
-        <a href="#">Logout</a>
+        <a href="{% url 'logout' %}">Logout</a>
     </div>
 
     <!-- ==================== PRODUCT DETAILS ==================== -->
@@ -75,6 +75,31 @@
     </div>
 
     <a href="{% url 'products' %}">← Back to Products</a>
+
+    
+    <section class="reviews" style="max-width:900px;margin:2rem auto;">
+        <h2>Reviews</h2>
+
+        {% if user_id %}
+            <form method="POST" action="{% url 'add_review' product.id %}" style="margin-bottom:1rem;">
+                {% csrf_token %}
+                {{ review_form.as_p }}
+                <button type="submit" class="btn btn-primary">Submit Review</button>
+            </form>
+        {% else %}
+            <p><a href="{% url 'login' %}">Login</a> to write a review.</p>
+        {% endif %}
+
+        {% for review in reviews %}
+            <article style="border:1px solid #ddd;padding:0.8rem;margin-bottom:0.8rem;border-radius:6px;">
+                <p><strong>{{ review.reviewer.username }}</strong> · {{ review.rating }}/5</p>
+                <p>{{ review.comment }}</p>
+                <small>{{ review.created_at|date:"M d, Y H:i" }}</small>
+            </article>
+        {% empty %}
+            <p>No reviews yet.</p>
+        {% endfor %}
+    </section>
 
     <div id="main">
         <h1>View More Products</h1>
