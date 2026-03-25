@@ -1,5 +1,6 @@
 from django import forms
-from .models import User
+from .models import User, Listing, ListingReview
+
 
 class RegisterForm(forms.Form):
     username = forms.CharField(max_length=50)
@@ -28,3 +29,19 @@ class RegisterForm(forms.Form):
         )
         user.save()
         return user
+
+
+class CreateListingForm(forms.ModelForm):
+    class Meta:
+        model = Listing
+        fields = ["title", "description", "price", "condition"]
+
+
+class ListingReviewForm(forms.ModelForm):
+    class Meta:
+        model = ListingReview
+        fields = ["rating", "comment"]
+        widgets = {
+            "rating": forms.NumberInput(attrs={"min": 1, "max": 5}),
+            "comment": forms.Textarea(attrs={"rows": 3}),
+        }

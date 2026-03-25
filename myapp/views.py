@@ -1,13 +1,34 @@
-from django.shortcuts import render, redirect, HttpResponse
-from .models import *
+from django.contrib.auth import login, logout
+from django.contrib.auth.forms import AuthenticationForm
+from django.shortcuts import redirect, render
 
-from .forms import RegisterForm
+from .forms import CreateListingForm, ListingReviewForm, RegisterForm
+from .models import (
+    Category,
+    CreditAccount,
+    Listing,
+    ListingReview,
+    ListingStatus,
+    Location,
+    Photo,
+    Transaction,
+    User,
+)
 
-from django.contrib.auth.decorators import login_required
+
+def _get_profile_user(request):
+    user_id = request.session.get("user_id")
+    profile_user = None
+    if user_id:
+        profile_user = User.objects.filter(id=user_id).first()
+    if not profile_user and request.user.is_authenticated:
+        profile_user = User.objects.filter(username=request.user.username).first()
+        if profile_user:
+            request.session["user_id"] = profile_user.id
+    return profile_user
 
 
 def get_nav_context(request):
-    """Returns user_id and user for the navbar on every page."""
     user_id = request.session.get("user_id")
     user = None
     if user_id:
@@ -21,97 +42,94 @@ def get_nav_context(request):
 def home(request):
     user_id = request.session.get("user_id")
     user = None
-    featured_listings = []
-    
     if user_id:
-        try:
-            user = User.objects.get(id=user_id)
-        except User.DoesNotExist:
-            pass
-    
-    # Get featured listings (recent 6)
+        user = User.objects.filter(id=user_id).first()
     featured_listings = Listing.objects.all()[:6]
-    
-    context = {
-        'user_id': user_id,
-        'user': user,
-        'featured_listings': featured_listings,
-    }
-    
-    return render(request, "home/home.html", context)
-    
-@login_required
-def profile(request):
-    user = request.user
+    return render(request, "home/home.html", {
+        "user_id": user_id, "user": user, "featured_listings": featured_listings,
+    })
 
-    return render(request, "profile/profile.html", {"user": user})
+
+def profile(request):
+    profile_user = _get_profile_user(request)
+    user_listings = Listing.objects.none()
+    if profile_user:
+        user_listings = Listing.objects.filter(user=profile_user).order_by("-createdDate")
+    return render(request, "profile/profile.html", {
+        **get_nav_context(request),
+        "profile_user": profile_user,
+        "user_listings": user_listings,
+    })
 
 
 def about(request):
-    return render(request, "about/about.html")
+    return render(request, "about/about.html", get_nav_context(request))
+
 
 def products(request):
     listings = Listing.objects.all()
     listings_with_photos = []
-    #It now loops through each listing and retrieves the primary photo associated with it, creating a list of dictionaries that contain both the listing and its primary photo. 
-    # This allows the template to easily access and display the primary photo for each listing.
     for listing in listings:
         primary_photo = listing.photo_set.filter(isPrimary=True).first()
-        listings_with_photos.append({
-            "listing": listing,
-            "primary_photo": primary_photo,
-        })
+        listings_with_photos.append({"listing": listing, "primary_photo": primary_photo})
     return render(request, "product-page/products.html", {
-        **get_nav_context(request),
-        "listings_with_photos": listings_with_photos,
+        **get_nav_context(request), "listings_with_photos": listings_with_photos,
     })
 
 
 def product_detail(request, listing_id):
-    try:
-        product = Listing.objects.get(id=listing_id)
-        primary_photo = product.photo_set.filter(isPrimary=True).first()
-
-        # Build carousel listings (exclude the current product)
-        other_listings = Listing.objects.exclude(id=listing_id)
-        listings_with_photos = []
-        for listing in other_listings:
-            photo = listing.photo_set.filter(isPrimary=True).first()
-            listings_with_photos.append({
-                "listing": listing,
-                "primary_photo": photo,
-            })
-
-        return render(request, "product-page/product_detail.html", {
-            **get_nav_context(request),
-            "product": product,
-            "primary_photo": primary_photo,
-            "listings_with_photos": listings_with_photos,
-        })
-        
-    except Listing.DoesNotExist:
+    product = Listing.objects.filter(id=listing_id).first()
+    if not product:
         return redirect("products")
+    primary_photo = product.photo_set.filter(isPrimary=True).first()
+    reviews = ListingReview.objects.filter(listing=product).order_by("-created_at")
+    other_listings = Listing.objects.exclude(id=listing_id)
+    listings_with_photos = []
+    for listing in other_listings:
+        photo = listing.photo_set.filter(isPrimary=True).first()
+        listings_with_photos.append({"listing": listing, "primary_photo": photo})
+    return render(request, "product-page/product_detail.html", {
+        **get_nav_context(request),
+        "product": product,
+        "primary_photo": primary_photo,
+        "reviews": reviews,
+        "review_form": ListingReviewForm(),
+        "listings_with_photos": listings_with_photos,
+    })
+
+
+def add_review(request, listing_id):
+    reviewer = _get_profile_user(request)
+    if not reviewer:
+        return redirect("login")
+    listing = Listing.objects.filter(id=listing_id).first()
+    if not listing:
+        return redirect("products")
+    if request.method == "POST":
+        form = ListingReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.listing = listing
+            review.reviewer = reviewer
+            review.save()
+    return redirect("product_details", listing_id=listing_id)
 
 
 def contact(request):
     return render(request, "sidebar/contact.html", get_nav_context(request))
 
 
-@login_required
 def messages(request):
-    user = request.user
+    return render(request, "sidebar/messages.html", get_nav_context(request))
 
-    return render(request, "sidebar/messages.html")
 
-@login_required 
 def settings(request):
-    user = request.user
-    
-    return render(request, "sidebar/settings.html")
+    return render(request, "sidebar/settings.html", get_nav_context(request))
 
 
 def logout_view(request):
-    request.session.flush()
+    logout(request)
+    request.session.pop("user_id", None)
     return redirect("home")
 
 
@@ -119,7 +137,8 @@ def register(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
+            request.session["user_id"] = user.id
             return redirect("login")
     else:
         form = RegisterForm()
@@ -145,27 +164,45 @@ def login_view(request):
     context = get_nav_context(request)
     context["error"] = error
     return render(request, "login-register/login.html", context)
-        
+
 
 def create_listing(request):
-    user_id = request.session.get("user_id")
-
-    if not user_id:
+    profile_user = _get_profile_user(request)
+    if not profile_user:
         return redirect("login")
-
     if request.method == "POST":
-        title = request.POST.get("title")
-        description = request.POST.get("description")
-        price = request.POST.get("price")
-
-        listing = Listing(title=title, description=description, price=price, user_id=user_id)
-        listing.save()
-
-        return redirect("products")
-
-    return render(request, "listings/create_listing.html", get_nav_context(request))
-
-
+        form = CreateListingForm(request.POST)
+        if form.is_valid():
+            listing = form.save(commit=False)
+            listing.user = profile_user
+            listing.status = ListingStatus.ACTIVE
+            default_category, _ = Category.objects.get_or_create(name="General")
+            default_location, _ = Location.objects.get_or_create(
+                user=profile_user,
+                defaults={"postcode": "N/A", "city": "Unknown", "latitude": 0, "longitude": 0},
+            )
+            credit_account, _ = CreditAccount.objects.get_or_create(
+                user=profile_user, defaults={"creditBalance": profile_user.credits_balance},
+            )
+            listing.category = default_category
+            listing.location = default_location
+            listing.creditAccount = credit_account
+            listing.save()
+            if listing.price <= 0:
+                profile_user.credits_balance += 1
+                profile_user.save(update_fields=["credits_balance"])
+                credit_account.creditBalance += 1
+                credit_account.save(update_fields=["creditBalance"])
+            image_url = request.POST.get("image_url")
+            if image_url:
+                Photo.objects.create(
+                    image_url=image_url, listing=listing,
+                    category=default_category, isPrimary=True,
+                )
+            return redirect("products")
+    else:
+        form = CreateListingForm()
+    return render(request, "listings/create_listing.html", {**get_nav_context(request), "form": form})
 
 
 def edit_listing(request):
@@ -174,56 +211,43 @@ def edit_listing(request):
         title = request.POST.get("title")
         description = request.POST.get("description")
         price = request.POST.get("price")
-
         try:
             listing = Listing.objects.get(id=listing_id, user_id=request.session.get("user_id"))
-
-            listing.title = title 
-            listing.description = description 
-            listing.price = price 
+            listing.title = title
+            listing.description = description
+            listing.price = price
             listing.save()
-
             return redirect("products")
-
         except Listing.DoesNotExist:
             return render(request, "home/home.html")
-
     return render(request, "listings/edit_listing.html", get_nav_context(request))
 
 
+def delete_listing(request, listing_id):
+    profile_user = _get_profile_user(request)
+    if not profile_user:
+        return redirect("login")
+    listing = Listing.objects.filter(id=listing_id, user=profile_user).first()
+    if listing and request.method in {"POST", "GET"}:
+        listing.delete()
+    return redirect("profile")
 
 
 def my_listings(request):
     user_id = request.session.get("user_id")
-
     if not user_id:
         return redirect("login")
-
     listings = Listing.objects.filter(user_id=user_id)
-
     return render(request, "listings/my_listings.html", {**get_nav_context(request), "listings": listings})
-    
-
 
 
 def transactions(request):
     user_id = request.session.get("user_id")
-
     if not user_id:
         return redirect("login")
-
-    user_transactions = Transaction.objects.filter(user_id=user_id)
-
+    user_transactions = Transaction.objects.none()
     return render(request, "profile/transactions.html", {**get_nav_context(request), "transactions": user_transactions})
 
 
-
 def notifications(request):
-    user_id = request.session.get("user_id")
-    
-    if not user_id:
-        return redirect("login")
-
-    user_notifications = Notification.objects.filter(user_id=user_id)
-
-    return render(request, "profile/notifications.html", {**get_nav_context(request), "notifications": user_notifications})
+    return render(request, "profile/notifications.html", {**get_nav_context(request), "notifications": []})
