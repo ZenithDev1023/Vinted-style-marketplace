@@ -10,7 +10,7 @@ from django.template.defaultfilters import slugify
 from django.views.decorators.http import require_POST
 
 from . import chatbot as chatbot_module
-from .forms import CreateListingForm, ListingReviewForm, RegisterForm, DirectMessageForm
+from .forms import CreateListingForm, ListingReviewForm, RegisterForm, DirectMessageForm, ProfileUpdateForm
 from .models import (
     Category,
     CreditAccount,
@@ -123,13 +123,24 @@ def home(request):
 
 def profile(request):
     profile_user = _get_profile_user(request)
+    if not profile_user:
+        return redirect("login")
+
+    if request.method == "POST":
+        form = ProfileUpdateForm(request.POST, request.FILES, instance=profile_user)
+        if form.is_valid():
+            form.save()
+            return redirect("profile")
+    else:
+        form = ProfileUpdateForm(instance=profile_user)
+
     user_listings = Listing.objects.none()
-    if profile_user:
-     user_listings = Listing.objects.filter(user=profile_user).order_by("-createdDate")
+    user_listings = Listing.objects.filter(user=profile_user).order_by("-createdDate")
     return render(request, "profile/profile.html", {
         **get_nav_context(request),
         "profile_user": profile_user,
         "user_listings": user_listings,
+        "profile_form": form,
     })
 
 

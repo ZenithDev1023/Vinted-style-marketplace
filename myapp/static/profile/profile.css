@@ -251,6 +251,51 @@
     margin-bottom: 1rem;
 }
 
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.profile-photo-wrapper {
+    width: 88px;
+    height: 88px;
+}
+
+.profile-photo {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-photo-placeholder {
+    background: #f4f6f8;
+    color: var(--medium-gray);
+    font-size: 2rem;
+}
+
+.profile-edit-section {
+    background: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.profile-edit-form .form-group ul {
+    margin: 0.3rem 0 0;
+    padding-left: 1rem;
+    color: #b42318;
+    font-size: 0.9rem;
+}
+
+
 .link-div {
     display: flex;
     gap: 1rem;

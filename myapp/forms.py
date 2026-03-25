@@ -1,4 +1,7 @@
 from django import forms
+from io import BytesIO
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from PIL import Image
 from .models import DirectMessage, User, Listing, ListingReview
 
 
@@ -56,4 +59,54 @@ class DirectMessageForm(forms.ModelForm):
         fields = ["content"]
         widgets = {
             "content": forms.Textarea(attrs={"rows": 3, "placeholder": "Write your message..."}),
-        }
+             }
+
+
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ["username", "email", "profile_photo"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["username"].max_length = 50
+        self.fields["profile_photo"].required = False
+
+    def clean_username(self):
+        username = self.cleaned_data["username"].strip()
+        duplicate = User.objects.filter(username=username).exclude(pk=self.instance.pk).exists()
+        if duplicate:
+            raise forms.ValidationError("Username already taken.")
+        return username
+
+    def clean_email(self):
+        email = self.cleaned_data["email"].strip().lower()
+        duplicate = User.objects.filter(email=email).exclude(pk=self.instance.pk).exists()
+        if duplicate:
+            raise forms.ValidationError("Email already registered.")
+        return email
+
+    def clean_profile_photo(self):
+        uploaded_photo = self.cleaned_data.get("profile_photo")
+        if not uploaded_photo:
+            return uploaded_photo
+
+        image = Image.open(uploaded_photo)
+        if image.mode not in ("RGB", "L"):
+            image = image.convert("RGB")
+        elif image.mode == "L":
+            image = image.convert("RGB")
+
+        resized_image = image.resize((128, 128))
+        image_bytes = BytesIO()
+        resized_image.save(image_bytes, format="JPEG", quality=90)
+        image_bytes.seek(0)
+
+        return InMemoryUploadedFile(
+            file=image_bytes,
+            field_name="profile_photo",
+            name=f"{uploaded_photo.name.rsplit('.', 1)[0]}_512.jpg",
+            content_type="image/jpeg",
+            size=image_bytes.getbuffer().nbytes,
+            charset=None,
+        )
