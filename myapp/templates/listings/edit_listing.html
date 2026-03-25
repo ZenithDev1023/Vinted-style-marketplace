@@ -77,7 +77,7 @@
         <div class="register-container">
             <div class="inner-div">
                 <h2>Edit Listing</h2>
-                <form method="POST">
+                <form method="POST" id="listing-form">
                     {% csrf_token %}
                     <p>{{ form.title.label_tag }} {{ form.title }}</p>
                     <p>{{ form.description.label_tag }} {{ form.description }}</p>
@@ -85,8 +85,22 @@
                     <p>{{ form.condition.label_tag }} {{ form.condition }}</p>
                     <p>{{ form.category.label_tag }} {{ form.category }}</p>
                     <div class="form-group">
-                        <label for="id_image_url">Image URL (optional)</label>
-                        <input type="url" id="id_image_url" name="image_url" value="{{ image_url }}" placeholder="https://example.com/photo.jpg">
+                        <label for="id_image_url_input">Image URL (optional)</label>
+                        <input type="url" id="id_image_url_input" value="{{ image_url }}" placeholder="https://example.com/photo.jpg">
+                    </div>
+                    <div class="form-group">
+                        <label for="id_image_file">Or paste/upload a new image (optional)</label>
+                        <input type="file" id="id_image_file" accept="image/*">
+                        <small>Tip: copy an image and paste it anywhere on this form.</small>
+                    </div>
+                    <input type="hidden" id="id_image_url" name="image_url" value="{{ image_url }}">
+                    <div id="image-preview-wrapper" style="{% if image_url %}display:block{% else %}display:none{% endif %};margin:0.75rem 0;">
+                        <p style="margin:0 0 0.5rem 0;font-weight:600;">Image preview</p>
+                        <img
+                            id="image-preview"
+                            src="{{ image_url }}"
+                            alt="Image preview"
+                            style="max-width:100%;max-height:260px;border-radius:8px;border:1px solid #d9d9d9;"
                     </div>
                     <button type="submit" class="submit-btn">Save Changes</button>
                 </form>
@@ -205,6 +219,75 @@
     </div>
     <script src="{% static 'home/home.js' %}"></script>
     <script src="{% static 'styles/styles.js' %}"></script>
+        <script>
+        (function () {
+            const form = document.getElementById("listing-form");
+            const imageUrlInput = document.getElementById("id_image_url_input");
+            const imageFileInput = document.getElementById("id_image_file");
+            const hiddenImageUrlInput = document.getElementById("id_image_url");
+            const previewWrapper = document.getElementById("image-preview-wrapper");
+            const previewImage = document.getElementById("image-preview");
+            let pastedImageDataUrl = "";
+
+            function showPreview(src) {
+                if (!src) {
+                    previewImage.src = "";
+                    previewWrapper.style.display = "none";
+                    return;
+                }
+                previewImage.src = src;
+                previewWrapper.style.display = "block";
+            }
+
+            function handleImageFile(file) {
+                if (!file || !file.type.startsWith("image/")) {
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    pastedImageDataUrl = event.target?.result || "";
+                    hiddenImageUrlInput.value = pastedImageDataUrl;
+                    showPreview(pastedImageDataUrl);
+                };
+                reader.readAsDataURL(file);
+            }
+
+            imageUrlInput.addEventListener("input", function () {
+                const urlValue = imageUrlInput.value.trim();
+                if (urlValue) {
+                    pastedImageDataUrl = "";
+                    hiddenImageUrlInput.value = urlValue;
+                    showPreview(urlValue);
+                    return;
+                }
+                hiddenImageUrlInput.value = pastedImageDataUrl;
+                showPreview(pastedImageDataUrl);
+            });
+
+            imageFileInput.addEventListener("change", function () {
+                const [selectedFile] = imageFileInput.files || [];
+                handleImageFile(selectedFile);
+            });
+
+            form.addEventListener("paste", function (event) {
+                const clipboardItems = event.clipboardData?.items || [];
+                for (const item of clipboardItems) {
+                    if (item.type.startsWith("image/")) {
+                        event.preventDefault();
+                        const imageFile = item.getAsFile();
+                        handleImageFile(imageFile);
+                        break;
+                    }
+                }
+            });
+
+            form.addEventListener("submit", function () {
+                if (!hiddenImageUrlInput.value.trim()) {
+                    hiddenImageUrlInput.value = imageUrlInput.value.trim();
+                }
+            });
+        })();
+    </script>
 </body>
 </html> 
 </html>
