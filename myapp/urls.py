@@ -38,7 +38,7 @@ urlpatterns = [
     
     # Policies
     path("privacy-notice/", views.privacy_notice, name="privacy_notice"),
-     path("terms-of-service/", views.terms_of_service, name="terms_of_service"),
+    path("terms-of-service/", views.terms_of_service, name="terms_of_service"),
     path("cookie-policy/", views.cookie_policy, name="cookie_policy"),
     path("community-guidelines/", views.community_guidelines, name="community_guidelines"),
     
