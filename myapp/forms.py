@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, Listing, ListingReview
+from .models import DirectMessage, User, Listing, ListingReview
 
 
 class RegisterForm(forms.Form):
@@ -49,4 +49,11 @@ class ListingReviewForm(forms.ModelForm):
         widgets = {
             "rating": forms.NumberInput(attrs={"min": 1, "max": 5}),
             "comment": forms.Textarea(attrs={"rows": 3}),
+        }
+class DirectMessageForm(forms.ModelForm):
+    class Meta:
+        model = DirectMessage
+        fields = ["content"]
+        widgets = {
+            "content": forms.Textarea(attrs={"rows": 3, "placeholder": "Write your message..."}),
         }

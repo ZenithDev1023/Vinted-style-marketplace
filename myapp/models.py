@@ -249,3 +249,18 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"( {self.message} | {self.created_at} | {self.is_read} )"
+
+class DirectMessage(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="sent_messages")
+    recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name="received_messages")
+    listing = models.ForeignKey(Listing, on_delete=models.SET_NULL, null=True, blank=True, related_name="direct_messages")
+    content = models.TextField()
+    sent_at = models.DateTimeField(auto_now_add=True)
+    read_status = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ["sent_at"]
+
+    def __str__(self):
+        listing_title = self.listing.title if self.listing else "General"
+        return f"{self.sender.username} -> {self.recipient.username} ({listing_title})"

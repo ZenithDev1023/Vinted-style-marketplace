@@ -75,7 +75,13 @@
             <p class="product-description">Category: {{ product.category.name }}</p>
             <p class="product-description">Approx. area: {{ product.location.postcode|slice:":3" }}***</p>
         </div>
-        <button class="contact-seller-button">Contact Seller</button>
+        {% if can_message_seller %}
+            <a class="contact-seller-button" href="{% url 'start_conversation' product.id %}">Contact Seller</a>
+        {% elif user_id and user_id == product.user_id %}
+            <button class="contact-seller-button" disabled>Your Listing</button>
+        {% else %}
+            <a class="contact-seller-button" href="{% url 'login' %}">Login to Contact Seller</a>
+        {% endif %}
     </div>
 
     <a href="{% url 'products' %}">← Back to Products</a>

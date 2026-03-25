@@ -11,6 +11,7 @@ urlpatterns = [
     path("about/", views.about, name="about"),
     path("contact/", views.contact, name="contact"),
     path("messages/", views.messages, name="messages"),
+    path("messages/start/<int:listing_id>/", views.start_conversation, name="start_conversation"),
     path("settings/", views.settings, name="settings"),
     path("register/", views.register, name="register"),
     path("login/", views.login_view, name="login"),

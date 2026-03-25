@@ -7,10 +7,11 @@ from django.shortcuts import redirect, render
 from django.db.models import Case, Count, IntegerField, Q, When
 from django.template.defaultfilters import slugify
 
-from .forms import CreateListingForm, ListingReviewForm, RegisterForm
+from .forms import CreateListingForm, DirectMessageForm, ListingReviewForm, RegisterForm
 from .models import (
     Category,
     CreditAccount,
+    DirectMessage,
     Listing,
     ListingReview,
     ListingStatus,
@@ -186,6 +187,7 @@ def product_detail(request, listing_id):
         "reviews": reviews,
         "review_form": ListingReviewForm(),
         "listings_with_photos": listings_with_photos,
+        "can_message_seller": bool(request.session.get("user_id")) and request.session.get("user_id") != product.user_id,
     })
 
 
@@ -209,9 +211,86 @@ def add_review(request, listing_id):
 def contact(request):
     return render(request, "sidebar/contact.html", get_nav_context(request))
 
+def _build_message_threads(profile_user):
+    message_qs = (
+        DirectMessage.objects.filter(Q(sender=profile_user) | Q(recipient=profile_user))
+        .select_related("sender", "recipient", "listing")
+        .order_by("-sent_at")
+    )
+
+    threads = {}
+    for message in message_qs:
+        partner = message.recipient if message.sender_id == profile_user.id else message.sender
+        key = (partner.id, message.listing_id or 0)
+        if key not in threads:
+            threads[key] = {"partner": partner, "listing": message.listing, "listing_id": message.listing_id, "latest": message}
+    return list(threads.values())
+
 
 def messages(request):
-    return render(request, "sidebar/messages.html", get_nav_context(request))
+    profile_user = _get_profile_user(request)
+    if not profile_user:
+        return redirect("login")
+
+    selected_partner = None
+    selected_listing = None
+    chat_messages = DirectMessage.objects.none()
+
+    recipient_id = request.GET.get("recipient")
+    listing_id = request.GET.get("listing")
+    if recipient_id:
+        selected_partner = User.objects.filter(id=recipient_id).first()
+        if selected_partner and selected_partner.id == profile_user.id:
+            selected_partner = None
+
+    if listing_id and listing_id.isdigit():
+        selected_listing = Listing.objects.filter(id=listing_id).first()
+
+    if request.method == "POST" and selected_partner:
+        form = DirectMessageForm(request.POST)
+        if form.is_valid():
+            new_message = form.save(commit=False)
+            new_message.sender = profile_user
+            new_message.recipient = selected_partner
+            new_message.listing = selected_listing
+            new_message.save()
+            return redirect(f"{request.path}?recipient={selected_partner.id}&listing={selected_listing.id if selected_listing else ''}")
+    else:
+        form = DirectMessageForm()
+
+    if selected_partner:
+        filters = Q(sender=profile_user, recipient=selected_partner) | Q(sender=selected_partner, recipient=profile_user)
+        if selected_listing:
+            filters &= Q(listing=selected_listing)
+        chat_messages = DirectMessage.objects.filter(filters).select_related("sender", "recipient").order_by("sent_at")
+        chat_messages.filter(recipient=profile_user, read_status=False).update(read_status=True)
+
+    context = {
+        **get_nav_context(request),
+        "threads": _build_message_threads(profile_user),
+        "selected_partner": selected_partner,
+        "selected_listing": selected_listing,
+        "selected_partner_id": selected_partner.id if selected_partner else None,
+        "selected_listing_id": selected_listing.id if selected_listing else None,
+        "chat_messages": chat_messages,
+        "message_form": form,
+    }
+    return render(request, "sidebar/messages.html", context)
+
+
+def start_conversation(request, listing_id):
+    profile_user = _get_profile_user(request)
+    if not profile_user:
+        return redirect("login")
+
+    listing = Listing.objects.filter(id=listing_id).select_related("user").first()
+    if not listing:
+        return redirect("products")
+
+    if listing.user_id == profile_user.id:
+        return redirect("messages")
+
+    return redirect(f"/messages/?recipient={listing.user_id}&listing={listing.id}")
 
 
 def settings(request):
