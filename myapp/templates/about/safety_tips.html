@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safety Tips - TradeX</title>
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .page-content { max-width: 800px; margin: 40px auto; padding: 20px; }
+        .page-content h1 { color: #1E5AA8; margin-bottom: 20px; }
+        .page-content h2 { color: #2D7BC0; margin-top: 30px; margin-bottom: 15px; }
+        .page-content p { line-height: 1.8; color: #333; margin-bottom: 15px; }
+        .page-content ul { margin-bottom: 15px; padding-left: 20px; }
+        .page-content li { margin-bottom: 8px; }
+        .tip-box { background: #E8F1F8; padding: 15px; border-left: 4px solid #1E5AA8; margin: 15px 0; }
+    </style>
+</head>
+<body>
+    {% include 'home/navbar.html' %}
+    
+    <div class="page-content">
+        <h1>Safety Tips</h1>
+        <p>Stay safe when buying and selling on TradeX.</p>
+        
+        <div class="tip-box">
+            <strong>🛡️ Meet in Public Places:</strong> Always arrange to meet buyers/sellers in busy, public locations.
+        </div>
+        
+        <h2>For Buyers</h2>
+        <ul>
+            <li>Inspect items before paying</li>
+            <li>Bring a friend when meeting sellers</li>
+            <li>Trust your instincts - if something feels wrong, walk away</li>
+            <li>Never share personal financial information</li>
+        </ul>
+        
+        <h2>For Sellers</h2>
+        <ul>
+            <li>Meet buyers during daylight hours</li>
+            <li>Accept cash or secure payment methods only</li>
+            <li>Don't share your home address publicly</li>
+            <li>Keep records of all transactions</li>
+        </ul>
+    </div>
+    
+    {% include 'home/footer.html' %}
+    <script src="{% static 'styles/styles.js' %}"></script>
+</body>
+</html>

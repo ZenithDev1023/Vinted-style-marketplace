@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-
+    
     <!-- ==================== TOP NAVIGATION BAR ==================== -->
     <nav class="navbar">
         <div class="nav-container">
@@ -73,10 +73,10 @@
                 <div class="footer-section">
                     <h4>About TradeX</h4>
                     <ul>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Press</a></li>
+                        <li><a href="{% url 'about_us' %}">About Us</a></li>
+                        <li><a href="{% url 'careers' %}">Careers</a></li>
+                        <li><a href="{% url 'blog' %}">Blog</a></li>
+                        <li><a href="{% url 'press' %}">Press</a></li>
                     </ul>
                 </div>
 
@@ -84,10 +84,10 @@
                 <div class="footer-section">
                     <h4>Help & Contact</h4>
                     <ul>
-                        <li><a href="#">Help Center</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Safety Tips</a></li>
-                        <li><a href="#">Scam Alerts</a></li>
+                        <li><a href="{% url 'help_center' %}">Help Center</a></li>
+                        <li><a href="{% url 'contact' %}">Contact Us</a></li>
+                        <li><a href="{% url 'safety_tips' %}">Safety Tips</a></li>
+                        <li><a href="{% url 'scam_alerts' %}">Scam Alerts</a></li>
                     </ul>
                 </div>
 
@@ -95,10 +95,10 @@
                 <div class="footer-section">
                     <h4>Policies</h4>
                     <ul>
-                        <li><a href="#">Privacy Notice</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">Cookie Policy</a></li>
-                        <li><a href="#">Community Guidelines</a></li>
+                        <li><a href="{% url 'privacy_notice' %}">Privacy Notice</a></li>
+                        <li><a href="{% url 'terms_of_service' %}">Terms of Service</a></li>
+                        <li><a href="{% url 'cookie_policy' %}">Cookie Policy</a></li>
+                        <li><a href="{% url 'community_guidelines' %}">Community Guidelines</a></li>
                     </ul>
                 </div>
 
@@ -108,7 +108,7 @@
                     <ul>
                         <li><a href="{% url 'create_listing' %}">Sell on TradeX</a></li>
                         <li><a href="#">Business Accounts</a></li>
-                        <li><a href="#">Advertising</a></li>
+                        <li><a href="{% url 'advertising' %}">Advertising</a></li>
                     </ul>
                 </div>
             </div>

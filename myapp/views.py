@@ -66,6 +66,48 @@ def about(request):
     return render(request, "about/about.html", get_nav_context(request))
 
 
+
+# ====FOOTER PAGES - ABOUT TRADEX =====
+def about_us(request):
+    return render(request, "about/about_us.html", get_nav_context(request))
+
+def careers(request):
+    return render(request, "about/careers.html", get_nav_context(request))
+
+def blog(request):
+    return render(request, "about/blog.html", get_nav_context(request))
+
+def press(request):
+    return render(request, "about/press.html", get_nav_context(request))
+
+# ======== FOOTER PAGES - HELP & CONTACT ====
+def help_center(request):
+    return render(request, "about/help_center.html", get_nav_context(request))
+
+def safety_tips(request):
+    return render(request, "about/safety_tips.html", get_nav_context(request))
+
+def scam_alerts(request):
+    return render(request, "about/scam_alerts.html", get_nav_context(request))
+
+# ======== FOOTER PAGES - POLICIES ======
+def privacy_notice(request):
+    return render(request, "about/privacy_notice.html", get_nav_context(request))
+
+def terms_of_service(request):
+    return render(request, "about/terms_of_service.html", get_nav_context(request))
+
+def cookie_policy(request):
+    return render(request, "about/cookie_policy.html", get_nav_context(request))
+
+def community_guidelines(request):
+    return render(request, "about/community_guidelines.html", get_nav_context(request))
+
+# ====== FOOTER PAGES - FOR TRADESPEOPLE ======
+def advertising(request):
+    return render(request, "about/advertising.html", get_nav_context(request))
+
+
 def products(request):
     listings = Listing.objects.all()
     listings_with_photos = []

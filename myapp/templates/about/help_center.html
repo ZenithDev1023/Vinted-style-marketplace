@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Center - TradeX</title>
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .page-content { max-width: 800px; margin: 40px auto; padding: 20px; }
+        .page-content h1 { color: #1E5AA8; margin-bottom: 20px; }
+        .page-content h2 { color: #2D7BC0; margin-top: 30px; margin-bottom: 15px; }
+        .page-content p { line-height: 1.8; color: #333; margin-bottom: 15px; }
+        .page-content ul { margin-bottom: 15px; padding-left: 20px; }
+        .page-content li { margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+    {% include 'home/navbar.html' %}
+    
+    <div class="page-content">
+        <h1>Help Center</h1>
+        <p>Find answers to common questions about using TradeX.</p>
+        
+        <h2>Buying</h2>
+        <ul>
+            <li>How do I search for items?</li>
+            <li>How do I contact a seller?</li>
+            <li>What payment methods are accepted?</li>
+        </ul>
+        
+        <h2>Selling</h2>
+        <ul>
+            <li>How do I create a listing?</li>
+            <li>How do I price my items?</li>
+            <li>What are the selling fees?</li>
+        </ul>
+        
+        <h2>Account</h2>
+        <ul>
+            <li>How do I reset my password?</li>
+            <li>How do I update my profile?</li>
+            <li>How do I delete my account?</li>
+        </ul>
+        
+        <p>Still need help? <a href="{% url 'contact' %}">Contact Us</a></p>
+    </div>
+    
+    {% include 'home/footer.html' %}
+    <script src="{% static 'styles/styles.js' %}"></script>
+</body>
+</html>

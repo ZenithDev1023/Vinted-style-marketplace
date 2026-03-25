@@ -1,0 +1,38 @@
+{% load static %}
+<nav class="navbar">
+        <div class="nav-container">
+            <!-- Hamburger Button (Far Left) -->
+            <span id="openNavBtn" style="font-size:30px;cursor:pointer;color:white;">&#9776;</span>
+
+            <!-- Logo (Left) -->
+            <a href="{% url 'home' %}" class="logo">
+                <img src="{% static 'images/tradex-logo.png' %}" alt="TradeX Logo">
+                <span>TradeX</span>
+            </a>
+
+            <!-- Search Bar (Center) -->
+            <form class="search-bar" method="GET" action="{% url 'products' %}">
+                <input type="text" 
+                       name="q" 
+                       placeholder="Search tools, equipment, materials..." 
+                       value="{{ search_query }}">
+                <button type="submit" class="search-btn">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </form>
+
+            <!-- Auth Buttons (Right) -->
+            <div class="nav-actions">
+                {% if user_id %}
+                    <span class="user-greeting">Hi, {{ user.username }}!</span>
+                    <a href="{% url 'create_listing' %}" class="btn btn-primary">Post an Ad</a>
+                    <a href="{% url 'profile' %}" class="btn btn-secondary">My Profile</a>
+                    <a href="{% url 'logout' %}" class="btn btn-outline">Logout</a>
+                {% else %}
+                    <a href="{% url 'create_listing' %}" class="btn btn-primary">Post an Ad</a>
+                    <a href="{% url 'register' %}" class="btn btn-secondary">Sign Up</a>
+                    <a href="{% url 'login' %}" class="btn btn-outline">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>

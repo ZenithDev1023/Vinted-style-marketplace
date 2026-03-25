@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Notice - TradeX</title>
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .page-content { max-width: 800px; margin: 40px auto; padding: 20px; }
+        .page-content h1 { color: #1E5AA8; margin-bottom: 20px; }
+        .page-content h2 { color: #2D7BC0; margin-top: 30px; margin-bottom: 15px; }
+        .page-content p { line-height: 1.8; color: #333; margin-bottom: 15px; }
+        .page-content ul { margin-bottom: 15px; padding-left: 20px; }
+        .page-content li { margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+    {% include 'home/navbar.html' %}
+    
+    <div class="page-content">
+        <h1>Privacy Notice</h1>
+        <p><strong>Last Updated:</strong> March 2026</p>
+        
+        <h2>1. Information We Collect</h2>
+        <p>We collect information you provide directly to us, including:</p>
+        <ul>
+            <li>Name and contact information</li>
+            <li>Email address and phone number</li>
+            <li>Payment and transaction information</li>
+            <li>Listing and product information</li>
+        </ul>
+        
+        <h2>2. How We Use Your Information</h2>
+        <p>We use the information we collect to:</p>
+        <ul>
+            <li>Provide and maintain our marketplace services</li>
+            <li>Process transactions and send notifications</li>
+            <li>Respond to your comments and questions</li>
+            <li>Develop new features and services</li>
+        </ul>
+        
+        <h2>3. Data Security</h2>
+        <p>We implement appropriate security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.</p>
+        
+        <h2>4. Contact Us</h2>
+        <p>If you have questions about this Privacy Notice, please contact us at <strong>privacy@tradex.co.uk</strong></p>
+    </div>
+    
+    {% include 'home/footer.html' %}
+    <script src="{% static 'styles/styles.js' %}"></script>
+</body>
+</html>
