@@ -22,4 +22,6 @@ urlpatterns = [
     path("myListings/", views.my_listings, name="my_listings"),
     path('transactions/', views.transactions, name="transactions"),
     path("notifications/", views.notifications, name="notifications"),
+    path("chatbot/", views.chatbot_response, name="chatbot"),
+    path("chatbot/page/", views.chatbot_page, name="chatbot_page"),
 ]

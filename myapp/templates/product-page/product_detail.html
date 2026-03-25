@@ -75,6 +75,7 @@
             <p class="product-description">Category: {{ product.category.name }}</p>
             <p class="product-description">Approx. area: {{ product.location.postcode|slice:":3" }}***</p>
         </div>
+        <a href="{% url 'chatbot_page' %}"><button class="chatbot-button">Chatbot</button></a>
         {% if can_message_seller %}
             <a class="contact-seller-button" href="{% url 'start_conversation' product.id %}">Contact Seller</a>
         {% elif user_id and user_id == product.user_id %}
@@ -137,6 +138,7 @@
                                 {% endif %}
                             </a>
                             <p>{{ item.listing.title }}</p>
+                            <span class="listing-category-btn">{{ item.listing.category.name }}</span>
                         </div>
                      </div>
                     {% endfor %}

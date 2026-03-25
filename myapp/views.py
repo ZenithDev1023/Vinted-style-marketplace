@@ -3,11 +3,14 @@ from urllib.parse import quote_plus
 from urllib.request import Request, urlopen
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.db.models import Case, Count, IntegerField, Q, When
 from django.template.defaultfilters import slugify
+from django.views.decorators.http import require_POST
 
-from .forms import CreateListingForm, DirectMessageForm, ListingReviewForm, RegisterForm
+from . import chatbot as chatbot_module
+from .forms import CreateListingForm, ListingReviewForm, RegisterForm, DirectMessageForm
 from .models import (
     Category,
     CreditAccount,
@@ -464,3 +467,35 @@ def transactions(request):
 
 def notifications(request):
     return render(request, "profile/notifications.html", {**get_nav_context(request), "notifications": []})
+
+
+@require_POST
+def chatbot_response(request):
+    """Receives a JSON POST with {message}, returns {response} as JSON."""
+    try:
+        body = json.loads(request.body)
+        user_message = body.get("message", "").strip()
+    except (json.JSONDecodeError, KeyError):
+        return JsonResponse({"error": "Invalid request"}, status=400)
+
+    if not user_message:
+        return JsonResponse({"error": "Empty message"}, status=400)
+
+    # Persist memory in the user's session so context carries across messages
+    memory = request.session.get("chatbot_memory", {})
+
+    # First, check if the message can be answered with live database data
+    db_response = chatbot_module.db_query_response(user_message)
+    if db_response:
+        chatbot_module.save_conversation(user_message, db_response)
+        return JsonResponse({"response": db_response})
+
+    response_text, updated_memory = chatbot_module.get_response(user_message, memory)
+    request.session["chatbot_memory"] = updated_memory
+
+    return JsonResponse({"response": response_text})
+
+
+def chatbot_page(request):
+    """Renders the chatbot HTML page."""
+    return render(request, "chatbot/chatbot.html", get_nav_context(request))

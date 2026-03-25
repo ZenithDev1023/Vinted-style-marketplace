@@ -1,0 +1,24 @@
+Timestamp: 2026-03-25 16:40:48.360193
+User: Hi
+Bot: Hi there! Welcome to the marketplace. How can I help you today?
+
+Timestamp: 2026-03-25 16:40:53.041584
+User: Hammer details
+Bot: You're welcome! Is there anything else I can help with?
+
+Timestamp: 2026-03-25 16:41:01.412303
+User: Price of hammer
+Bot: The listing "Hammer" is priced at £10.00 (condition: Good, seller: Steve12).
+
+Timestamp: 2026-03-25 16:41:07.470704
+User: hammer condition
+Bot: Each listing shows the item's condition — options include New, Like New, Good, and Used.
+
+Timestamp: 2026-03-25 16:41:18.102328
+User: condition of hammer
+Bot: "Hammer" — £10.00
+Condition: Good
+Category: Hand Tools
+Seller: Steve12
+Description: Very high quality hammers, no longer in use.
+
