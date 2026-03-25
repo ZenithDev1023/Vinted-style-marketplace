@@ -60,16 +60,46 @@
         <a href="{% url 'contact' %}">Contact</a>
         <a href="{% url 'messages' %}">Messages</a>
         <a href="{% url 'settings' %}">Settings</a>
-        <a href="#">Logout</a>
+        <a href="{% url 'logout' %}">Logout</a>
     </div>
 
     <div class="profile-outer-div">
-        <h1>Profile Page</h1>
+         <h1>My Profile</h1>
+        {% if profile_user %}
+            <p class="profile-meta">{{ profile_user.username }} · {{ profile_user.email }} · Credits: {{ profile_user.credits_balance }}</p>
+        {% endif %}
+
+
         <div class="link-div">
-            <a href="{% url 'messages' %}">Messages</div>
-            <a href="{% url 'notifications' %}">Notifications</div>
-            <a href="{% url 'transactions' %}">Transactions</div>
+            <a href="{% url 'messages' %}">Messages</a>
+            <a href="{% url 'notifications' %}">Notifications</a>
+            <a href="{% url 'transactions' %}">Transactions</a>
         </div>
+        <section class="posts-section">
+            <div class="posts-header">
+                <h2>My Posts</h2>
+                <a href="{% url 'create_listing' %}" class="btn btn-primary">Post a New Ad</a>
+            </div>
+
+            {% if user_listings %}
+                <div class="posts-grid">
+                    {% for listing in user_listings %}
+                        <article class="post-card">
+                            <h3>{{ listing.title }}</h3>
+                            <p class="post-description">{{ listing.description }}</p>
+                            <p class="post-meta">Condition: {{ listing.get_condition_display }} · Status: {{ listing.get_status_display }}</p>
+                            <p class="post-price">£{{ listing.price }}</p>
+                            <div class="post-actions">
+                                <a href="{% url 'product_details' listing.id %}">View post</a>
+                                <a href="{% url 'delete_listing' listing.id %}" class="btn btn-outline" onclick="return confirm('Delete this ad?');">Delete</a>
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="empty-posts">You haven't posted any ads yet.</p>
+            {% endif %}
+        </section>
     </div>
 
 
