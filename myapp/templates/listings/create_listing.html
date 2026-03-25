@@ -85,7 +85,11 @@
                 <h2>Post an Ad</h2>
                 <form method="POST">
                     {% csrf_token %}
-                    {{ form.as_p }}
+                    <p>{{ form.title.label_tag }} {{ form.title }}</p>
+                    <p>{{ form.description.label_tag }} {{ form.description }}</p>
+                    <p>{{ form.price.label_tag }} {{ form.price }}</p>
+                    <p>{{ form.condition.label_tag }} {{ form.condition }}</p>
+                    <p>{{ form.category.label_tag }} {{ form.category }}</p>
                     <div class="form-group">
                         <label for="id_image_url">Image URL (optional)</label>
                         <input type="url" id="id_image_url" name="image_url" placeholder="https://example.com/photo.jpg">

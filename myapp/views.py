@@ -4,6 +4,8 @@ from urllib.request import Request, urlopen
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import redirect, render
+from django.db.models import Case, Count, IntegerField, Q, When
+from django.template.defaultfilters import slugify
 
 from .forms import CreateListingForm, ListingReviewForm, RegisterForm
 from .models import (
@@ -17,6 +19,30 @@ from .models import (
     Transaction,
     User,
 )
+
+DISCOVER_CATEGORY_NAMES = [
+    "Hand Tools",
+    "Power Tools",
+    "Equipment",
+    "Safety Gear",
+    "Materials",
+    "Trade Vehicles",
+]
+
+
+def _discover_categories_queryset(with_counts=False):
+    for category_name in DISCOVER_CATEGORY_NAMES:
+        Category.objects.get_or_create(name=category_name)
+
+    custom_order = Case(
+        *[When(name=name, then=position) for position, name in enumerate(DISCOVER_CATEGORY_NAMES)],
+        output_field=IntegerField(),
+    )
+    queryset = Category.objects.filter(name__in=DISCOVER_CATEGORY_NAMES).annotate(sort_order=custom_order)
+    if with_counts:
+        queryset = queryset.annotate(listing_count=Count("listing"))
+    return queryset.order_by("sort_order")
+
 
 def _geocode_postcode(postcode):
     """Return an approximate (city, lat, lon) tuple for a postcode."""
@@ -74,8 +100,20 @@ def home(request):
     if user_id:
         user = User.objects.filter(id=user_id).first()
     featured_listings = Listing.objects.all()[:6]
+    discovered_categories = _discover_categories_queryset(with_counts=True)
+    counts_by_slug = {
+        slugify(category.name.strip()): category.listing_count for category in discovered_categories
+    }
     return render(request, "home/home.html", {
-        "user_id": user_id, "user": user, "featured_listings": featured_listings,
+        "user_id": user_id,
+        "user": user,
+        "featured_listings": featured_listings,
+        "hand_tools_count": counts_by_slug.get("hand-tools", 0),
+        "power_tools_count": counts_by_slug.get("power-tools", 0),
+        "equipment_count": counts_by_slug.get("equipment", 0),
+        "safety_count": counts_by_slug.get("safety-gear", 0),
+        "materials_count": counts_by_slug.get("materials", 0),
+        "vehicles_count": counts_by_slug.get("vehicles", 0) + counts_by_slug.get("trade-vehicles", 0),
     })
 
 
@@ -96,13 +134,37 @@ def about(request):
 
 
 def products(request):
+    discover_categories = _discover_categories_queryset(with_counts=True)
     listings = Listing.objects.all()
+    category_filter = request.GET.get("category", "").strip()
+    if category_filter:
+        category_aliases = {
+            "hand-tools": ["hand tools"],
+            "power-tools": ["power tools"],
+            "equipment": ["equipment"],
+            "safety-gear": ["safety gear"],
+            "materials": ["materials"],
+            "vehicles": ["vehicles", "trade vehicles"],
+            "trade-vehicles": ["trade vehicles", "vehicles"],
+        }
+        normalized_filter = category_filter.lower()
+        names_to_match = category_aliases.get(normalized_filter, [category_filter.replace("-", " ")])
+        category_query = Q()
+        for name in names_to_match:
+            category_query |= Q(category__name__iexact=name)
+        listings = listings.filter(category_query)
     listings_with_photos = []
     for listing in listings:
         primary_photo = listing.photo_set.filter(isPrimary=True).first()
         listings_with_photos.append({"listing": listing, "primary_photo": primary_photo})
+    discovered_categories = (
+        Category.objects.annotate(listing_count=Count("listing"))
+        .order_by("-listing_count", "name")
+    )
     return render(request, "product-page/products.html", {
-        **get_nav_context(request), "listings_with_photos": listings_with_photos,
+        **get_nav_context(request),
+        "listings_with_photos": listings_with_photos,
+        "discovered_categories": discover_categories,
     })
 
 
@@ -202,16 +264,17 @@ def login_view(request):
 
 
 def create_listing(request):
+    discover_categories = _discover_categories_queryset()
     profile_user = _get_profile_user(request)
     if not profile_user:
         return redirect("login")
     if request.method == "POST":
         form = CreateListingForm(request.POST)
+        form.fields["category"].queryset = discover_categories
         if form.is_valid():
             listing = form.save(commit=False)
             listing.user = profile_user
             listing.status = ListingStatus.ACTIVE
-            default_category, _ = Category.objects.get_or_create(name="General")
             default_location, _ = Location.objects.get_or_create(
                 user=profile_user,
                 defaults={"postcode": "N/A", "city": "Unknown", "latitude": 0, "longitude": 0},
@@ -226,7 +289,6 @@ def create_listing(request):
             credit_account, _ = CreditAccount.objects.get_or_create(
                 user=profile_user, defaults={"creditBalance": profile_user.credits_balance},
             )
-            listing.category = default_category
             listing.location = default_location
             listing.creditAccount = credit_account
             listing.save()
@@ -239,15 +301,17 @@ def create_listing(request):
             if image_url:
                 Photo.objects.create(
                     image_url=image_url, listing=listing,
-                    category=default_category, isPrimary=True,
+                    category=listing.category, isPrimary=True,
                 )
             return redirect("products")
     else:
         form = CreateListingForm()
+        form.fields["category"].queryset = discover_categories
     return render(request, "listings/create_listing.html", {**get_nav_context(request), "form": form})
 
 
 def edit_listing(request, listing_id):
+    discover_categories = _discover_categories_queryset()
     profile_user = _get_profile_user(request)
     if not profile_user:
         return redirect("login")
@@ -258,6 +322,7 @@ def edit_listing(request, listing_id):
 
     if request.method == "POST":
         form = CreateListingForm(request.POST, instance=listing)
+        form.fields["category"].queryset = discover_categories
         if form.is_valid():
             updated_listing = form.save()
             image_url = request.POST.get("image_url", "").strip()
@@ -277,6 +342,7 @@ def edit_listing(request, listing_id):
             return redirect("profile")
     else:
         form = CreateListingForm(instance=listing)
+        form.fields["category"].queryset = discover_categories
 
     primary_photo = listing.photo_set.filter(isPrimary=True).first()
     return render(

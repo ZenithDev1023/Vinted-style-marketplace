@@ -8,7 +8,7 @@ class RegisterForm(forms.Form):
     password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
     password2 = forms.CharField(label="Confirm Password", widget=forms.PasswordInput)
     postcode = forms.CharField(max_length=20, help_text="Used to show an approximate listing location.")
-    
+
     def clean(self):
         cleaned_data = super().clean()
         p1 = cleaned_data.get("password1")
@@ -33,9 +33,13 @@ class RegisterForm(forms.Form):
 
 
 class CreateListingForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["category"].queryset = self.fields["category"].queryset.order_by("name")
+
     class Meta:
         model = Listing
-        fields = ["title", "description", "price", "condition"]
+        fields = ["title", "description", "price", "condition", "category"]
 
 
 class ListingReviewForm(forms.ModelForm):
