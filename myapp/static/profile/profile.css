@@ -322,3 +322,17 @@
 .post-actions .btn {
     padding: 0.35rem 0.7rem;
 }
+
+.post-actions .btn-secondary,
+.post-actions .btn-outline {
+    background-color: var(--secondary-blue);
+    border-color: var(--secondary-blue);
+    color: var(--white);
+}
+
+.post-actions .btn-secondary:hover,
+.post-actions .btn-outline:hover {
+    background-color: var(--primary-blue);
+    border-color: var(--primary-blue);
+    color: var(--white);
+}
