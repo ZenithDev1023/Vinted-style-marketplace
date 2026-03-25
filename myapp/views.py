@@ -54,7 +54,7 @@ def profile(request):
     profile_user = _get_profile_user(request)
     user_listings = Listing.objects.none()
     if profile_user:
-        user_listings = Listing.objects.filter(user=profile_user).order_by("-createdDate")
+     user_listings = Listing.objects.filter(user=profile_user).order_by("-createdDate")
     return render(request, "profile/profile.html", {
         **get_nav_context(request),
         "profile_user": profile_user,
