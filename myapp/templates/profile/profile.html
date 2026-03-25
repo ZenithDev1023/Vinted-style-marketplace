@@ -92,6 +92,7 @@
                             <p class="post-price">£{{ listing.price }}</p>
                             <div class="post-actions">
                                 <a href="{% url 'product_details' listing.id %}">View post</a>
+                                <a href="{% url 'edit_listing' listing.id %}" class="btn btn-secondary">Edit</a>
                                 <a href="{% url 'delete_listing' listing.id %}" class="btn btn-outline" onclick="return confirm('Delete this ad?');">Delete</a>
                             </div>
                         </article>

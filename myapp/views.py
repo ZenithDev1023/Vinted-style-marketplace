@@ -247,22 +247,48 @@ def create_listing(request):
     return render(request, "listings/create_listing.html", {**get_nav_context(request), "form": form})
 
 
-def edit_listing(request):
+def edit_listing(request, listing_id):
+    profile_user = _get_profile_user(request)
+    if not profile_user:
+        return redirect("login")
+
+    listing = Listing.objects.filter(id=listing_id, user=profile_user).first()
+    if not listing:
+        return redirect("profile")
+
     if request.method == "POST":
-        listing_id = request.POST.get("listing_id")
-        title = request.POST.get("title")
-        description = request.POST.get("description")
-        price = request.POST.get("price")
-        try:
-            listing = Listing.objects.get(id=listing_id, user_id=request.session.get("user_id"))
-            listing.title = title
-            listing.description = description
-            listing.price = price
-            listing.save()
-            return redirect("products")
-        except Listing.DoesNotExist:
-            return render(request, "home/home.html")
-    return render(request, "listings/edit_listing.html", get_nav_context(request))
+        form = CreateListingForm(request.POST, instance=listing)
+        if form.is_valid():
+            updated_listing = form.save()
+            image_url = request.POST.get("image_url", "").strip()
+            if image_url:
+                primary_photo = updated_listing.photo_set.filter(isPrimary=True).first()
+                if primary_photo:
+                    primary_photo.image_url = image_url
+                    primary_photo.category = updated_listing.category
+                    primary_photo.save(update_fields=["image_url", "category"])
+                else:
+                    Photo.objects.create(
+                        image_url=image_url,
+                        listing=updated_listing,
+                        category=updated_listing.category,
+                        isPrimary=True,
+                    )
+            return redirect("profile")
+    else:
+        form = CreateListingForm(instance=listing)
+
+    primary_photo = listing.photo_set.filter(isPrimary=True).first()
+    return render(
+        request,
+        "listings/edit_listing.html",
+        {
+            **get_nav_context(request),
+            "form": form,
+            "listing": listing,
+            "image_url": primary_photo.image_url if primary_photo else "",
+        },
+    )
 
 
 def delete_listing(request, listing_id):
