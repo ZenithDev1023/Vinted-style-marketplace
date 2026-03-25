@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - TradeX</title>
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .page-content { max-width: 800px; margin: 40px auto; padding: 20px; }
+        .page-content h1 { color: #1E5AA8; margin-bottom: 20px; }
+        .page-content h2 { color: #2D7BC0; margin-top: 30px; margin-bottom: 15px; }
+        .page-content p { line-height: 1.8; color: #333; margin-bottom: 15px; }
+        .page-content ul { margin-bottom: 15px; padding-left: 20px; }
+        .page-content li { margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+    {% include 'home/navbar.html' %}
+    
+    <div class="page-content">
+        <h1>Terms of Service</h1>
+        <p><strong>Last Updated:</strong> March 2026</p>
+        
+        <h2>1. Acceptance of Terms</h2>
+        <p>By accessing and using TradeX, you accept and agree to be bound by these Terms of Service.</p>
+        
+        <h2>2. User Responsibilities</h2>
+        <p>As a user of TradeX, you agree to:</p>
+        <ul>
+            <li>Provide accurate and complete information</li>
+            <li>Maintain the security of your account</li>
+            <li>Not post fraudulent or misleading listings</li>
+            <li>Comply with all applicable laws and regulations</li>
+        </ul>
+        
+        <h2>3. Listing Rules</h2>
+        <p>All listings must:</p>
+        <ul>
+            <li>Be accurate and truthful</li>
+            <li>Not infringe on any intellectual property rights</li>
+            <li>Comply with our community guidelines</li>
+        </ul>
+        
+        <h2>4. Limitation of Liability</h2>
+        <p>TradeX is a marketplace platform and does not guarantee the quality, safety, or legality of items listed.</p>
+        
+        <h2>5. Contact</h2>
+        <p>For questions about these Terms, contact us at <strong>legal@tradex.co.uk</strong></p>
+    </div>
+    
+    {% include 'home/footer.html' %}
+    <script src="{% static 'styles/styles.js' %}"></script>
+</body>
+</html>

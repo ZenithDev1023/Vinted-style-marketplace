@@ -24,4 +24,25 @@ urlpatterns = [
     path("notifications/", views.notifications, name="notifications"),
     path("chatbot/", views.chatbot_response, name="chatbot"),
     path("chatbot/page/", views.chatbot_page, name="chatbot_page"),
+
+
+     # About TradeX
+    path("about-us/", views.about_us, name="about_us"),
+    path("careers/", views.careers, name="careers"),
+    path("blog/", views.blog, name="blog"),
+    path("press/", views.press, name="press"),
+    
+    # Help & Contact
+    path("help-center/", views.help_center, name="help_center"),
+    path("safety-tips/", views.safety_tips, name="safety_tips"),
+    path("scam-alerts/", views.scam_alerts, name="scam_alerts"),
+    
+    # Policies
+    path("privacy-notice/", views.privacy_notice, name="privacy_notice"),
+     path("terms-of-service/", views.terms_of_service, name="terms_of_service"),
+    path("cookie-policy/", views.cookie_policy, name="cookie_policy"),
+    path("community-guidelines/", views.community_guidelines, name="community_guidelines"),
+    
+    # For Tradespeople
+    path("advertising/", views.advertising, name="advertising"),
 ]

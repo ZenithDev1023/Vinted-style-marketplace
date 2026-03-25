@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scam Alerts - TradeX</title>
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .page-content { max-width: 800px; margin: 40px auto; padding: 20px; }
+        .page-content h1 { color: #1E5AA8; margin-bottom: 20px; }
+        .page-content h2 { color: #2D7BC0; margin-top: 30px; margin-bottom: 15px; }
+        .page-content p { line-height: 1.8; color: #333; margin-bottom: 15px; }
+        .page-content ul { margin-bottom: 15px; padding-left: 20px; }
+        .page-content li { margin-bottom: 8px; }
+        .warning-box { background: #fff3cd; padding: 15px; border-left: 4px solid #FFA500; margin: 15px 0; }
+        .danger-box { background: #f8d7da; padding: 15px; border-left: 4px solid #dc3545; margin: 15px 0; }
+    </style>
+</head>
+<body>
+    {% include 'home/navbar.html' %}
+    
+    <div class="page-content">
+        <h1>Scam Alerts</h1>
+        <p>Protect yourself from common scams on online marketplaces.</p>
+        
+        <div class="danger-box">
+            <strong>⚠️ NEVER send money before receiving items!</strong> This is the #1 rule of safe trading.
+        </div>
+        
+        <h2>Common Scams to Watch For</h2>
+        <ul>
+            <li><strong>Overpayment Scam:</strong> Buyer sends a fake cheque for more than the price and asks for change</li>
+            <li><strong>Shipping Scam:</strong> Seller asks for payment but never ships the item</li>
+            <li><strong>Phishing:</strong> Fake emails pretending to be from TradeX asking for login details</li>
+            <li><strong>Too Good to Be True:</strong> Extremely low prices on high-value items</li>
+        </ul>
+        
+        <h2>Report Suspicious Activity</h2>
+        <p>If you encounter a scammer, report them immediately to <strong>safety@tradex.co.uk</strong></p>
+    </div>
+    
+    {% include 'home/footer.html' %}
+    <script src="{% static 'styles/styles.js' %}"></script>
+</body>
+</html>
