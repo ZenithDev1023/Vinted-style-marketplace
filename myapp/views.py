@@ -5,7 +5,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
-from django.db.models import Case, Count, IntegerField, Q, When
+from django.db.models import Avg, Case, Count, IntegerField, Q, When
 from django.template.defaultfilters import slugify
 from django.views.decorators.http import require_POST
 
@@ -136,10 +136,15 @@ def profile(request):
 
     user_listings = Listing.objects.none()
     user_listings = Listing.objects.filter(user=profile_user).order_by("-createdDate")
+    received_reviews = ListingReview.objects.filter(listing__user=profile_user)
+    reviews_count = received_reviews.count()
+    average_rating = received_reviews.aggregate(avg_rating=Avg("rating"))["avg_rating"]
     return render(request, "profile/profile.html", {
         **get_nav_context(request),
         "profile_user": profile_user,
         "user_listings": user_listings,
+        "reviews_count": reviews_count,
+        "average_rating": average_rating,
         "profile_form": form,
     })
 
