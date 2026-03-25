@@ -1,3 +1,6 @@
+import json
+from urllib.parse import quote_plus
+from urllib.request import Request, urlopen
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import redirect, render
@@ -14,6 +17,32 @@ from .models import (
     Transaction,
     User,
 )
+
+def _geocode_postcode(postcode):
+    """Return an approximate (city, lat, lon) tuple for a postcode."""
+    if not postcode:
+        return ("Unknown", 0.0, 0.0)
+
+    query = quote_plus(postcode.strip())
+    url = f"https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=gb,us,ca,au&q={query}"
+    request = Request(url, headers={"User-Agent": "TradeXMarketplace/1.0"})
+
+    try:
+        with urlopen(request, timeout=4) as response:
+            payload = json.loads(response.read().decode("utf-8"))
+        if payload:
+            result = payload[0]
+            city = result.get("display_name", "Unknown").split(",")[0]
+            return (
+                city or "Unknown",
+                float(result.get("lat", 0.0)),
+                float(result.get("lon", 0.0)),
+            )
+    except Exception:
+        pass
+
+    return ("Unknown", 0.0, 0.0)
+
 
 
 def _get_profile_user(request):
@@ -138,6 +167,12 @@ def register(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
+            postcode = form.cleaned_data.get("postcode", "").strip()
+            city, lat, lon = _geocode_postcode(postcode)
+            Location.objects.update_or_create(
+                user=user,
+                defaults={"postcode": postcode, "city": city, "latitude": lat, "longitude": lon},
+            )
             request.session["user_id"] = user.id
             return redirect("login")
     else:
@@ -181,6 +216,13 @@ def create_listing(request):
                 user=profile_user,
                 defaults={"postcode": "N/A", "city": "Unknown", "latitude": 0, "longitude": 0},
             )
+            if default_location.postcode and default_location.latitude == 0 and default_location.longitude == 0:
+                city, lat, lon = _geocode_postcode(default_location.postcode)
+                if lat or lon:
+                    default_location.city = city
+                    default_location.latitude = lat
+                    default_location.longitude = lon
+                    default_location.save(update_fields=["city", "latitude", "longitude"])
             credit_account, _ = CreditAccount.objects.get_or_create(
                 user=profile_user, defaults={"creditBalance": profile_user.credits_balance},
             )
