@@ -100,12 +100,14 @@
     <section class="reviews" style="max-width:900px;margin:2rem auto;">
         <h2>Reviews</h2>
 
-        {% if user_id %}
+        {% if can_review_listing %}
             <form method="POST" action="{% url 'add_review' product.id %}" style="margin-bottom:1rem;">
                 {% csrf_token %}
                 {{ review_form.as_p }}
                 <button type="submit" class="btn btn-primary">Submit Review</button>
             </form>
+            {% elif user_id and user_id == product.user_id %}
+            <p>You can't review your own listing.</p>
         {% else %}
             <p><a href="{% url 'login' %}">Login</a> to write a review.</p>
         {% endif %}
