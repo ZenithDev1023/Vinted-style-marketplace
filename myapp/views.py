@@ -477,7 +477,33 @@ def transactions(request):
 
 
 def notifications(request):
-    return render(request, "profile/notifications.html", {**get_nav_context(request), "notifications": []})
+    profile_user = _get_profile_user(request)
+    if not profile_user:
+        return redirect("login")
+
+    recent_listings = (
+        Listing.objects.select_related("user", "category")
+        .order_by("-createdDate")[:50]
+    )
+
+    notifications_feed = []
+    for listing in recent_listings:
+        notifications_feed.append(
+            {
+                "listing_id": listing.id,
+                "title": listing.title,
+                "seller": listing.user.username,
+                "category": listing.category.name,
+                "created_at": listing.createdDate,
+                "is_own_listing": listing.user_id == profile_user.id,
+            }
+        )
+
+    return render(
+        request,
+        "profile/notifications.html",
+        {**get_nav_context(request), "notifications": notifications_feed},
+    )
 
 
 @require_POST

@@ -105,7 +105,7 @@ class ProfileUpdateForm(forms.ModelForm):
         return InMemoryUploadedFile(
             file=image_bytes,
             field_name="profile_photo",
-            name=f"{uploaded_photo.name.rsplit('.', 1)[0]}_512.jpg",
+            name=f"{uploaded_photo.name.rsplit('.', 1)[0]}_128.jpg",
             content_type="image/jpeg",
             size=image_bytes.getbuffer().nbytes,
             charset=None,

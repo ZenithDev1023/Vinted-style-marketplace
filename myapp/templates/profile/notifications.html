@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TradeX - Trade & Construction Marketplace</title>
     <link rel="stylesheet" href="{% static 'profile/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
     <link rel="stylesheet" href="{% static 'home/home.css' %}">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -64,7 +65,33 @@
     </div>
 
 
-    <h1>Notifications Page</h1>
+        <main class="container" style="padding: 2rem 1rem; min-height: 50vh;">
+        <h1 style="margin-bottom: 0.5rem;">Notifications</h1>
+        <p style="margin-top: 0; color: #666;">See when new listings are posted across the marketplace.</p>
+
+        {% if notifications %}
+            <div style="display: grid; gap: 0.75rem; margin-top: 1.5rem;">
+                {% for item in notifications %}
+                    <a href="{% url 'product_details' item.listing_id %}" style="text-decoration: none; color: inherit;">
+                        <article style="background: #fff; border: 1px solid #e6e6e6; border-radius: 10px; padding: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+                            <p style="margin: 0 0 0.25rem 0; font-weight: 700;">
+                                {% if item.is_own_listing %}
+                                    Your listing "{{ item.title }}" is now live.
+                                {% else %}
+                                    {{ item.seller }} just posted "{{ item.title }}".
+                                {% endif %}
+                            </p>
+                            <p style="margin: 0; color: #666; font-size: 0.95rem;">
+                                Category: {{ item.category }} • {{ item.created_at|timesince }} ago
+                            </p>
+                        </article>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p style="margin-top: 1.25rem;">No listings have been posted yet.</p>
+        {% endif %}
+    </main>
 
     <!-- ==================== FOOTER ==================== -->
     <footer class="footer">
