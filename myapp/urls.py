@@ -11,16 +11,22 @@ urlpatterns = [
     path("about/", views.about, name="about"),
     path("contact/", views.contact, name="contact"),
     path("messages/", views.messages, name="messages"),
+    path("messages/start/<int:listing_id>/", views.start_conversation, name="start_conversation"),
     path("settings/", views.settings, name="settings"),
     path("register/", views.register, name="register"),
     path("login/", views.login_view, name="login"),
     path("logout/", views.logout_view, name="logout"),
     path("createListing/", views.create_listing, name="create_listing"),
-    path("editListing/", views.edit_listing, name="edit_listing"),
+    path("editListing/<int:listing_id>/", views.edit_listing, name="edit_listing"),
     path("deleteListing/<int:listing_id>/", views.delete_listing, name="delete_listing"),
     path("myListings/", views.my_listings, name="my_listings"),
     path('transactions/', views.transactions, name="transactions"),
     path("notifications/", views.notifications, name="notifications"),
+<<<<<<< HEAD
+=======
+    path("chatbot/", views.chatbot_response, name="chatbot"),
+    path("chatbot/page/", views.chatbot_page, name="chatbot_page"),
+>>>>>>> temp-save
 
 
      # About TradeX

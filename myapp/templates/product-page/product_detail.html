@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
 <body>
     <nav class="navbar">
@@ -72,13 +73,30 @@
             <p class="product-description">Price: £{{ product.price }}</p>
             <p class="product-description">Condition: {{ product.condition }}</p>
             <p class="product-description">Category: {{ product.category.name }}</p>
+            <p class="product-description">Approx. area: {{ product.location.postcode|slice:":3" }}***</p>
         </div>
-        <button class="contact-seller-button">Contact Seller</button>
+        <a href="{% url 'chatbot_page' %}"><button class="chatbot-button">Chatbot</button></a>
+        {% if can_message_seller %}
+            <a class="contact-seller-button" href="{% url 'start_conversation' product.id %}">Contact Seller</a>
+        {% elif user_id and user_id == product.user_id %}
+            <button class="contact-seller-button" disabled>Your Listing</button>
+        {% else %}
+            <a class="contact-seller-button" href="{% url 'login' %}">Login to Contact Seller</a>
+        {% endif %}
     </div>
 
     <a href="{% url 'products' %}">← Back to Products</a>
 
-    
+        <section style="max-width:900px;margin:1.2rem auto;">
+        <h2>Approximate Location</h2>
+        {% if product.location.latitude != 0 or product.location.longitude != 0 %}
+            <div id="listingMap" style="height:320px;border-radius:10px;overflow:hidden;"></div>
+            <p style="margin-top:0.5rem;color:#666;">To protect privacy, this shows an approximate area based on the seller postcode.</p>
+        {% else %}
+            <p>Approximate location is {{ product.location.postcode }}.</p>
+        {% endif %}
+    </section>
+
     <section class="reviews" style="max-width:900px;margin:2rem auto;">
         <h2>Reviews</h2>
 
@@ -120,6 +138,7 @@
                                 {% endif %}
                             </a>
                             <p>{{ item.listing.title }}</p>
+                            <span class="listing-category-btn">{{ item.listing.category.name }}</span>
                         </div>
                      </div>
                     {% endfor %}
@@ -190,6 +209,27 @@
             </div>
         </div>
     </footer>
+
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        (function() {
+            var lat = {{ product.location.latitude|default:0 }};
+            var lon = {{ product.location.longitude|default:0 }};
+            if ((lat !== 0 || lon !== 0) && document.getElementById("listingMap") && window.L) {
+                var map = L.map("listingMap").setView([lat, lon], 11);
+                L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                    maxZoom: 19,
+                    attribution: "&copy; OpenStreetMap contributors"
+                }).addTo(map);
+                L.circle([lat, lon], {
+                    radius: 1200,
+                    color: "#2f6fed",
+                    fillColor: "#2f6fed",
+                    fillOpacity: 0.18
+                }).addTo(map).bindPopup("Approximate area");
+            }
+        })();
+    </script>
 
     <script src="{% static 'products-page/product-detail.js' %}"></script>
     <script src="{% static 'styles/styles.js' %}"></script>

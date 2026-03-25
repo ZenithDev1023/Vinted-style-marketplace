@@ -4,11 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TradeX - Trade & Construction Marketplace</title>
+    <title>Messages</title>
     <link rel="stylesheet" href="{% static 'home/home.css' %}">
     <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .messages-layout {display:grid;grid-template-columns:320px 1fr;gap:1rem;max-width:1100px;margin:1.5rem auto;}
+        .panel {background:#fff;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;}
+        .panel h2 {margin:0;padding:1rem;border-bottom:1px solid #e2e8f0;font-size:1.1rem;}
+        .thread-link {display:block;padding:0.85rem 1rem;border-bottom:1px solid #f1f5f9;text-decoration:none;color:#0f172a;}
+        .thread-link:hover,.thread-link.active {background:#eef2ff;}
+        .thread-meta {font-size:0.85rem;color:#64748b;margin-top:0.2rem;}
+        .chat-stream {height:430px;overflow:auto;padding:1rem;display:flex;flex-direction:column;gap:0.65rem;background:#f8fafc;}
+        .bubble {max-width:70%;padding:0.65rem 0.8rem;border-radius:10px;}
+        .bubble.me {background:#dbeafe;align-self:flex-end;}
+        .bubble.them {background:#ffffff;border:1px solid #e2e8f0;align-self:flex-start;}
+        .bubble small {display:block;color:#64748b;margin-top:0.35rem;}
+        .chat-form {padding:1rem;border-top:1px solid #e2e8f0;}
+        .chat-form textarea {width:100%;resize:vertical;}
+        .empty-state {padding:1rem;color:#64748b;}
+        @media (max-width: 900px) {.messages-layout{grid-template-columns:1fr;}}
+    </style>
 </head>
 <body>
 
@@ -26,13 +43,8 @@
 
             <!-- Search Bar (Center) -->
             <form class="search-bar" method="GET" action="{% url 'products' %}">
-                <input type="text" 
-                       name="q" 
-                       placeholder="Search tools, equipment, materials..." 
-                       value="{{ search_query }}">
-                <button type="submit" class="search-btn">
-                    <i class="fas fa-search"></i> Search
-                </button>
+                <input type="text" name="q" placeholder="Search tools, equipment, materials..." value="{{ search_query }}">
+                <button type="submit" class="search-btn"><i class="fas fa-search"></i> Search</button>
             </form>
 
             <!-- Auth Buttons (Right) -->
@@ -63,70 +75,45 @@
         <a href="{% url 'logout' %}">Logout</a>
     </div>
 
-    <div id="main">
-        <h1>Message Page</h1>
-    </div>
 
-     <!-- ==================== FOOTER ==================== -->
-     <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <!-- About Us -->
-                <div class="footer-section">
-                    <h4>About TradeX</h4>
-                    <ul>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Press</a></li>
-                    </ul>
-                </div>
+            <main class="messages-layout">
+        <section class="panel">
+            <h2>Conversations</h2>
+            {% for thread in threads %}
+                <a class="thread-link {% if selected_partner_id == thread.partner.id and selected_listing_id == thread.listing_id %}active{% endif %}" href="{% url 'messages' %}?recipient={{ thread.partner.id }}{% if thread.listing %}&listing={{ thread.listing.id }}{% endif %}">
+                    <strong>{{ thread.partner.username }}</strong>
+                    {% if thread.listing %}<div class="thread-meta">Re: {{ thread.listing.title }}</div>{% endif %}
+                    <div class="thread-meta">{{ thread.latest.sent_at|date:"M d, Y H:i" }}</div>
+                </a>
+            {% empty %}
+                <p class="empty-state">No conversations yet. Open any product and contact a seller to start messaging.</p>
+            {% endfor %}
+        </section>
 
-                <!-- Help & Contact -->
-                <div class="footer-section">
-                    <h4>Help & Contact</h4>
-                    <ul>
-                        <li><a href="#">Help Center</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Safety Tips</a></li>
-                        <li><a href="#">Scam Alerts</a></li>
-                    </ul>
+                    <section class="panel">
+            {% if selected_partner %}
+                <h2>Chat with {{ selected_partner.username }}{% if selected_listing %} · {{ selected_listing.title }}{% endif %}</h2>
+                <div class="chat-stream">
+                    {% for message in chat_messages %}
+                        <article class="bubble {% if message.sender_id == user_id %}me{% else %}them{% endif %}">
+                            <div>{{ message.content }}</div>
+                            <small>{{ message.sent_at|date:"M d, Y H:i" }}</small>
+                        </article>
+                    {% empty %}
+                        <p class="empty-state">No messages yet. Say hello 👋</p>
+                    {% endfor %}
                 </div>
-
-                <!-- Policies -->
-                <div class="footer-section">
-                    <h4>Policies</h4>
-                    <ul>
-                        <li><a href="#">Privacy Notice</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">Cookie Policy</a></li>
-                        <li><a href="#">Community Guidelines</a></li>
-                    </ul>
-                </div>
-
-                <!-- For Tradespeople -->
-                <div class="footer-section">
-                    <h4>For Tradespeople</h4>
-                    <ul>
-                        <li><a href="{% url 'create_listing' %}">Sell on TradeX</a></li>
-                        <li><a href="#">Business Accounts</a></li>
-                        <li><a href="#">Advertising</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Copyright -->
-            <div class="footer-bottom">
-                <p>&copy; {% now "Y" %} TradeX Marketplace. All rights reserved.</p>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <form method="POST" class="chat-form">
+                    {% csrf_token %}
+                    {{ message_form.content }}
+                    <button type="submit" class="btn btn-primary" style="margin-top:0.5rem;">Send</button>
+                </form>
+            {% else %}
+                <h2>Messages</h2>
+                <p class="empty-state">Select a conversation from the left to start chatting.</p>
+            {% endif %}
+        </section>
+    </main>
 
     <script src="{% static 'styles/styles.js' %}"></script>
 </body>

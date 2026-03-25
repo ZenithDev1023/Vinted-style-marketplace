@@ -1,0 +1,70 @@
+Timestamp: 2026-03-25 15:47:27.060005
+User: How much is the product
+Bot: I couldn't find any active listings matching "product" right now. Try browsing the Products page or use the search bar.
+
+Timestamp: 2026-03-25 15:47:34.954548
+User: How much is the hammer
+Bot: The listing "Hammer" is priced at £10.00 (condition: Good, seller: Steve12).
+
+Timestamp: 2026-03-25 15:47:56.976121
+User: How many items is Steve selling
+Bot: I couldn't find any active listings matching "items is Steve selling" right now. Try browsing the Products page or use the search bar.
+
+Timestamp: 2026-03-25 15:48:08.729803
+User: How many tools are in the site
+Bot: I couldn't find any active listings matching "tools are in the site" right now. Try browsing the Products page or use the search bar.
+
+Timestamp: 2026-03-25 15:48:16.254472
+User: Hammer
+Bot: Hmm, I didn't quite get that. Try asking about listings, transactions, your profile, or how to contact us.
+
+Timestamp: 2026-03-25 15:48:24.486216
+User: How to contact
+Bot: Happy to help! Let me know if you have more questions.
+
+Timestamp: 2026-03-25 15:48:58.171161
+User: Create listing hammer
+Bot: To create a listing, click 'Create Listing' in the navigation menu. You'll need a title, description, price, condition, and at least one photo.
+
+Timestamp: 2026-03-25 15:50:49.207784
+User: Hi
+Bot: Hey! What can I assist you with today?
+
+Timestamp: 2026-03-25 15:50:57.458134
+User: How to create a listing
+Bot: To create a listing, click 'Create Listing' in the navigation menu. You'll need a title, description, price, condition, and at least one photo.
+
+Timestamp: 2026-03-25 15:51:06.886299
+User: How much is a spanner
+Bot: I couldn't find any active listings matching "a spanner" right now. Try browsing the Products page or use the search bar.
+
+Timestamp: 2026-03-25 15:51:14.709735
+User: How much is spanner
+Bot: The listing "Spanner" is priced at £30.00 (condition: Good, seller: smas).
+
+Timestamp: 2026-03-25 15:51:19.336128
+User: Spanner price
+Bot: Hmm, I didn't quite get that. Try asking about listings, transactions, your profile, or how to contact us.
+
+Timestamp: 2026-03-25 15:51:22.922211
+User: price of spanner
+Bot: The listing "Spanner" is priced at £30.00 (condition: Good, seller: smas).
+
+Timestamp: 2026-03-25 15:51:30.284906
+User: what condition is spanner
+Bot: Each listing shows the item's condition — options include New, Like New, Good, and Used.
+
+Timestamp: 2026-03-25 15:58:46.802743
+User: is there hammer
+Bot: Yes! Here's what's currently available for "hammer":
+• Hammer — £10.00 (Good, posted by Steve12)
+
+Timestamp: 2026-03-25 15:58:51.416770
+User: is there spanner
+Bot: Yes! Here's what's currently available for "spanner":
+• Spanner — £30.00 (Good, posted by smas)
+
+Timestamp: 2026-03-25 15:59:05.933750
+User: is there chicken
+Bot: I couldn't find any active listings matching "chicken" right now. Try browsing the Products page or use the search bar.
+

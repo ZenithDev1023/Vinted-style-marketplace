@@ -98,3 +98,19 @@ body {
 .filter-btn.active {
     background-color: #73c0ff;
 }
+
+
+.category-link-btn {
+    text-decoration: none;
+    display: inline-block;
+}
+
+.listing-category-btn {
+    margin-top: 8px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background-color: #e6f4ff;
+    color: #0b7dda;
+    font-size: 0.8rem;
+    font-weight: 600;
+}

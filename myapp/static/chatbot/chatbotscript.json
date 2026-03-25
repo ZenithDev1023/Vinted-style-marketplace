@@ -1,0 +1,255 @@
+{
+  "Tags": [
+    {
+      "tag": "greeting",
+      "patterns": "(?:hello|hi|hey|greetings|good morning|good afternoon|good evening)(?P<greeting_msg>.*)",
+      "responses": [
+        "Hi there! Welcome to the marketplace. How can I help you today?",
+        "Hello! Looking to buy or sell something? I'm here to help.",
+        "Hey! What can I assist you with today?"
+      ]
+    },
+    {
+      "tag": "goodbye",
+      "patterns": "(?:bye|goodbye|see you|farewell|thanks bye|cheers)(?P<farewell>.*)",
+      "responses": [
+        "Goodbye! Happy shopping!",
+        "See you later! Good luck with your listings.",
+        "Take care! Come back if you need anything."
+      ]
+    },
+    {
+      "tag": "thanks",
+      "patterns": "(?:thank you|thanks|cheers|appreciate it|ta)(?P<thanks_msg>.*)",
+      "responses": [
+        "You're welcome! Is there anything else I can help with?",
+        "Happy to help! Let me know if you have more questions.",
+        "No problem at all!"
+      ]
+    },
+    {
+      "tag": "yes",
+      "patterns": "(?:yes|yeah|yep|sure|correct|exactly|that's right)(?P<confirmation>.*)",
+      "responses": [
+        "Great! How can I help further?",
+        "Understood. What else would you like to know?",
+        "Got it. What's your next question?"
+      ]
+    },
+    {
+      "tag": "no",
+      "patterns": "(?:no|nope|not really|not quite|that's not it)(?P<negation>.*)",
+      "responses": [
+        "No worries! What were you actually looking for?",
+        "That's fine — could you describe what you need a bit more?",
+        "Okay, let me know what I can help with instead."
+      ]
+    },
+    {
+      "tag": "sell_item",
+      "patterns": "(?:how do i|how to|can i|want to)\\s+(?:sell|list|post|put up)\\s+(?P<item>.+)",
+      "responses": [
+        "To sell {item}, go to 'Create Listing' from your profile menu. Add photos, a title, description, price and condition.",
+        "Listing {item} is easy! Head to 'Create Listing', fill in the details, and you're live.",
+        "You can sell {item} by creating a new listing. Make sure to add clear photos for the best results!"
+      ]
+    },
+    {
+      "tag": "create_listing",
+      "patterns": "(?:create|make|add|post|start)\\s+(?:a\\s+)?(?:listing|item|product|post)(?P<listing_details>.*)",
+      "responses": [
+        "To create a listing, click 'Create Listing' in the navigation menu. You'll need a title, description, price, condition, and at least one photo.",
+        "Head to 'Create Listing' from the nav bar. Fill in your item details — the more info you add, the faster it sells!",
+        "Creating a listing takes just a minute! Go to 'Create Listing', add your item details and photos, then publish."
+      ]
+    },
+    {
+      "tag": "edit_listing",
+      "patterns": "(?:edit|update|change|modify|fix)\\s+(?:my\\s+)?(?:listing|item|post|product)(?P<edit_detail>.*)",
+      "responses": [
+        "You can edit your listing from 'My Listings' in your profile. Click the edit button on the item you want to update.",
+        "Go to 'My Listings', find the item, and hit the edit icon to make changes to{edit_detail}.",
+        "Head to your profile, then 'My Listings' — you can edit any active listing from there."
+      ]
+    },
+    {
+      "tag": "delete_listing",
+      "patterns": "(?:delete|remove|take down|cancel)\\s+(?:my\\s+)?(?:listing|item|post|product)(?P<delete_detail>.*)",
+      "responses": [
+        "To delete a listing, go to 'My Listings' in your profile and click the delete button on the item.",
+        "You can remove any of your listings from the 'My Listings' page in your profile.",
+        "Head to 'My Listings', find the item you want to remove, and click Delete."
+      ]
+    },
+    {
+      "tag": "buy_item",
+      "patterns": "(?:how do i|how to|can i|want to)\\s+(?:buy|purchase|get|order)\\s+(?P<item>.+)",
+      "responses": [
+        "To buy {item}, find it on the products page and click the listing for more details. You can contact the seller from there.",
+        "Browse the marketplace for {item}, click on the listing you like, and reach out to the seller to arrange the purchase.",
+        "Find {item} using the search or category filters, then open the listing to get in touch with the seller."
+      ]
+    },
+    {
+      "tag": "search_item",
+      "patterns": "(?:find|search|look for|browse|where is|looking for)\\s+(?P<search_term>.+)",
+      "responses": [
+        "You can search for {search_term} using the search bar at the top of the products page.",
+        "Head to the Products page and use the category filters or search to find {search_term}.",
+        "Try browsing by category on the Products page to find {search_term}."
+      ]
+    },
+    {
+      "tag": "credits",
+      "patterns": "(?:credit|credits|coins|balance|points|earn|reward)(?P<credits_detail>.*)",
+      "responses": [
+        "Credits are earned when you sell items on the marketplace. You can view your balance in your profile.",
+        "You earn credits for each successful listing or sale. Check your Transactions page to see your credit history.",
+        "Your credit balance is shown in your profile. Credits are awarded when you complete sales."
+      ]
+    },
+    {
+      "tag": "transactions",
+      "patterns": "(?:transaction|transactions|payment|purchase history|order history|history)(?P<transaction_detail>.*)",
+      "responses": [
+        "You can view all your transactions on the Transactions page in your profile.",
+        "Head to your profile and click 'Transactions' to see a full history of your purchases and sales.",
+        "Your full transaction history is available under your profile menu."
+      ]
+    },
+    {
+      "tag": "account",
+      "patterns": "(?:account|profile|settings|my account|my profile)(?P<account_detail>.*)",
+      "responses": [
+        "You can manage your account details from the Profile page. Click your username in the nav bar to get there.",
+        "Head to your profile to view and update your account information.",
+        "Your account settings and profile details are all accessible from the Profile page."
+      ]
+    },
+    {
+      "tag": "login",
+      "patterns": "(?:login|log in|sign in|can't log in|forgot password|access my account)(?P<login_detail>.*)",
+      "responses": [
+        "You can log in from the Login page. Click 'Login' in the navigation bar.",
+        "Head to the Login page and enter your username and password to access your account.",
+        "If you're having trouble logging in, make sure your username and password are correct."
+      ]
+    },
+    {
+      "tag": "register",
+      "patterns": "(?:register|sign up|create account|new account|join)(?P<register_detail>.*)",
+      "responses": [
+        "To create an account, click 'Register' in the navigation bar and fill in your details.",
+        "Signing up is free and easy! Hit the Register button and you'll be set up in seconds.",
+        "Click 'Register' at the top of the page to create your account and start buying or selling."
+      ]
+    },
+    {
+      "tag": "logout",
+      "patterns": "(?:logout|log out|sign out)(?P<logout_detail>.*)",
+      "responses": [
+        "You can log out by clicking the Logout button in the navigation menu.",
+        "To sign out, find the Logout option in the nav bar."
+      ]
+    },
+    {
+      "tag": "messages",
+      "patterns": "(?:message|messages|inbox|contact seller|chat|talk to)(?P<message_detail>.*)",
+      "responses": [
+        "You can send and receive messages from the Messages section in your profile.",
+        "To contact a seller, open their listing and use the message feature. Your inbox is in your profile.",
+        "Head to your profile and click 'Messages' to view your conversations."
+      ]
+    },
+    {
+      "tag": "notifications",
+      "patterns": "(?:notification|notifications|alert|alerts|updates)(?P<notif_detail>.*)",
+      "responses": [
+        "You can view your notifications in your profile under 'Notifications'.",
+        "Check the Notifications section in your profile for updates on your listings and messages.",
+        "Your latest alerts and updates are in the Notifications page of your profile."
+      ]
+    },
+    {
+      "tag": "price",
+      "patterns": "(?:price|cost|how much|value|worth|expensive|cheap)\\s+(?:is|for|of)?\\s*(?P<price_item>.+)",
+      "responses": [
+        "Prices are set by each seller. Open the listing for {price_item} to see its current price.",
+        "Each seller sets their own price. Browse the listing for {price_item} to find out more.",
+        "You can find the price of {price_item} on its product page. Click the listing to see full details."
+      ]
+    },
+    {
+      "tag": "condition",
+      "patterns": "(?:condition|quality|new|used|second hand|worn|like new|brand new)(?P<condition_detail>.*)",
+      "responses": [
+        "Each listing shows the item's condition — options include New, Like New, Good, and Used.",
+        "You can filter by condition on the Products page to find items in the state you're looking for.",
+        "Item conditions are listed on each product page. Look for the condition label on the listing."
+      ]
+    },
+    {
+      "tag": "category",
+      "patterns": "(?:category|categories|type|kind|sort of|what kind)(?P<category_detail>.*)",
+      "responses": [
+        "You can browse by category on the Products page using the filter buttons at the top.",
+        "Each listing belongs to a category. Use the category filters on the Products page to narrow your search.",
+        "Head to the Products page and select a category to see relevant listings."
+      ]
+    },
+    {
+      "tag": "shipping",
+      "patterns": "(?:shipping|delivery|postage|ship|deliver|send|dispatch)(?P<shipping_detail>.*)",
+      "responses": [
+        "Shipping details are arranged between buyer and seller. Check the listing or message the seller for more info.",
+        "Each seller sets their own shipping terms. You'll find delivery details on the product listing.",
+        "Contact the seller directly to arrange shipping for your item."
+      ]
+    },
+    {
+      "tag": "review",
+      "patterns": "(?:review|reviews|rating|ratings|feedback|leave a review|write a review)(?P<review_detail>.*)",
+      "responses": [
+        "You can leave a review on a product page after viewing a listing. Scroll down to the reviews section.",
+        "Reviews are found at the bottom of each product listing. Feel free to share your feedback!",
+        "To leave a review, open the product page and use the review form at the bottom."
+      ]
+    },
+    {
+      "tag": "report",
+      "patterns": "(?:report|problem|issue|scam|fake|wrong|broken|complaint)(?P<report_detail>.*)",
+      "responses": [
+        "If you've encountered an issue, please use the Contact page to report it to us.",
+        "We're sorry to hear that. Please head to the Contact page and describe the problem so we can help.",
+        "For any issues or complaints, reach out via the Contact page and our team will look into it."
+      ]
+    },
+    {
+      "tag": "contact",
+      "patterns": "(?:contact|support|help|assistance|reach out|get in touch)(?P<contact_detail>.*)",
+      "responses": [
+        "You can reach us via the Contact page linked in the navigation menu.",
+        "For support, head to the Contact page and fill in your query — we'll get back to you.",
+        "Our Contact page is the best way to get in touch with the team."
+      ]
+    },
+    {
+      "tag": "about",
+      "patterns": "(?:about|what is this|what is the site|who are you|what do you do|tell me about)(?P<about_detail>.*)",
+      "responses": [
+        "This is a second-hand marketplace where you can buy and sell pre-loved items easily.",
+        "We're a Vinted-style platform for buying and selling second-hand goods. Check out the About page for more info!",
+        "This marketplace lets you list items for sale, browse listings, and connect with other buyers and sellers."
+      ]
+    },
+    {
+      "tag": "fallback",
+      "patterns": "(?P<unknown_query>.*)",
+      "responses": [
+        "I'm not sure I understood that. Could you rephrase? You can ask me about buying, selling, your account, credits, or listings.",
+        "Hmm, I didn't quite get that. Try asking about listings, transactions, your profile, or how to contact us.",
+        "I'm still learning! Try asking something like 'How do I create a listing?' or 'How do credits work?'"
+      ]
+    }
+  ]
+}
