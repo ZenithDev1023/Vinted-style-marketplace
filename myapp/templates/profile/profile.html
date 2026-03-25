@@ -78,7 +78,7 @@
                     {% endif %}
                 </div>
                 <p class="profile-meta">{{ profile_user.username }} · {{ profile_user.email }} · Credits: {{ profile_user.credits_balance }}</p>
-                                <p class="profile-meta">
+                <p class="profile-meta">
                     Seller Rating:
                     {% if reviews_count %}
                         {{ average_rating|floatformat:1 }}/5 ({{ reviews_count }} review{{ reviews_count|pluralize }})
