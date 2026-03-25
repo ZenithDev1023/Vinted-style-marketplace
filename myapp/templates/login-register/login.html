@@ -41,7 +41,7 @@
                     <span class="user-greeting">Hi, {{ user.username }}!</span>
                     <a href="{% url 'create_listing' %}" class="btn btn-primary">Post an Ad</a>
                     <a href="{% url 'profile' %}" class="btn btn-secondary">My Profile</a>
-                    <a href="{% url 'home' %}" class="btn btn-outline">Logout</a>
+                    <a href="{% url 'logout' %}" class="btn btn-outline">Logout</a>
                 {% else %}
                     <a href="{% url 'create_listing' %}" class="btn btn-primary">Post an Ad</a>
                     <a href="{% url 'register' %}" class="btn btn-secondary">Sign Up</a>
@@ -67,9 +67,13 @@
         <div class="register-container">
             <div class="inner-div">
                 <h2>Login In</h2>
+                {% if error %}
+                    <p style="color:red;">{{ error }}</p>
+                {% endif %}
                 <form method="POST">
                     {% csrf_token %}
-                    {{ form.as_p }}
+                    <p><label>Username:<br><input type="text" name="username" required></label></p>
+                    <p><label>Password:<br><input type="password" name="password" required></label></p>
                     <button type="submit" class="submit-btn">Login In</button>
                 </form>
             </div>

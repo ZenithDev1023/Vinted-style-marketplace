@@ -3,11 +3,21 @@ from .models import *
 
 from .forms import RegisterForm
 
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 
-# Create your views here.
+
+def get_nav_context(request):
+    """Returns user_id and user for the navbar on every page."""
+    user_id = request.session.get("user_id")
+    user = None
+    if user_id:
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            pass
+    return {"user_id": user_id, "user": user}
+
+
 def home(request):
     user_id = request.session.get("user_id")
     user = None
@@ -51,16 +61,32 @@ def products(request):
             "listing": listing,
             "primary_photo": primary_photo,
         })
-    return render(request, "product-page/products.html", {"listings_with_photos": listings_with_photos})
+    return render(request, "product-page/products.html", {
+        **get_nav_context(request),
+        "listings_with_photos": listings_with_photos,
+    })
 
 
 def product_detail(request, listing_id):
     try:
         product = Listing.objects.get(id=listing_id)
         primary_photo = product.photo_set.filter(isPrimary=True).first()
+
+        # Build carousel listings (exclude the current product)
+        other_listings = Listing.objects.exclude(id=listing_id)
+        listings_with_photos = []
+        for listing in other_listings:
+            photo = listing.photo_set.filter(isPrimary=True).first()
+            listings_with_photos.append({
+                "listing": listing,
+                "primary_photo": photo,
+            })
+
         return render(request, "product-page/product_detail.html", {
+            **get_nav_context(request),
             "product": product,
             "primary_photo": primary_photo,
+            "listings_with_photos": listings_with_photos,
         })
         
     except Listing.DoesNotExist:
@@ -68,7 +94,7 @@ def product_detail(request, listing_id):
 
 
 def contact(request):
-    return render(request, "sidebar/contact.html")
+    return render(request, "sidebar/contact.html", get_nav_context(request))
 
 
 @login_required
@@ -84,31 +110,41 @@ def settings(request):
     return render(request, "sidebar/settings.html")
 
 
+def logout_view(request):
+    request.session.flush()
+    return redirect("home")
+
+
 def register(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
-        
         if form.is_valid():
             form.save()
             return redirect("login")
     else:
         form = RegisterForm()
-    
-    return render(request, "login-register/register.html", {"form": form})
+    context = get_nav_context(request)
+    context["form"] = form
+    return render(request, "login-register/register.html", context)
 
 
 def login_view(request):
+    error = None
     if request.method == "POST":
-        form = AuthenticationForm(request, data=request.POST)
-
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            return redirect("home")
-    else:
-        form = AuthenticationForm()
-    
-    return render(request, "login-register/login.html", {"form": form})
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        try:
+            user = User.objects.get(username=username)
+            if user.login(password):
+                request.session["user_id"] = user.id
+                return redirect("home")
+            else:
+                error = "Invalid password."
+        except User.DoesNotExist:
+            error = "No account found with that username."
+    context = get_nav_context(request)
+    context["error"] = error
+    return render(request, "login-register/login.html", context)
         
 
 def create_listing(request):
@@ -127,7 +163,7 @@ def create_listing(request):
 
         return redirect("products")
 
-    return render(request, "listings/create_listing.html")
+    return render(request, "listings/create_listing.html", get_nav_context(request))
 
 
 
@@ -152,7 +188,7 @@ def edit_listing(request):
         except Listing.DoesNotExist:
             return render(request, "home/home.html")
 
-    return render(request, "listings/edit_listing.html")
+    return render(request, "listings/edit_listing.html", get_nav_context(request))
 
 
 
@@ -165,7 +201,7 @@ def my_listings(request):
 
     listings = Listing.objects.filter(user_id=user_id)
 
-    return render(request, "listings/my_listings.html", {"listings": listings})
+    return render(request, "listings/my_listings.html", {**get_nav_context(request), "listings": listings})
     
 
 
@@ -178,7 +214,7 @@ def transactions(request):
 
     user_transactions = Transaction.objects.filter(user_id=user_id)
 
-    return render(request, "profile/transactions.html", {"transactions": user_transactions})
+    return render(request, "profile/transactions.html", {**get_nav_context(request), "transactions": user_transactions})
 
 
 
@@ -190,4 +226,4 @@ def notifications(request):
 
     user_notifications = Notification.objects.filter(user_id=user_id)
 
-    return render(request, "profile/notifications.html", {"notifications": user_notifications})
+    return render(request, "profile/notifications.html", {**get_nav_context(request), "notifications": user_notifications})

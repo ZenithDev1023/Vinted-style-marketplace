@@ -5,6 +5,8 @@
     <title>{{ product.title }}</title>
     <link rel="stylesheet" href="{% static 'products-page/product-detail.css' %}">
     <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <nav class="navbar">
@@ -35,7 +37,7 @@
                     <span class="user-greeting">Hi, {{ user.username }}!</span>
                     <a href="{% url 'create_listing' %}" class="btn btn-primary">Post an Ad</a>
                     <a href="{% url 'profile' %}" class="btn btn-secondary">My Profile</a>
-                    <a href="{% url 'home' %}" class="btn btn-outline">Logout</a>
+                    <a href="{% url 'logout' %}" class="btn btn-outline">Logout</a>
                 {% else %}
                     <a href="{% url 'create_listing' %}" class="btn btn-primary">Post an Ad</a>
                     <a href="{% url 'register' %}" class="btn btn-secondary">Sign Up</a>
@@ -82,13 +84,21 @@
             <button onclick="prev()">&#8592;</button>
             <div class="carousel-window">
                 <div class="carousel-track">
-                    <div class="container">
-                        <div><img src="{% static 'images/Saw.jpeg' %}" alt="Saw" class="product-image"><p>Saw</p></div>
-                        <div><img src="{% static 'images/Crowbar.jpeg' %}" alt="Crowbar" class="product-image"><p>Crowbar</p></div>
-                        <div><img src="{% static 'images/Nails.jpeg' %}" alt="Nails" class="product-image"><p>Nails</p></div>
-                        <div><img src="{% static 'images/Screwdriver.webp' %}" alt="Screwdriver" class="product-image"><p>Screwdriver</p></div>
-                        <div><img src="{% static 'images/WoodPlanks.jpeg' %}" alt="Wood Planks" class="product-image"><p>Wood Planks</p></div>
-                    </div>
+                    {% for item in listings_with_photos %}
+                     <div class="container">
+                         <div>
+                            <a href="{% url 'product_details' item.listing.id %}">
+                                {% if item.primary_photo %}
+                                    <img src="{{ item.primary_photo.image_url }}" alt="{{ item.listing.title }}" class="product-image">
+                                {% else %}
+                                    <img src="{% static 'images/placeholder.webp' %}" alt="{{ item.listing.title }}" class="product-image">
+                                {% endif %}
+                            </a>
+                            <p>{{ item.listing.title }}</p>
+                        </div>
+                     </div>
+                    {% endfor %}
+
                 </div>
             </div>
             <button onclick="next()">&#8594;</button>

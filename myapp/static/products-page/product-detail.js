@@ -1,4 +1,5 @@
 let current = 0;
+const itemsPerPage = 4;
 
 // Automatically counts however many slides Django generates
 const track = document.querySelector('.carousel-track');
@@ -7,18 +8,27 @@ const total = slides.length;
 
 function updateCarousel() {
     if (!track) return;
-    track.style.transform = `translateX(-${current * 100}%)`;
+    track.style.transform = `translateX(-${current * 25}%)`;
 }
 
 function next() {
     if (total === 0) return;
-    current = (current + 1) % total;  // Loops back to start
+    
+    if (current + itemsPerPage < total) {
+        current += itemsPerPage;
+    } else {
+        current = 0; 
+    }
     updateCarousel();
 }
 
 function prev() {
     if (total === 0) return;
-    current = (current - 1 + total) % total;  // Loops back to end
+    if (current - itemsPerPage >= 0) {
+        current -= itemsPerPage;
+    } else {
+        current = Math.floor((total - 1) / itemsPerPage) * itemsPerPage;
+    }
     updateCarousel();
 }
 

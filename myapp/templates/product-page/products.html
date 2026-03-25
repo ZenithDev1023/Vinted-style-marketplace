@@ -5,7 +5,8 @@
     <title>Products Page</title>
     <link rel="stylesheet" type="text/css" href="{% static 'products-page/products.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'styles/styles.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
@@ -37,7 +38,7 @@
                     <span class="user-greeting">Hi, {{ user.username }}!</span>
                     <a href="{% url 'create_listing' %}" class="btn btn-primary">Post an Ad</a>
                     <a href="{% url 'profile' %}" class="btn btn-secondary">My Profile</a>
-                    <a href="{% url 'home' %}" class="btn btn-outline">Logout</a>
+                    <a href="{% url 'logout' %}" class="btn btn-outline">Logout</a>
                 {% else %}
                     <a href="{% url 'create_listing' %}" class="btn btn-primary">Post an Ad</a>
                     <a href="{% url 'register' %}" class="btn btn-secondary">Sign Up</a>
@@ -77,7 +78,7 @@
                             {% if item.primary_photo %}
                                 <img src="{{ item.primary_photo.image_url }}" alt="{{ item.listing.title }}" class="product-image">
                             {% else %}
-                                <img src="{% static 'images/placeholder.png' %}" alt="{{ item.listing.title }}" class="product-image">
+                                <img src="{% static 'images/placeholder.webp' %}" alt="{{ item.listing.title }}" class="product-image">
                             {% endif %}
                             <p>{{ item.listing.title }}</p>
                         </a>

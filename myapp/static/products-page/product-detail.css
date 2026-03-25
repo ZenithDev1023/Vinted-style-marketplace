@@ -21,6 +21,7 @@ body {
     margin: 10px 0;
 }
 
+/* ===========CONTACT SELLER BUTTON===================== */
 .contact-seller-button {
     display: inline-block;
     padding: 10px 20px;
@@ -71,7 +72,7 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 20px;          /* Added - gives some breathing room */
+    padding: 20px;          
 }
 
 .carousel-window {
@@ -84,17 +85,16 @@ body {
     transition: transform 0.3s ease;
 }
 
-/* Each container is now one "slide" */
+
 .container {
     display: flex;
-    min-width: 100%;
-    justify-content: space-around;
-    gap: 20px;
-    padding: 10px;          /* Added - stops images touching edges */
-    box-sizing: border-box; /* Added - prevents padding breaking layout */
+    flex-direction: column;
+    align-items: center;
+    min-width: 25%;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
-/* Product cards */
 .container div {
     flex: 1;
     text-align: center;
@@ -106,7 +106,7 @@ body {
     height: 150px;
     object-fit: cover;
     border-radius: 8px;
-    border: 1px solid #ccc; /* Added - helps if image fails to load */
+    border: 1px solid #ccc; 
 }
 
 .container a {
@@ -170,9 +170,43 @@ a:hover {
     height: 40px;
     font-size: 18px;
     cursor: pointer;
-    flex-shrink: 0;         /* Stops buttons shrinking on small screens */
+    flex-shrink: 0;         
 }
 
 .carousel-wrapper button:hover {
     background-color: #f0f0f0;
+}
+
+/* ===========RESPONSIVE===================== */
+@media (max-width: 768px) {
+
+
+    .product-layout {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .main-product-image {
+        width: 100%;
+        height: auto;
+    }
+
+    .row {
+        flex-direction: column;
+    }
+
+    .column {
+        flex: 100%;
+        flex-wrap: wrap;
+    }
+
+    .container img {
+        max-width: 120px;
+        height: 100px;
+    }
+
+    .product-image {
+        width: 120px;
+        height: 100px;
+    }
 }
