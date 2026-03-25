@@ -206,6 +206,7 @@ def product_detail(request, listing_id):
         "reviews": reviews,
         "review_form": ListingReviewForm(),
         "listings_with_photos": listings_with_photos,
+        "can_review_listing": bool(request.session.get("user_id")) and request.session.get("user_id") != product.user_id,
         "can_message_seller": bool(request.session.get("user_id")) and request.session.get("user_id") != product.user_id,
     })
 
@@ -217,6 +218,8 @@ def add_review(request, listing_id):
     listing = Listing.objects.filter(id=listing_id).first()
     if not listing:
         return redirect("products")
+    if reviewer.id == listing.user_id:
+        return redirect("product_details", listing_id=listing_id)
     if request.method == "POST":
         form = ListingReviewForm(request.POST)
         if form.is_valid():
