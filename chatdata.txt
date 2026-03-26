@@ -110,3 +110,19 @@ Timestamp: 2026-03-26 16:46:43.908324
 User: How do I sign up
 Bot: Click 'Register' at the top of the page to create your account and start buying or selling.
 
+Timestamp: 2026-03-26 19:07:40.775175
+User: Price of hammer
+Bot: The listing "Hammer" is priced at �10.00 (condition: Good, seller: Steve12).
+
+Timestamp: 2026-03-26 19:10:04.356392
+User: price of hammer
+Bot: The listing "Hammer" is priced at �10.00 (condition: Good, seller: Steve12).
+
+Timestamp: 2026-03-26 19:12:19.151140
+User: Price of hammer
+Bot: The listing "Hammer" is priced at �10.00 (condition: Good, seller: Steve12).
+
+Timestamp: 2026-03-26 19:12:26.196282
+User: Price of hammer
+Bot: The listing "Hammer" is priced at �10.00 (condition: Good, seller: Steve12).
+
