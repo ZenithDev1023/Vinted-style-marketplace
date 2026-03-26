@@ -10,3 +10,7 @@
     overflow-y: scroll;
     margin-bottom: 10px;
 }
+
+.chat-msg.bot-msg{
+    font-weight: bold;
+}
