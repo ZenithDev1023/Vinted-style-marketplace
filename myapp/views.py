@@ -103,7 +103,7 @@ def home(request):
     user = None
     if user_id:
         user = User.objects.filter(id=user_id).first()
-    featured_listings = Listing.objects.all()[:6]
+    featured_listings = Listing.objects.filter(status=ListingStatus.ACTIVE)[:6]
     discovered_categories = _discover_categories_queryset(with_counts=True)
     counts_by_slug = {
         slugify(category.name.strip()): category.listing_count for category in discovered_categories
@@ -197,7 +197,7 @@ def advertising(request):
 
 def products(request):
     discover_categories = _discover_categories_queryset(with_counts=True)
-    listings = Listing.objects.all()
+    listings = Listing.objects.filter(status=ListingStatus.ACTIVE)
     category_filter = request.GET.get("category", "").strip()
     if category_filter:
         category_aliases = {
@@ -236,7 +236,7 @@ def product_detail(request, listing_id):
         return redirect("products")
     primary_photo = product.photo_set.filter(isPrimary=True).first()
     reviews = ListingReview.objects.filter(listing=product).order_by("-created_at")
-    other_listings = Listing.objects.exclude(id=listing_id)
+    other_listings = Listing.objects.filter(status=ListingStatus.ACTIVE).exclude(id=listing_id)
     listings_with_photos = []
     for listing in other_listings:
         photo = listing.photo_set.filter(isPrimary=True).first()
@@ -498,6 +498,24 @@ def edit_listing(request, listing_id):
             "image_url": primary_photo.image_url if primary_photo else "",
         },
     )
+
+@require_POST
+def update_listing_status(request, listing_id):
+    profile_user = _get_profile_user(request)
+    if not profile_user:
+        return redirect("login")
+
+    listing = Listing.objects.filter(id=listing_id, user=profile_user).first()
+    if not listing:
+        return redirect("profile")
+
+    new_status = request.POST.get("status", "").strip().lower()
+    allowed_statuses = {ListingStatus.ACTIVE, ListingStatus.SOLD}
+    if new_status in allowed_statuses:
+        listing.status = new_status
+        listing.save(update_fields=["status"])
+
+    return redirect("profile")
 
 
 def delete_listing(request, listing_id):

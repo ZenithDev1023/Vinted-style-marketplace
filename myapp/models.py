@@ -6,6 +6,7 @@ from django.db import models
 class ListingStatus(models.TextChoices):
     ACTIVE = "active", "Active"
     PENDING = "pending", "Pending"
+    SOLD = "sold", "Sold"
     COMPLETED = "completed", "Completed"
     CANCELLED = "cancelled", "Cancelled"
 

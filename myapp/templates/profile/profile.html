@@ -140,6 +140,18 @@
                                 <a href="{% url 'edit_listing' listing.id %}" class="btn btn-secondary">Edit</a>
                                 <a href="{% url 'delete_listing' listing.id %}" class="btn btn-outline" onclick="return confirm('Delete this ad?');">Delete</a>
                             </div>
+                                <div class="post-actions" style="margin-top:0.5rem;gap:0.5rem;">
+                                <form method="post" action="{% url 'update_listing_status' listing.id %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="status" value="active">
+                                    <button type="submit" class="btn btn-outline" {% if listing.status == 'active' %}disabled{% endif %}>Mark Active</button>
+                                </form>
+                                <form method="post" action="{% url 'update_listing_status' listing.id %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="status" value="sold">
+                                    <button type="submit" class="btn btn-secondary" {% if listing.status == 'sold' %}disabled{% endif %}>Mark Sold</button>
+                                </form>
+                            </div>
                         </article>
                     {% endfor %}
                 </div>
