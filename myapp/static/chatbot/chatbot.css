@@ -1,0 +1,12 @@
+#chatbot-header{
+    font-weight: bold;
+    font-size: 30px;
+}
+
+#chatbot-messages {
+    border: 1px solid #ddd;
+    padding: 10px;
+    height: 300px;
+    overflow-y: scroll;
+    margin-bottom: 10px;
+}

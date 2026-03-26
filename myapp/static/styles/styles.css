@@ -174,6 +174,16 @@
     width: 100%;
 }
 
+.chatbot-button {
+    background-color: var(--primary-blue);
+    color: var(--white);
+    border: none;
+    outline: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
 /* ===============SIDEBAR===================== */
 
 .sidenav {

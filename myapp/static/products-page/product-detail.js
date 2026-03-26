@@ -34,12 +34,10 @@ function prev() {
 
 function openNav() {
     document.getElementById("mySidenav").classList.add("open");
-    document.getElementById("main").style.marginLeft = "250px";
 }
 
 function closeNav() {
     document.getElementById("mySidenav").classList.remove("open");
-    document.getElementById("main").style.marginLeft = "0";
 }
 
 document.getElementById("openNavBtn").addEventListener("click", openNav);
