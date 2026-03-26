@@ -12,15 +12,7 @@
 <body>
     {% include 'home/navbar.html' %}
 
-    <!-- ==================== SIDE NAVIGATION ==================== -->
-    <div id="mySidenav" class="sidenav">
-        <a id="closeNavBtn" href="javascript:void(0)" class="closebtn">&times;</a>
-        <a href="{% url 'profile' %}">My Profile</a>
-        <a href="{% url 'about' %}">About</a>
-        <a href="{% url 'products' %}">Products</a>
-        <a href="{% url 'messages' %}">Messages</a>
-        <a href="{% url 'logout' %}">Logout</a>
-    </div>
+    {% include 'home/sidenav.html' %}
 
     <!-- ==================== PRODUCT DETAILS ==================== -->
     <h1>{{ product.title }}</h1>
@@ -36,15 +28,17 @@
             <p class="product-description">Condition: {{ product.condition }}</p>
             <p class="product-description">Category: {{ product.category.name }}</p>
             <p class="product-description">Approx. area: {{ product.location.postcode|slice:":3" }}***</p>
+            <div style="display:flex;gap:0.75rem;margin-top:1rem;align-items:center;">
+                <a href="{% url 'chatbot_page' %}"><button class="chatbot-button">Chatbot</button></a>
+                {% if can_message_seller %}
+                    <a class="contact-seller-button" href="{% url 'start_conversation' product.id %}">Contact Seller</a>
+                {% elif user_id and user_id == product.user_id %}
+                    <button class="contact-seller-button" disabled>Your Listing</button>
+                {% else %}
+                    <a class="contact-seller-button" href="{% url 'login' %}">Login to Contact Seller</a>
+                {% endif %}
+            </div>
         </div>
-        <a href="{% url 'chatbot_page' %}"><button class="chatbot-button">Chatbot</button></a>
-        {% if can_message_seller %}
-            <a class="contact-seller-button" href="{% url 'start_conversation' product.id %}">Contact Seller</a>
-        {% elif user_id and user_id == product.user_id %}
-            <button class="contact-seller-button" disabled>Your Listing</button>
-        {% else %}
-            <a class="contact-seller-button" href="{% url 'login' %}">Login to Contact Seller</a>
-        {% endif %}
     </div>
 
     <a href="{% url 'products' %}">← Back to Products</a>

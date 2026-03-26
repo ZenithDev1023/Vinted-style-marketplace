@@ -138,3 +138,15 @@ Category: Hand Tools
 Seller: Steve12
 Description: Hacksaw in good condition. Works fine.
 
+Timestamp: 2026-03-26 21:15:51.905730
+User: How to sell
+Bot: Hmm, I didn't quite get that. Try asking about listings, transactions, your profile, or how to contact us.
+
+Timestamp: 2026-03-26 21:15:59.876118
+User: How do I list
+Bot: I'm still learning! Try asking something like 'How do I create a listing?' or 'How do credits work?'
+
+Timestamp: 2026-03-26 21:16:06.290919
+User: How do I create a listing?
+Bot: Creating a listing takes just a minute! Go to 'Create Listing', add your item details and photos, then publish.
+

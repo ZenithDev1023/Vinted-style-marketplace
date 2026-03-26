@@ -15,15 +15,7 @@
 
     {% include 'home/navbar.html' %}
 
-    <!-- ==================== SIDE NAVIGATION ==================== -->
-    <div id="mySidenav" class="sidenav">
-        <a id="closeNavBtn" href="javascript:void(0)" class="closebtn">&times;</a>
-        <a href="{% url 'profile' %}">My Profile</a>
-        <a href="{% url 'about' %}">About</a>
-        <a href="{% url 'products' %}">Products</a>
-        <a href="{% url 'messages' %}">Messages</a>
-        <a href="{% url 'logout' %}">Logout</a>
-    </div>
+    {% include 'home/sidenav.html' %}
 
     <div class="profile-outer-div">
          <h1>My Profile</h1>
