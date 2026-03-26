@@ -3,60 +3,16 @@
 <html>
 <head>
     <title>{{ product.title }}</title>
-    <link rel="stylesheet" href="{% static 'products-page/product-detail.css' %}">
     <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'products-page/product-detail.css' %}">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <!-- Hamburger Button (Far Left) -->
-            <span id="openNavBtn" style="font-size:30px;cursor:pointer;color:white;">&#9776;</span>
+    {% include 'home/navbar.html' %}
 
-            <!-- Logo (Left) -->
-            <a href="{% url 'home' %}" class="logo">
-                <img src="{% static 'images/tradex-logo.png' %}" alt="TradeX Logo">
-                <span>TradeX</span>
-            </a>
-
-            <!-- Search Bar (Center) -->
-            <form class="search-bar" method="GET" action="{% url 'products' %}">
-                <input type="text" 
-                    name="q" 
-                    placeholder="Search tools, equipment, materials..." 
-                    value="{{ search_query }}">
-                <button type="submit" class="search-btn">
-                    <i class="fas fa-search"></i> Search
-                </button>
-            </form>
-
-            <!-- Auth Buttons (Right) -->
-            <div class="nav-actions">
-                {% if user_id %}
-                    <span class="user-greeting">Hi, {{ user.username }}!</span>
-                    <a href="{% url 'create_listing' %}" class="btn btn-primary">Post an Ad</a>
-                    <a href="{% url 'profile' %}" class="btn btn-secondary">My Profile</a>
-                    <a href="{% url 'logout' %}" class="btn btn-outline">Logout</a>
-                {% else %}
-                    <a href="{% url 'create_listing' %}" class="btn btn-primary">Post an Ad</a>
-                    <a href="{% url 'register' %}" class="btn btn-secondary">Sign Up</a>
-                    <a href="{% url 'login' %}" class="btn btn-outline">Login</a>
-                {% endif %}
-            </div>
-        </div>
-    </nav>
-
-    <!-- ==================== SIDE NAVIGATION ==================== -->
-    <div id="mySidenav" class="sidenav">
-        <a id="closeNavBtn" href="javascript:void(0)" class="closebtn">&times;</a>
-        <a href="{% url 'profile' %}">My Profile</a>
-        <a href="{% url 'about' %}">About</a>
-        <a href="{% url 'products' %}">Products</a>
-        <a href="{% url 'messages' %}">Messages</a>
-        <a href="{% url 'logout' %}">Logout</a>
-    </div>
+    {% include 'home/sidenav.html' %}
 
     <!-- ==================== PRODUCT DETAILS ==================== -->
     <h1>{{ product.title }}</h1>
@@ -72,15 +28,17 @@
             <p class="product-description">Condition: {{ product.condition }}</p>
             <p class="product-description">Category: {{ product.category.name }}</p>
             <p class="product-description">Approx. area: {{ product.location.postcode|slice:":3" }}***</p>
+            <div style="display:flex;gap:0.75rem;margin-top:1rem;align-items:center;">
+                <a href="{% url 'chatbot_page' %}"><button class="chatbot-button">Chatbot</button></a>
+                {% if can_message_seller %}
+                    <a class="contact-seller-button" href="{% url 'start_conversation' product.id %}">Contact Seller</a>
+                {% elif user_id and user_id == product.user_id %}
+                    <button class="contact-seller-button" disabled>Your Listing</button>
+                {% else %}
+                    <a class="contact-seller-button" href="{% url 'login' %}">Login to Contact Seller</a>
+                {% endif %}
+            </div>
         </div>
-        <a href="{% url 'chatbot_page' %}"><button class="chatbot-button">Chatbot</button></a>
-        {% if can_message_seller %}
-            <a class="contact-seller-button" href="{% url 'start_conversation' product.id %}">Contact Seller</a>
-        {% elif user_id and user_id == product.user_id %}
-            <button class="contact-seller-button" disabled>Your Listing</button>
-        {% else %}
-            <a class="contact-seller-button" href="{% url 'login' %}">Login to Contact Seller</a>
-        {% endif %}
     </div>
 
     <a href="{% url 'products' %}">← Back to Products</a>
@@ -149,66 +107,7 @@
         </div>
     </div>
 
-        <!-- ==================== FOOTER ==================== -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <!-- About Us -->
-                <div class="footer-section">
-                    <h4>About TradeX</h4>
-                    <ul>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Press</a></li>
-                    </ul>
-                </div>
-
-                <!-- Help & Contact -->
-                <div class="footer-section">
-                    <h4>Help & Contact</h4>
-                    <ul>
-                        <li><a href="#">Help Center</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Safety Tips</a></li>
-                        <li><a href="#">Scam Alerts</a></li>
-                    </ul>
-                </div>
-
-                <!-- Policies -->
-                <div class="footer-section">
-                    <h4>Policies</h4>
-                    <ul>
-                        <li><a href="#">Privacy Notice</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">Cookie Policy</a></li>
-                        <li><a href="#">Community Guidelines</a></li>
-                    </ul>
-                </div>
-
-                <!-- For Tradespeople -->
-                <div class="footer-section">
-                    <h4>For Tradespeople</h4>
-                    <ul>
-                        <li><a href="{% url 'create_listing' %}">Sell on TradeX</a></li>
-                        <li><a href="#">Business Accounts</a></li>
-                        <li><a href="#">Advertising</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Copyright -->
-            <div class="footer-bottom">
-                <p>&copy; {% now "Y" %} TradeX Marketplace. All rights reserved.</p>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                </div>
-            </div>
-        </div>
-    </footer>
+    {% include 'home/footer.html' %}
 
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
@@ -230,8 +129,8 @@
             }
         })();
     </script>
-
-    <script src="{% static 'products-page/product-detail.js' %}"></script>
     <script src="{% static 'styles/styles.js' %}"></script>
+    <script src="{% static 'products-page/product-detail.js' %}"></script>
+
 </body>
 </html>

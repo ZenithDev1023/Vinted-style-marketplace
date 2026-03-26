@@ -1,0 +1,109 @@
+/* ==================== BODY ==================== */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--light-gray);
+    color: var(--dark-gray);
+    line-height: 1.6;
+}
+
+/* ==================== PAGE CONTENT ==================== */
+.page-content {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: var(--white);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.page-content h1 {
+    font-size: 2rem;
+    color: var(--primary-blue);
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 12px;
+}
+
+.page-content h2 {
+    font-size: 1.3rem;
+    color: var(--secondary-blue);
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+.page-content p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--dark-gray);
+    margin-bottom: 15px;
+}
+
+.page-content ul {
+    margin-bottom: 15px;
+    padding-left: 20px;
+}
+
+.page-content li {
+    font-size: 1rem;
+    margin-bottom: 8px;
+    color: var(--dark-gray);
+}
+
+/* ==================== TIP / INFO BOX ==================== */
+.tip-box {
+    background-color: var(--light-blue);
+    padding: 15px 20px;
+    border-left: 4px solid var(--primary-blue);
+    border-radius: 4px;
+    margin: 15px 0;
+}
+
+/* ==================== WARNING / DANGER BOXES ==================== */
+.warning-box {
+    background: #fff3cd;
+    padding: 15px 20px;
+    border-left: 4px solid #FFA500;
+    border-radius: 4px;
+    margin: 15px 0;
+}
+
+.danger-box {
+    background: #f8d7da;
+    padding: 15px 20px;
+    border-left: 4px solid #dc3545;
+    border-radius: 4px;
+    margin: 15px 0;
+}
+
+.rule-box {
+    background-color: var(--light-blue);
+    padding: 15px 20px;
+    border-left: 4px solid var(--primary-blue);
+    border-radius: 4px;
+    margin: 15px 0;
+}
+
+/* ==================== CARD BOXES ==================== */
+.job-listing,
+.blog-post,
+.press-release,
+.ad-box {
+    background: var(--light-gray);
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.job-listing h3,
+.blog-post h3,
+.press-release h3,
+.ad-box h3 {
+    color: var(--primary-blue);
+    margin-bottom: 10px;
+}
+
+.blog-post .date {
+    color: var(--medium-gray);
+    font-size: 14px;
+}
