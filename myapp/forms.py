@@ -56,11 +56,21 @@ class ListingReviewForm(forms.ModelForm):
 class DirectMessageForm(forms.ModelForm):
     class Meta:
         model = DirectMessage
-        fields = ["content"]
+        fields = ["content", "image"]
         widgets = {
             "content": forms.Textarea(attrs={"rows": 3, "placeholder": "Write your message..."}),
              }
+        
+    def clean(self):
+        cleaned_data = super().clean()
+        content = (cleaned_data.get("content") or "").strip()
+        image = cleaned_data.get("image")
 
+        if not content and not image:
+            raise forms.ValidationError("Please enter a message or attach an image.")
+
+        cleaned_data["content"] = content
+        return cleaned_data
 
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:

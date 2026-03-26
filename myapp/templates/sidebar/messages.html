@@ -21,6 +21,8 @@
         .bubble.me {background:#dbeafe;align-self:flex-end;}
         .bubble.them {background:#ffffff;border:1px solid #e2e8f0;align-self:flex-start;}
         .bubble small {display:block;color:#64748b;margin-top:0.35rem;}
+        .bubble img {max-width:240px;border-radius:8px;margin-top:0.4rem;display:block;}
+        .chat-form .field-help {font-size:0.85rem;color:#64748b;margin-top:0.35rem;}
         .chat-form {padding:1rem;border-top:1px solid #e2e8f0;}
         .chat-form textarea {width:100%;resize:vertical;}
         .empty-state {padding:1rem;color:#64748b;}
@@ -96,16 +98,20 @@
                 <div class="chat-stream">
                     {% for message in chat_messages %}
                         <article class="bubble {% if message.sender_id == user_id %}me{% else %}them{% endif %}">
-                            <div>{{ message.content }}</div>
+                            <div>{% if message.content %}{{ message.content }}{% endif %}</div>
+                            {% if message.image %}<img src="{{ message.image.url }}" alt="Shared message image">{% endif %}
                             <small>{{ message.sent_at|date:"M d, Y H:i" }}</small>
                         </article>
                     {% empty %}
                         <p class="empty-state">No messages yet. Say hello 👋</p>
                     {% endfor %}
                 </div>
-    <form method="POST" class="chat-form">
+    <form method="POST" enctype="multipart/form-data" class="chat-form">
                     {% csrf_token %}
                     {{ message_form.content }}
+                    {{ message_form.image }}
+                    {% if message_form.non_field_errors %}<div class="field-help">{{ message_form.non_field_errors }}</div>{% endif %}
+                    <div class="field-help">Tip: You can send text, an image, or both.</div>
                     <button type="submit" class="btn btn-primary" style="margin-top:0.5rem;">Send</button>
                 </form>
             {% else %}

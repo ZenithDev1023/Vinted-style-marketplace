@@ -256,7 +256,8 @@ class DirectMessage(models.Model):
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="sent_messages")
     recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name="received_messages")
     listing = models.ForeignKey(Listing, on_delete=models.SET_NULL, null=True, blank=True, related_name="direct_messages")
-    content = models.TextField()
+    content = models.TextField(blank=True)
+    image = models.ImageField(upload_to="messages/", null=True, blank=True)
     sent_at = models.DateTimeField(auto_now_add=True)
     read_status = models.BooleanField(default=False)
 

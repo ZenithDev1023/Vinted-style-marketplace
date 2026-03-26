@@ -314,7 +314,7 @@ def messages(request):
         selected_listing = Listing.objects.filter(id=listing_id).first()
 
     if request.method == "POST" and selected_partner:
-        form = DirectMessageForm(request.POST)
+        form = DirectMessageForm(request.POST, request.FILES)
         if form.is_valid():
             new_message = form.save(commit=False)
             new_message.sender = profile_user
