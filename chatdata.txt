@@ -165,3 +165,13 @@ Timestamp: 2026-03-26 21:16:06.290919
 User: How do I create a listing?
 Bot: Creating a listing takes just a minute! Go to 'Create Listing', add your item details and photos, then publish.
 
+Timestamp: 2026-03-26 23:06:07.983396
+User: How do I sign up?
+Bot: Signing up is free and easy! Hit the Register button and you'll be set up in seconds.
+
+Timestamp: 2026-03-26 23:06:16.240632
+User: Price of hammer
+Bot: Here are the active listings I found for "hammer":
+• Hammer — £10.00 (Good)
+• Demo hammer — £20.00 (Good)
+
