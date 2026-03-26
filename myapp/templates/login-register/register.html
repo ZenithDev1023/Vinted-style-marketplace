@@ -58,9 +58,13 @@
         <div class="register-container">
             <div class="inner-div">
                 <h2>Register</h2>
-                <form method="POST" onsubmit="return validatePostcode()">
+                                <p style="font-size:0.9em;color:#555;">
+                    Password requirements: at least 8 characters, include 1 number, and do not use your username.
+                </p>
+                <form method="POST" onsubmit="return validateRegisterForm()">
                     {% csrf_token %}
                     {{ form.as_p }}
+                    <span id="passwordError" style="color:red;font-size:0.9em;"></span>
                     <span id="postcodeError" style="color:red;font-size:0.9em;"></span>
                     <button type="submit" class="submit-btn">Sign up</button>
                 </form>
