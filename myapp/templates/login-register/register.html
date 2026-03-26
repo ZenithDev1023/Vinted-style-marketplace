@@ -66,9 +66,10 @@
         <div class="register-container">
             <div class="inner-div">
                 <h2>Register</h2>
-                <form method="POST">
+                <form method="POST" onsubmit="return validatePostcode()">
                     {% csrf_token %}
                     {{ form.as_p }}
+                    <span id="postcodeError" style="color:red;font-size:0.9em;"></span>
                     <button type="submit" class="submit-btn">Sign up</button>
                 </form>
             </div>
@@ -138,6 +139,6 @@
 
 
 
-        <script src="{% static 'myapp/login-register/login-register.js' %}"></script>
+        <script src="{% static 'login-register/login-register.js' %}"></script>
     </body>
 </html>

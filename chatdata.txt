@@ -98,3 +98,15 @@ Timestamp: 2026-03-26 15:32:15.930963
 User: Hi
 Bot: Hi there! Welcome to the marketplace. How can I help you today?
 
+Timestamp: 2026-03-26 16:46:08.905799
+User: Price of hammer
+Bot: The listing "Hammer" is priced at £10.00 (condition: Good, seller: Steve12).
+
+Timestamp: 2026-03-26 16:46:29.411266
+User: How do I sell an item?
+Bot: You can sell an item? by creating a new listing. Make sure to add clear photos for the best results!
+
+Timestamp: 2026-03-26 16:46:43.908324
+User: How do I sign up
+Bot: Click 'Register' at the top of the page to create your account and start buying or selling.
+
