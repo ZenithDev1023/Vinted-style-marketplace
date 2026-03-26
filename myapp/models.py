@@ -100,6 +100,7 @@ class Listing(models.Model):
 
     condition = models.CharField(max_length=10, choices=MaterialCondition.choices)
     status = models.CharField(max_length=10, choices=ListingStatus.choices)
+    credit_awarded_on_sale = models.BooleanField(default=False)
 
     def createListing(self):
         self.save()

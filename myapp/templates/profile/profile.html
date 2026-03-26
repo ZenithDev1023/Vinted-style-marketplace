@@ -77,7 +77,9 @@
                         </div>
                     {% endif %}
                 </div>
-                <p class="profile-meta">{{ profile_user.username }} · {{ profile_user.email }} · Credits: {{ profile_user.credits_balance }}</p>
+                <p class="profile-meta">
+                    {{ profile_user.username }} · {{ profile_user.email }} · Credits: {{ profile_user.credits_balance }} ({{ credit_value_gbp|floatformat:2 }} GBP @ £0.50 per credit)
+                </p>
                                 <p class="profile-meta">
                     Seller Rating:
                     {% if reviews_count %}

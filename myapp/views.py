@@ -5,6 +5,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
+from decimal import Decimal
 from django.db.models import Avg, Case, Count, IntegerField, Q, When
 from django.template.defaultfilters import slugify
 from django.views.decorators.http import require_POST
@@ -139,12 +140,14 @@ def profile(request):
     received_reviews = ListingReview.objects.filter(listing__user=profile_user)
     reviews_count = received_reviews.count()
     average_rating = received_reviews.aggregate(avg_rating=Avg("rating"))["avg_rating"]
+    credit_value_gbp = Decimal(profile_user.credits_balance) * Decimal("0.50")
     return render(request, "profile/profile.html", {
         **get_nav_context(request),
         "profile_user": profile_user,
         "user_listings": user_listings,
         "reviews_count": reviews_count,
         "average_rating": average_rating,
+        "credit_value_gbp": credit_value_gbp,
         "profile_form": form,
     })
 
@@ -435,11 +438,6 @@ def create_listing(request):
             listing.location = default_location
             listing.creditAccount = credit_account
             listing.save()
-            if listing.price <= 0:
-                profile_user.credits_balance += 1
-                profile_user.save(update_fields=["credits_balance"])
-                credit_account.creditBalance += 1
-                credit_account.save(update_fields=["creditBalance"])
             image_url = request.POST.get("image_url")
             if image_url:
                 Photo.objects.create(
@@ -512,8 +510,25 @@ def update_listing_status(request, listing_id):
     new_status = request.POST.get("status", "").strip().lower()
     allowed_statuses = {ListingStatus.ACTIVE, ListingStatus.SOLD}
     if new_status in allowed_statuses:
+        should_award_credit = (
+            new_status == ListingStatus.SOLD
+            and listing.price == 0
+            and not listing.credit_awarded_on_sale
+        )
         listing.status = new_status
-        listing.save(update_fields=["status"])
+        if should_award_credit:
+            listing.credit_awarded_on_sale = True
+            profile_user.credits_balance += 1
+            profile_user.save(update_fields=["credits_balance"])
+            credit_account, _ = CreditAccount.objects.get_or_create(
+                user=profile_user,
+                defaults={"creditBalance": profile_user.credits_balance},
+            )
+            credit_account.creditBalance += 1
+            credit_account.save(update_fields=["creditBalance"])
+            listing.save(update_fields=["status", "credit_awarded_on_sale"])
+        else:
+            listing.save(update_fields=["status"])
 
     return redirect("profile")
 
