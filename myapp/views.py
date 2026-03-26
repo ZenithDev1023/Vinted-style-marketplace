@@ -275,9 +275,6 @@ def add_review(request, listing_id):
     return redirect("product_details", listing_id=listing_id)
 
 
-def contact(request):
-    return render(request, "sidebar/contact.html", get_nav_context(request))
-
 def _build_message_threads(profile_user):
     message_qs = (
         DirectMessage.objects.filter(Q(sender=profile_user) | Q(recipient=profile_user))
@@ -358,10 +355,6 @@ def start_conversation(request, listing_id):
         return redirect("messages")
 
     return redirect(f"/messages/?recipient={listing.user_id}&listing={listing.id}")
-
-
-def settings(request):
-    return render(request, "sidebar/settings.html", get_nav_context(request))
 
 
 def logout_view(request):

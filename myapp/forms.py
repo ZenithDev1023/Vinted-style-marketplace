@@ -10,7 +10,15 @@ class RegisterForm(forms.Form):
     email = forms.EmailField()
     password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
     password2 = forms.CharField(label="Confirm Password", widget=forms.PasswordInput)
-    postcode = forms.CharField(max_length=20, help_text="Used to show an approximate listing location.")
+    postcode = forms.CharField(max_length=8, help_text="Used to show an approximate listing location.")
+
+    def clean_postcode(self):
+        import re
+        postcode = self.cleaned_data.get("postcode", "").strip().upper()
+        pattern = r'^[A-Z]{1,2}[0-9]{1,2}[A-Z]?\s?[0-9][A-Z]{2}$'
+        if postcode and not re.match(pattern, postcode):
+            raise forms.ValidationError("Invalid postcode format.")
+        return postcode
 
     def clean(self):
         cleaned_data = super().clean()
