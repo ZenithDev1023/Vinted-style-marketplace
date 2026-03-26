@@ -110,3 +110,31 @@ Timestamp: 2026-03-26 16:46:43.908324
 User: How do I sign up
 Bot: Click 'Register' at the top of the page to create your account and start buying or selling.
 
+Timestamp: 2026-03-26 20:11:39.773951
+User: Who is selling hacksaw
+Bot: Hmm, I didn't quite get that. Try asking about listings, transactions, your profile, or how to contact us.
+
+Timestamp: 2026-03-26 20:11:44.504878
+User: hacksaw details
+Bot: No problem at all!
+
+Timestamp: 2026-03-26 20:11:47.842517
+User: hacksaw
+Bot: I'm still learning! Try asking something like 'How do I create a listing?' or 'How do credits work?'
+
+Timestamp: 2026-03-26 20:11:56.157202
+User: Hacksaw price
+Bot: Hmm, I didn't quite get that. Try asking about listings, transactions, your profile, or how to contact us.
+
+Timestamp: 2026-03-26 20:12:01.499309
+User: price of hacksaw
+Bot: The listing "Hacksaw" is priced at £20.00 (condition: Good, seller: Steve12).
+
+Timestamp: 2026-03-26 20:12:08.690830
+User: seller of hacksaw
+Bot: "Hacksaw" — £20.00
+Condition: Good
+Category: Hand Tools
+Seller: Steve12
+Description: Hacksaw in good condition. Works fine.
+

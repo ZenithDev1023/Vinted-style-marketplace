@@ -20,6 +20,22 @@
     justify-content: space-between;
 }
 
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ==================== GLOBAL STYLES ==================== */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+a, button, [onclick] {
+    cursor: pointer;
+}
+
 /* ==================== NAVBAR ==================== */
 .navbar {
     background-color: var(--primary-blue);
@@ -224,6 +240,7 @@
   background-color: #1a5fa8;
   border-radius: 4px; 
   color: white;
+  text-decoration: none;
 }
 
 /* Position and style the close button (top right corner) */
@@ -251,6 +268,7 @@
     background-color: var(--dark-gray);
     color: var(--white);
     padding: 60px 0 20px;
+    margin-top: auto;
 }
 
 .footer-grid {
