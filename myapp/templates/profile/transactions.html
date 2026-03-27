@@ -4,22 +4,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TradeX - Trade & Construction Marketplace</title>
+    <title>TradeX - Transactions</title>
     <link rel="stylesheet" href="{% static 'profile/profile.css' %}">
     <link rel="stylesheet" href="{% static 'home/home.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .transaction-card {
+            background: #fff;
+            border: 1px solid #e6e6e6;
+            border-radius: 10px;
+            padding: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 1rem;
+            transition: transform 0.1s;
+        }
+        .transaction-card:hover {
+            transform: translateY(-2px);
+        }
+        .transaction-card p {
+            margin: 0.25rem 0;
+        }
+        .transactions-empty {
+            color: #666;
+            font-size: 0.95rem;
+            margin-top: 1.25rem;
+        }
+    </style>
 </head>
 <body>
 
     {% include 'home/navbar.html' %}
-
     {% include 'home/sidenav.html' %}
 
+    <main class="container" style="padding: 2rem 1rem; min-height: 50vh;">
+        <h1>Transactions</h1>
+        <p style="margin-top: 0.25rem; color: #666;">
+            View all your recent transactions and purchases on TradeX.
+        </p>
 
-    <h1>Transaction Page</h1>
-
-
+        {% if transactions %}
+            <div style="display: grid; gap: 0.75rem; margin-top: 1.5rem;">
+                {% for tx in transactions %}
+                    <div class="transaction-card">
+                        <p><strong>Order #{{ tx.id }}</strong> – £{{ tx.amount }} – {{ tx.status }}</p>
+                        <p>Seller: {{ tx.seller.username }} • {{ tx.created_at|timesince }} ago</p>
+                        <p>Item: {{ tx.listing.title }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="transactions-empty">Currently in development</p>
+        {% endif %}
+    </main>
 
     {% include 'home/footer.html' %}
 
@@ -33,7 +71,6 @@
                 <button class="tab-btn" onclick="switchTab('signup')">Sign Up</button>
             </div>
 
-            <!-- Login Form -->
             <form id="loginForm" class="auth-form" method="POST" action="{% url 'login' %}">
                 {% csrf_token %}
                 <h2>Login</h2>
@@ -48,7 +85,6 @@
                 <button type="submit" class="btn btn-primary btn-full">Login</button>
             </form>
 
-            <!-- Signup Form -->
             <form id="signupForm" class="auth-form" method="POST" action="{% url 'register' %}" style="display: none;">
                 {% csrf_token %}
                 <h2>Sign Up</h2>
@@ -69,9 +105,7 @@
         </div>
     </div>
 
-    <!-- ==================== JAVASCRIPT ==================== -->
-    </div>
     <script src="{% static 'home/home.js' %}"></script>
     <script src="{% static 'styles/styles.js' %}"></script>
 </body>
-</html> 
+</html>
