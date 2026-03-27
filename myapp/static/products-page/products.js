@@ -62,15 +62,17 @@ function removeClass(element, name) {
 }
 
 var btnContainer = document.getElementById("filterButtons");
-var buttons = btnContainer.getElementsByClassName("filter-btn");
-for (var i = 0; i < buttons.length; i++) {
-  buttons[i].addEventListener("click", function(){
-    var current = document.getElementsByClassName("active");
-    if (current.length > 0) { 
-      current[0].className = current[0].className.replace(" active", "");
-    }
-    this.className += " active";
-  });
+if (btnContainer) {
+  var buttons = btnContainer.getElementsByClassName("filter-btn");
+  for (var i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener("click", function(){
+      var current = document.getElementsByClassName("active");
+      if (current.length > 0) { 
+        current[0].className = current[0].className.replace(" active", "");
+      }
+      this.className += " active";
+    });
+  }
 }
 
 // Show all items on page load

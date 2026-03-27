@@ -1,4 +1,5 @@
 from django import forms
+import re
 from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from PIL import Image
@@ -8,14 +9,36 @@ from .models import DirectMessage, User, Listing, ListingReview
 class RegisterForm(forms.Form):
     username = forms.CharField(max_length=50)
     email = forms.EmailField()
-    password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
+    password1 = forms.CharField(
+        label="Password",
+        widget=forms.PasswordInput,
+        help_text="Minimum 8 characters, at least 1 number, and not similar to your username.",
+    )
     password2 = forms.CharField(label="Confirm Password", widget=forms.PasswordInput)
-    postcode = forms.CharField(max_length=20, help_text="Used to show an approximate listing location.")
+    postcode = forms.CharField(max_length=8, help_text="Used to show an approximate listing location.") 
+
+    def clean_postcode(self):
+        postcode = self.cleaned_data.get("postcode", "").strip().upper()
+        pattern = r'^[A-Z]{1,2}[0-9]{1,2}[A-Z]?\s?[0-9][A-Z]{2}$'
+        if postcode and not re.match(pattern, postcode):
+            raise forms.ValidationError("Invalid postcode format.")
+        return postcode
 
     def clean(self):
         cleaned_data = super().clean()
         p1 = cleaned_data.get("password1")
         p2 = cleaned_data.get("password2")
+        username = cleaned_data.get("username", "").strip().lower()
+
+        if p1:
+            if len(p1) < 8:
+                self.add_error("password1", "Password must be at least 8 characters long.")
+            if not any(character.isdigit() for character in p1):
+                self.add_error("password1", "Password must include at least 1 number.")
+            normalized_password = p1.lower()
+            if username and (username in normalized_password or normalized_password in username):
+                self.add_error("password1", "Password cannot be similar to your username.")
+
         if p1 and p2 and p1 != p2:
             raise forms.ValidationError("Passwords do not match.")
         if User.objects.filter(username=cleaned_data.get("username")).exists():

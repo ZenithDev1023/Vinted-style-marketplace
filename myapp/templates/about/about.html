@@ -12,119 +12,21 @@
 </head>
 <body>
     
-    <!-- ==================== TOP NAVIGATION BAR ==================== -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <!-- Hamburger Button (Far Left) -->
-            <span id="openNavBtn" style="font-size:30px;cursor:pointer;color:white;">&#9776;</span>
+    {% include 'home/navbar.html' %}
+    {% include 'home/sidenav.html' %}
 
-            <!-- Logo (Left) -->
-            <a href="{% url 'home' %}" class="logo">
-                <img src="{% static 'images/tradex-logo.png' %}" alt="TradeX Logo">
-                <span>TradeX</span>
-            </a>
-
-            <!-- Search Bar (Center) -->
-            <form class="search-bar" method="GET" action="{% url 'products' %}">
-                <input type="text" 
-                       name="q" 
-                       placeholder="Search tools, equipment, materials..." 
-                       value="{{ search_query }}">
-                <button type="submit" class="search-btn">
-                    <i class="fas fa-search"></i> Search
-                </button>
-            </form>
-
-            <!-- Auth Buttons (Right) -->
-            <div class="nav-actions">
-                {% if user_id %}
-                    <span class="user-greeting">Hi, {{ user.username }}!</span>
-                    <a href="{% url 'create_listing' %}" class="btn btn-primary">Post an Ad</a>
-                    <a href="{% url 'profile' %}" class="btn btn-secondary">My Profile</a>
-                    <a href="{% url 'logout' %}" class="btn btn-outline">Logout</a>
-                {% else %}
-                    <a href="{% url 'create_listing' %}" class="btn btn-primary">Post an Ad</a>
-                    <a href="{% url 'register' %}" class="btn btn-secondary">Sign Up</a>
-                    <a href="{% url 'login' %}" class="btn btn-outline">Login</a>
-                {% endif %}
-            </div>
-        </div>
-    </nav>
-
-    <!-- ==================== SIDE NAVIGATION ==================== -->
-    <div id="mySidenav" class="sidenav">
-        <a id="closeNavBtn" href="javascript:void(0)" class="closebtn">&times;</a>
-        <a href="{% url 'profile' %}">My Profile</a>
-        <a href="{% url 'about' %}">About</a>
-        <a href="{% url 'products' %}">Products</a>
-        <a href="{% url 'contact' %}">Contact</a>
-        <a href="{% url 'messages' %}">Messages</a>
-        <a href="{% url 'settings' %}">Settings</a>
-        <a href="{% url 'logout' %}">Logout</a>
+    <!-- ==================== MAIN CONTENT ==================== -->
+    <div class="main-content">
+        <h1>About TradeX</h1>
+        <p>Welcome to TradeX, your premier online marketplace for buying, selling, and
+trading tools, equipment, and materials in the construction industry. Our mission is to connect tradespeople, contractors, and DIY enthusiasts with the resources they need to get the job done efficiently and affordably.</p>
+        <p>At TradeX, we understand the unique challenges faced by those in the construction field. Whether you're a seasoned professional looking to offload surplus equipment or a DIYer searching for that one tool to complete your project, TradeX is here to help you find exactly what you need.</p>
+        <p>Our platform is designed to foster a community of trust and reliability. We offer secure payment options, user reviews, and a dedicated support team to ensure that every transaction is smooth and satisfactory. Join TradeX today and discover a world of possibilities for your construction needs!</p>
     </div>
 
 
 
-     <!-- ==================== FOOTER ==================== -->
-     <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <!-- About Us -->
-                <div class="footer-section">
-                    <h4>About TradeX</h4>
-                    <ul>
-                        <li><a href="{% url 'about_us' %}">About Us</a></li>
-                        <li><a href="{% url 'careers' %}">Careers</a></li>
-                        <li><a href="{% url 'blog' %}">Blog</a></li>
-                        <li><a href="{% url 'press' %}">Press</a></li>
-                    </ul>
-                </div>
-
-                <!-- Help & Contact -->
-                <div class="footer-section">
-                    <h4>Help & Contact</h4>
-                    <ul>
-                        <li><a href="{% url 'help_center' %}">Help Center</a></li>
-                        <li><a href="{% url 'contact' %}">Contact Us</a></li>
-                        <li><a href="{% url 'safety_tips' %}">Safety Tips</a></li>
-                        <li><a href="{% url 'scam_alerts' %}">Scam Alerts</a></li>
-                    </ul>
-                </div>
-
-                <!-- Policies -->
-                <div class="footer-section">
-                    <h4>Policies</h4>
-                    <ul>
-                        <li><a href="{% url 'privacy_notice' %}">Privacy Notice</a></li>
-                        <li><a href="{% url 'terms_of_service' %}">Terms of Service</a></li>
-                        <li><a href="{% url 'cookie_policy' %}">Cookie Policy</a></li>
-                        <li><a href="{% url 'community_guidelines' %}">Community Guidelines</a></li>
-                    </ul>
-                </div>
-
-                <!-- For Tradespeople -->
-                <div class="footer-section">
-                    <h4>For Tradespeople</h4>
-                    <ul>
-                        <li><a href="{% url 'create_listing' %}">Sell on TradeX</a></li>
-                        <li><a href="#">Business Accounts</a></li>
-                        <li><a href="{% url 'advertising' %}">Advertising</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Copyright -->
-            <div class="footer-bottom">
-                <p>&copy; {% now "Y" %} TradeX Marketplace. All rights reserved.</p>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                </div>
-            </div>
-        </div>
-    </footer>
+    {% include 'home/footer.html' %}
 
     <!-- ==================== AUTH MODAL (Login/Signup) ==================== -->
     <div id="authModal" class="modal">

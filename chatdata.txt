@@ -34,3 +34,144 @@ Timestamp: 2026-03-25 17:17:06.059767
 User: What condition is spanner
 Bot: I couldn't find any active listings matching "is spanner" right now. Try browsing the Products page or use the search bar.
 
+Timestamp: 2026-03-26 15:05:37.890989
+User: Hammer
+Bot: Hmm, I didn't quite get that. Try asking about listings, transactions, your profile, or how to contact us.
+
+Timestamp: 2026-03-26 15:05:42.320786
+User: Price of Hammer
+Bot: The listing "Hammer" is priced at £10.00 (condition: Good, seller: Steve12).
+
+Timestamp: 2026-03-26 15:05:52.905497
+User: Price of Spanner
+Bot: The listing "Spanner" is priced at £30.00 (condition: Good, seller: smas).
+
+Timestamp: 2026-03-26 15:06:32.367173
+User: Price of 2
+Bot: I couldn't find any active listings matching "2" right now. Try browsing the Products page or use the search bar.
+
+Timestamp: 2026-03-26 15:07:47.881467
+User: Hi
+Bot: Hey! What can I assist you with today?
+
+Timestamp: 2026-03-26 15:09:58.727688
+User: Hi
+Bot: Hi there! Welcome to the marketplace. How can I help you today?
+
+Timestamp: 2026-03-26 15:10:03.187536
+User: Price of Spanner
+Bot: The listing "Spanner" is priced at £30.00 (condition: Good, seller: smas).
+
+Timestamp: 2026-03-26 15:10:09.669080
+User: Condition of Spanner
+Bot: "Spanner" — £30.00
+Condition: Good
+Category: Hand Tools
+Seller: smas
+Description: Spanner in good condition.
+
+Timestamp: 2026-03-26 15:10:16.903828
+User: Seller of Spanner
+Bot: "Spanner" — £30.00
+Condition: Good
+Category: Hand Tools
+Seller: smas
+Description: Spanner in good condition.
+
+Timestamp: 2026-03-26 15:12:37.940768
+User: How do I log out
+Bot: To sign out, find the Logout option in the nav bar.
+
+Timestamp: 2026-03-26 15:12:45.901978
+User: How does someone register
+Bot: Signing up is free and easy! Hit the Register button and you'll be set up in seconds.
+
+Timestamp: 2026-03-26 15:12:55.945359
+User: How do I see my account?
+Bot: Your account settings and profile details are all accessible from the Profile page.
+
+Timestamp: 2026-03-26 15:13:06.800283
+User: How do I message?
+Bot: You can send and receive messages from the Messages section in your profile.
+
+Timestamp: 2026-03-26 15:32:15.930963
+User: Hi
+Bot: Hi there! Welcome to the marketplace. How can I help you today?
+
+Timestamp: 2026-03-26 16:46:08.905799
+User: Price of hammer
+Bot: The listing "Hammer" is priced at £10.00 (condition: Good, seller: Steve12).
+
+Timestamp: 2026-03-26 16:46:29.411266
+User: How do I sell an item?
+Bot: You can sell an item? by creating a new listing. Make sure to add clear photos for the best results!
+
+Timestamp: 2026-03-26 16:46:43.908324
+User: How do I sign up
+Bot: Click 'Register' at the top of the page to create your account and start buying or selling.
+
+Timestamp: 2026-03-26 19:07:40.775175
+User: Price of hammer
+Bot: The listing "Hammer" is priced at �10.00 (condition: Good, seller: Steve12).
+
+Timestamp: 2026-03-26 19:10:04.356392
+User: price of hammer
+Bot: The listing "Hammer" is priced at �10.00 (condition: Good, seller: Steve12).
+
+Timestamp: 2026-03-26 19:12:19.151140
+User: Price of hammer
+Bot: The listing "Hammer" is priced at �10.00 (condition: Good, seller: Steve12).
+
+Timestamp: 2026-03-26 19:12:26.196282
+User: Price of hammer
+Bot: The listing "Hammer" is priced at �10.00 (condition: Good, seller: Steve12).
+Timestamp: 2026-03-26 20:11:39.773951
+User: Who is selling hacksaw
+Bot: Hmm, I didn't quite get that. Try asking about listings, transactions, your profile, or how to contact us.
+
+Timestamp: 2026-03-26 20:11:44.504878
+User: hacksaw details
+Bot: No problem at all!
+
+Timestamp: 2026-03-26 20:11:47.842517
+User: hacksaw
+Bot: I'm still learning! Try asking something like 'How do I create a listing?' or 'How do credits work?'
+
+Timestamp: 2026-03-26 20:11:56.157202
+User: Hacksaw price
+Bot: Hmm, I didn't quite get that. Try asking about listings, transactions, your profile, or how to contact us.
+
+Timestamp: 2026-03-26 20:12:01.499309
+User: price of hacksaw
+Bot: The listing "Hacksaw" is priced at £20.00 (condition: Good, seller: Steve12).
+
+Timestamp: 2026-03-26 20:12:08.690830
+User: seller of hacksaw
+Bot: "Hacksaw" — £20.00
+Condition: Good
+Category: Hand Tools
+Seller: Steve12
+Description: Hacksaw in good condition. Works fine.
+
+Timestamp: 2026-03-26 21:15:51.905730
+User: How to sell
+Bot: Hmm, I didn't quite get that. Try asking about listings, transactions, your profile, or how to contact us.
+
+Timestamp: 2026-03-26 21:15:59.876118
+User: How do I list
+Bot: I'm still learning! Try asking something like 'How do I create a listing?' or 'How do credits work?'
+
+Timestamp: 2026-03-26 21:16:06.290919
+User: How do I create a listing?
+Bot: Creating a listing takes just a minute! Go to 'Create Listing', add your item details and photos, then publish.
+
+Timestamp: 2026-03-26 23:06:07.983396
+User: How do I sign up?
+Bot: Signing up is free and easy! Hit the Register button and you'll be set up in seconds.
+
+Timestamp: 2026-03-26 23:06:16.240632
+User: Price of hammer
+Bot: Here are the active listings I found for "hammer":
+• Hammer — £10.00 (Good)
+• Demo hammer — £20.00 (Good)
+

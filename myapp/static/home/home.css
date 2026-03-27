@@ -12,12 +12,7 @@ body {
     line-height: 1.6;
 }
 
-/* ==================== CONTAINERS ==================== */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
+
 
 
 /* ==================== CATEGORY NAV ==================== */

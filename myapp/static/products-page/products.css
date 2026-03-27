@@ -4,9 +4,10 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
-
-
 
 
 /* ===========PRODUCT IMAGE GRID===================== */
@@ -30,7 +31,7 @@ body {
 
 }
 
-.container a {
+.product-card a {
     text-decoration: none;
     color: black;
     display: flex;
@@ -38,12 +39,12 @@ body {
     align-items: center;
 }
 
-.container a:hover p {
-    color: #C7511F; /* Amazon Orange */
+.product-card a:hover p {
+    color: #C7511F;
     font-weight: bold;
 }
 
-.container a:hover .product-image {
+.product-card a:hover .product-image {
     opacity: 0.85;
     cursor: pointer;
 }
@@ -89,10 +90,13 @@ body {
     border-radius: 4px;
     transition: background-color 0.3s;
     margin: 4px 2px;
+    text-decoration: none;
+    display: inline-block;
 }
 
 .filter-btn:hover {
     background-color: #0b7dda;
+    text-decoration: none;
 }
 
 .filter-btn.active {

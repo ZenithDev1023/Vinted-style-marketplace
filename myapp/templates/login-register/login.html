@@ -51,17 +51,7 @@
         </div>
     </nav>
     
-    <!-- ==================== SIDE NAVIGATION ==================== -->
-    <div id="mySidenav" class="sidenav">
-        <a id="closeNavBtn" href="javascript:void(0)" class="closebtn">&times;</a>
-        <a href="{% url 'profile' %}">My Profile</a>
-        <a href="{% url 'about' %}">About</a>
-        <a href="{% url 'products' %}">Products</a>
-        <a href="{% url 'contact' %}">Contact</a>
-        <a href="{% url 'messages' %}">Messages</a>
-        <a href="{% url 'settings' %}">Settings</a>
-        <a href="{% url 'logout' %}">Logout</a>
-    </div>
+    {% include 'home/sidenav.html' %}
 
     <div class="main-div">
         <div class="register-container">
@@ -83,63 +73,8 @@
     
 
      <!-- ==================== FOOTER ==================== -->
-     <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <!-- About Us -->
-                <div class="footer-section">
-                    <h4>About TradeX</h4>
-                    <ul>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Press</a></li>
-                    </ul>
-                </div>
+    {% include 'home/footer.html' %}
 
-                <!-- Help & Contact -->
-                <div class="footer-section">
-                    <h4>Help & Contact</h4>
-                    <ul>
-                        <li><a href="#">Help Center</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Safety Tips</a></li>
-                        <li><a href="#">Scam Alerts</a></li>
-                    </ul>
-                </div>
-
-                <!-- Policies -->
-                <div class="footer-section">
-                    <h4>Policies</h4>
-                    <ul>
-                        <li><a href="#">Privacy Notice</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">Cookie Policy</a></li>
-                        <li><a href="#">Community Guidelines</a></li>
-                    </ul>
-                </div>
-
-                <!-- For Tradespeople -->
-                <div class="footer-section">
-                    <h4>For Tradespeople</h4>
-                    <ul>
-                        <li><a href="{% url 'create_listing' %}">Sell on TradeX</a></li>
-                        <li><a href="#">Business Accounts</a></li>
-                        <li><a href="#">Advertising</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Copyright -->
-            <div class="footer-bottom">
-                <p>&copy; {% now "Y" %} TradeX Marketplace. All rights reserved.</p>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
+    <script src="{% static 'styles/styles.js' %}"></script>
+</body>
+</html>
